@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Phim Nhà - Xem Phim Hay Chuẩn HD Nịnh Mắt</title>
+  <title>Phim Nhà - Xem Phim Không Quảng Cáo</title>
+  <!-- Thư viện Hls.js giúp phát luồng m3u8 sạch trực tiếp trên Android/PC -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
     :root {
       --bg-main: #0a0c13;
       --bg-card: #141824;
-      --bg-card-hover: #1e2436;
       --accent: #ffb703;
       --accent-red: #e50914;
       --text: #ffffff;
@@ -32,7 +33,7 @@
       padding-bottom: 75px;
     }
 
-    /* Header & Tìm kiếm */
+    /* Header */
     header {
       position: sticky;
       top: 0;
@@ -90,7 +91,6 @@
       border-color: var(--accent);
     }
 
-    /* Gợi ý tìm kiếm tự động */
     .suggest-box {
       position: absolute;
       top: calc(100% + 8px);
@@ -113,7 +113,6 @@
       align-items: center;
       cursor: pointer;
       border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: background 0.15s;
     }
 
     .suggest-item:hover {
@@ -147,16 +146,13 @@
       color: var(--text-sub);
     }
 
-    /* Danh mục menu trên Desktop */
     .nav-links {
       display: none;
       gap: 16px;
     }
 
     @media (min-width: 768px) {
-      .nav-links {
-        display: flex;
-      }
+      .nav-links { display: flex; }
     }
 
     .nav-link {
@@ -165,14 +161,13 @@
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      transition: color 0.15s;
     }
 
     .nav-link:hover, .nav-link.active {
       color: var(--accent);
     }
 
-    /* Hero Banner kiểu Rổ Phim */
+    /* Hero Banner */
     .hero-container {
       position: relative;
       max-width: 1200px;
@@ -207,9 +202,7 @@
     }
 
     @media (min-width: 768px) {
-      .hero-overlay {
-        padding: 32px;
-      }
+      .hero-overlay { padding: 32px; }
     }
 
     .hero-title-main {
@@ -221,9 +214,7 @@
     }
 
     @media (min-width: 768px) {
-      .hero-title-main {
-        font-size: 2.2rem;
-      }
+      .hero-title-main { font-size: 2.2rem; }
     }
 
     .hero-subtitle {
@@ -268,12 +259,6 @@
       max-width: 650px;
     }
 
-    .hero-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
     .btn-hero-play {
       background: var(--accent);
       color: #000;
@@ -288,7 +273,7 @@
       gap: 6px;
     }
 
-    /* Grid & Danh sách phim */
+    /* Danh sách cuộn ngang */
     .content-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -327,9 +312,7 @@
       scrollbar-width: none;
     }
 
-    .movie-scroll::-webkit-scrollbar {
-      display: none;
-    }
+    .movie-scroll::-webkit-scrollbar { display: none; }
 
     .movie-card {
       flex: 0 0 125px;
@@ -340,9 +323,7 @@
     }
 
     @media (min-width: 768px) {
-      .movie-card {
-        flex: 0 0 160px;
-      }
+      .movie-card { flex: 0 0 160px; }
     }
 
     .poster-box {
@@ -359,11 +340,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.25s ease;
-    }
-
-    .movie-card:hover .poster-box img {
-      transform: scale(1.05);
     }
 
     .badge-top {
@@ -371,12 +347,10 @@
       top: 6px;
       left: 6px;
       background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
       font-size: 0.68rem;
       font-weight: 700;
       padding: 2px 6px;
       border-radius: 4px;
-      color: #fff;
     }
 
     .badge-quality {
@@ -407,7 +381,7 @@
       text-overflow: ellipsis;
     }
 
-    /* Trình phát phim & Xem chi tiết */
+    /* Trình phát Video (Native HTML5 Video + Hls.js) */
     .player-overlay {
       display: none;
       position: fixed;
@@ -433,9 +407,6 @@
       font-weight: bold;
       cursor: pointer;
       margin-bottom: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .video-viewport {
@@ -445,15 +416,24 @@
       background: #000;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.9);
       border: 1px solid var(--border);
     }
 
-    /* Lọc nịnh mắt (tăng độ tương phản + bão hòa màu chuẩn rạp) */
-    .video-viewport iframe {
+    /* Video player nịnh mắt, không quảng cáo */
+    #native-player {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      outline: none;
+      filter: contrast(1.06) saturate(1.12);
+    }
+
+    /* Khung dự phòng có Sandbox chặn hoàn toàn Pop-up và chuyển hướng */
+    #video-iframe {
       width: 100%;
       height: 100%;
       border: none;
+      display: none;
       filter: contrast(1.06) saturate(1.12);
     }
 
@@ -530,9 +510,7 @@
     }
 
     @media (min-width: 768px) {
-      .mobile-bottom-nav {
-        display: none;
-      }
+      .mobile-bottom-nav { display: none; }
     }
 
     .m-nav-item {
@@ -553,7 +531,6 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header>
     <div class="nav-container">
       <div class="brand-logo" onclick="loadCategory('moi-cap-nhat')">
@@ -574,27 +551,25 @@
     </div>
   </header>
 
-  <!-- Banner nổi bật phong cách Rổ Phim -->
   <div class="hero-container" id="hero-section">
     <div class="hero-card">
       <img id="hero-img" class="hero-backdrop" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&auto=format&fit=crop" alt="Hero">
       <div class="hero-overlay">
-        <h1 class="hero-title-main" id="hero-title">ĐANG TẢI PHIM...</h1>
+        <h1 class="hero-title-main" id="hero-title">ĐANG TẢI...</h1>
         <div class="hero-subtitle" id="hero-origin">Loading...</div>
         <div class="hero-tags">
           <span class="badge-tag gold">FHD 1080P</span>
           <span class="badge-tag" id="hero-year">2026</span>
           <span class="badge-tag" id="hero-lang">Vietsub / Thuyết Minh</span>
         </div>
-        <p class="hero-desc" id="hero-desc">Hệ thống đang đồng bộ danh sách phim chất lượng cao từ máy chủ...</p>
+        <p class="hero-desc" id="hero-desc">Thưởng thức phim chất lượng cao, luồng phát trực tiếp sạch hoàn toàn quảng cáo.</p>
         <div class="hero-actions">
-          <button class="btn-hero-play" id="hero-btn-play" onclick="">▶ Xem Ngay</button>
+          <button class="btn-hero-play" id="hero-btn-play">▶ Xem Ngay</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Danh sách phim phân theo mục -->
   <main class="content-container">
     <div class="section-head">
       <h2 class="section-title" id="list-title">Phim Mới Cập Nhật</h2>
@@ -612,13 +587,17 @@
     <div class="movie-scroll" id="movies-single-grid"></div>
   </main>
 
-  <!-- Modal Trình phát video độc lập -->
+  <!-- Trình phát Video -->
   <div class="player-overlay" id="player-modal">
     <div class="player-wrap">
       <button class="btn-back" onclick="closePlayer()">✕ Quay lại danh sách</button>
       
       <div class="video-viewport">
-        <iframe id="video-iframe" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+        <!-- Trình phát video HTML5 trực tiếp: KHÔNG CÓ QUẢNG CÁO -->
+        <video id="native-player" controls playsinline></video>
+        
+        <!-- Iframe dự phòng: Chặn nghiêm ngặt bằng sandbox (không cho mở tab mới, không cho redirect) -->
+        <iframe id="video-iframe" sandbox="allow-scripts allow-same-origin allow-forms" allowfullscreen></iframe>
       </div>
 
       <div class="player-meta">
@@ -627,8 +606,8 @@
         
         <div class="episodes-box">
           <div class="episodes-title">
-            <span>DANH SÁCH TẬP PHIM (FULL HD VIP)</span>
-            <span style="font-size:0.75rem; color:var(--accent);">★ Đã khóa 1080p nịnh mắt</span>
+            <span>DANH SÁCH TẬP PHIM</span>
+            <span style="font-size:0.75rem; color:var(--accent);">🛡️ Đã bật khiên chặn quảng cáo</span>
           </div>
           <div class="ep-list" id="episodes-container"></div>
         </div>
@@ -636,7 +615,6 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation điện thoại -->
   <nav class="mobile-bottom-nav">
     <div class="m-nav-item active" onclick="loadCategory('moi-cap-nhat')">🏠<span>Trang chủ</span></div>
     <div class="m-nav-item" onclick="loadCategory('phim-bo')">📺<span>Phim bộ</span></div>
@@ -647,27 +625,24 @@
   <script>
     const API_BASE = "https://phimapi.com";
     let searchTimeout = null;
+    let hlsInstance = null;
 
-    // Chuẩn hóa đường link ảnh để không bao giờ bị vỡ poster
     function formatPoster(url) {
       if (!url) return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400";
       if (url.startsWith("http://") || url.startsWith("https://")) return url;
       return `https://phimimg.com/${url.replace(/^\/+/, '')}`;
     }
 
-    // Tự động tải phim theo danh mục
     async function fetchMovies(endpoint) {
       try {
         const res = await fetch(`${API_BASE}/${endpoint}`);
         const data = await res.json();
         return data.items || [];
       } catch (err) {
-        console.error("Lỗi nạp API:", err);
         return [];
       }
     }
 
-    // Đổ dữ liệu ra danh sách cuộn ngang
     function renderList(items, containerId) {
       const container = document.getElementById(containerId);
       container.innerHTML = "";
@@ -690,7 +665,7 @@
       });
     }
 
-    // Tải thông tin chi tiết và phát phim
+    // Mở phim và nạp tập
     async function openMovie(slug) {
       document.getElementById("suggest-box").style.display = "none";
       try {
@@ -715,34 +690,73 @@
             btn.onclick = () => {
               document.querySelectorAll(".ep-btn").forEach(b => b.classList.remove("active"));
               btn.classList.add("active");
-              playStream(ep.link_embed);
+              playStream(ep.link_m3u8, ep.link_embed);
             };
             epContainer.appendChild(btn);
           });
 
-          // Tự động phát tập 1 ở chất lượng cao nhất
-          playStream(serverData[0].link_embed);
+          // Tự động phát tập đầu tiên
+          playStream(serverData[0].link_m3u8, serverData[0].link_embed);
         }
 
         document.getElementById("player-modal").style.display = "block";
         window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (err) {
-        alert("Không thể tải tập phim này, vui lòng chọn phim khác!");
+        alert("Không thể tải danh sách tập của phim này.");
       }
     }
 
-    function playStream(embedUrl) {
+    // HÀM PHÁT VIDEO SẠCH - CHẶN CỜ BẠC POPUP
+    function playStream(m3u8Url, embedFallback) {
+      const video = document.getElementById("native-player");
       const iframe = document.getElementById("video-iframe");
-      iframe.src = embedUrl;
+
+      // Huỷ luồng hls cũ nếu có
+      if (hlsInstance) {
+        hlsInstance.destroy();
+        hlsInstance = null;
+      }
+
+      if (m3u8Url) {
+        // Ưu tiên 1: Chạy trực tiếp link_m3u8 (KHÔNG THỂ CÓ QUẢNG CÁO HAY REDIRECT)
+        iframe.style.display = "none";
+        iframe.src = "";
+        video.style.display = "block";
+
+        if (Hls.isSupported()) {
+          hlsInstance = new Hls({ maxBufferLength: 30 });
+          hlsInstance.loadSource(m3u8Url);
+          hlsInstance.attachMedia(video);
+          hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+          // Hỗ trợ nguyên bản trên Safari iOS
+          video.src = m3u8Url;
+          video.addEventListener("loadedmetadata", () => video.play());
+        }
+      } else {
+        // Dự phòng: Nếu phim không có m3u8, dùng iframe có sandbox chặn chuyển hướng
+        video.pause();
+        video.style.display = "none";
+        iframe.style.display = "block";
+        iframe.src = embedFallback;
+      }
     }
 
     function closePlayer() {
+      const video = document.getElementById("native-player");
       const iframe = document.getElementById("video-iframe");
+
+      video.pause();
+      video.src = "";
+      if (hlsInstance) {
+        hlsInstance.destroy();
+        hlsInstance = null;
+      }
       iframe.src = "";
       document.getElementById("player-modal").style.display = "none";
     }
 
-    // Tìm kiếm trực tiếp hiển thị gợi ý (Live Search Auto-complete)
+    // Tìm kiếm trực tiếp
     function handleSearchLive(keyword) {
       clearTimeout(searchTimeout);
       const box = document.getElementById("suggest-box");
@@ -779,7 +793,7 @@
       }, 300);
     }
 
-    // Đổi danh mục
+    // Phân loại danh mục
     async function loadCategory(cat, el) {
       if (el) {
         document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
@@ -808,34 +822,29 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    // Khởi tạo trang ban đầu
+    // Khởi chạy ban đầu
     async function initApp() {
-      // 1. Lấy phim mới nhất đổ vào Hero & Grid chính
       const newMovies = await fetchMovies("danh-sach/phim-moi-cap-nhat?page=1");
       if (newMovies.length > 0) {
         const top = newMovies[0];
         document.getElementById("hero-title").innerText = top.name;
         document.getElementById("hero-origin").innerText = top.origin_name || "Official Release";
         document.getElementById("hero-year").innerText = top.year || "2026";
-        document.getElementById("hero-desc").innerText = `Thưởng thức siêu phẩm ${top.name} với độ phân giải Full HD cao nhất, máy chủ phát siêu tốc không quảng cáo chen ngang.`;
         document.getElementById("hero-img").src = formatPoster(top.poster_url || top.thumb_url);
         document.getElementById("hero-btn-play").onclick = () => openMovie(top.slug);
 
         renderList(newMovies, "movies-grid");
       }
 
-      // 2. Lấy phim bộ
       const seriesRes = await fetch(`${API_BASE}/v1/api/danh-sach/phim-bo?page=1`);
       const seriesData = await seriesRes.json();
       renderList((seriesData.data && seriesData.data.items) || [], "series-grid");
 
-      // 3. Lấy phim lẻ
       const singlesRes = await fetch(`${API_BASE}/v1/api/danh-sach/phim-le?page=1`);
       const singlesData = await singlesRes.json();
       renderList((singlesData.data && singlesData.data.items) || [], "movies-single-grid");
     }
 
-    // Đóng popup gợi ý khi bấm ra ngoài
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".search-wrapper")) {
         document.getElementById("suggest-box").style.display = "none";
