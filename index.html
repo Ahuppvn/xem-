@@ -2,15 +2,19 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>FlixMobile - Web Phim Di Động</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Phim Nhà - Xem Phim Hay Chuẩn HD Nịnh Mắt</title>
   <style>
     :root {
-      --bg-color: #0f1015;
-      --card-bg: #1a1c23;
-      --accent: #e50914;
-      --text-main: #ffffff;
-      --text-muted: #9aa0a6;
+      --bg-main: #0a0c13;
+      --bg-card: #141824;
+      --bg-card-hover: #1e2436;
+      --accent: #ffb703;
+      --accent-red: #e50914;
+      --text: #ffffff;
+      --text-sub: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --radius: 10px;
     }
 
     * {
@@ -22,389 +26,823 @@
     }
 
     body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      padding-bottom: 70px;
+      background-color: var(--bg-main);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 75px;
     }
 
-    /* Header & Thanh tìm kiếm */
+    /* Header & Tìm kiếm */
     header {
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: rgba(15, 16, 21, 0.95);
-      backdrop-filter: blur(8px);
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 1000;
+      background: rgba(10, 12, 19, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
     }
 
-    .top-bar {
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
-    .logo {
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: 0.5px;
-    }
-
-    .search-box {
-      width: 100%;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid #2d3139;
-      background-color: var(--card-bg);
+      font-weight: 900;
       color: #fff;
-      font-size: 0.9rem;
-      outline: none;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
     }
 
-    .search-box input:focus {
+    .brand-logo span {
+      color: var(--accent);
+    }
+
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+      max-width: 500px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: #151a28;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
       border-color: var(--accent);
     }
 
-    /* Banner nổi bật (Hero) */
-    .hero {
-      position: relative;
-      margin: 12px 16px;
+    /* Gợi ý tìm kiếm tự động */
+    .suggest-box {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      background: #141824;
+      border: 1px solid var(--border);
       border-radius: 12px;
-      overflow: hidden;
-      aspect-ratio: 16 / 9;
-      background: #2a2e39;
-    }
-
-    .hero img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.9) 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 12px;
-    }
-
-    .hero-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .btn-play {
-      align-self: flex-start;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    /* Danh sách cuộn ngang */
-    .section-title {
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 16px 16px 8px;
-    }
-
-    .movie-scroll-list {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding: 0 16px 8px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-
-    .movie-scroll-list::-webkit-scrollbar {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      max-height: 380px;
+      overflow-y: auto;
       display: none;
+      z-index: 1100;
     }
 
-    .movie-card {
-      flex: 0 0 130px;
-      scroll-snap-align: start;
+    .suggest-item {
       display: flex;
-      flex-direction: column;
+      gap: 10px;
+      padding: 8px 12px;
+      align-items: center;
       cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.15s;
     }
 
-    .poster-wrap {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 2 / 3;
-      border-radius: 8px;
-      overflow: hidden;
-      background-color: var(--card-bg);
-      margin-bottom: 6px;
+    .suggest-item:hover {
+      background: #1f273d;
     }
 
-    .poster-wrap img {
-      width: 100%;
-      height: 100%;
+    .suggest-thumb {
+      width: 40px;
+      height: 56px;
       object-fit: cover;
-    }
-
-    .badge-rating {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: rgba(0, 0, 0, 0.75);
-      color: #ffb703;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 2px 5px;
       border-radius: 4px;
+      background: #2a3147;
+      flex-shrink: 0;
     }
 
-    .card-title {
+    .suggest-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .suggest-title {
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .card-meta {
-      font-size: 0.75rem;
-      color: var(--text-muted);
+    .suggest-meta {
+      font-size: 0.72rem;
+      color: var(--text-sub);
     }
 
-    /* Modal phát video */
-    .modal {
+    /* Danh mục menu trên Desktop */
+    .nav-links {
       display: none;
-      position: fixed;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--accent);
+    }
+
+    /* Hero Banner kiểu Rổ Phim */
+    .hero-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 12px auto;
+      padding: 0 16px;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      max-height: 480px;
+      background: #181d2c;
+    }
+
+    .hero-backdrop {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+    }
+
+    .hero-overlay {
+      position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.92);
-      z-index: 200;
+      background: linear-gradient(180deg, rgba(10,12,19,0.1) 0%, rgba(10,12,19,0.7) 60%, rgba(10,12,19,0.98) 100%);
+      display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-end;
       padding: 16px;
     }
 
-    .modal.active {
-      display: flex;
+    @media (min-width: 768px) {
+      .hero-overlay {
+        padding: 32px;
+      }
     }
 
-    .video-wrapper {
+    .hero-title-main {
+      font-size: 1.35rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    @media (min-width: 768px) {
+      .hero-title-main {
+        font-size: 2.2rem;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .badge-tag {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .badge-tag.gold {
+      background: rgba(255, 183, 3, 0.2);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 14px;
+      max-width: 650px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-hero-play {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Grid & Danh sách phim */
+    .content-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0 12px;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 4px;
+      height: 16px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .movie-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .movie-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .movie-card {
+      flex: 0 0 125px;
+      scroll-snap-align: start;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 768px) {
+      .movie-card {
+        flex: 0 0 160px;
+      }
+    }
+
+    .poster-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--bg-card);
+      margin-bottom: 6px;
+    }
+
+    .poster-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.25s ease;
+    }
+
+    .movie-card:hover .poster-box img {
+      transform: scale(1.05);
+    }
+
+    .badge-top {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    .badge-quality {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      background: var(--accent);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 900;
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    .movie-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .movie-origin-name {
+      font-size: 0.72rem;
+      color: var(--text-sub);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Trình phát phim & Xem chi tiết */
+    .player-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #080a10;
+      z-index: 2000;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .player-wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .btn-back {
+      background: #1b2133;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .video-viewport {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
       background: #000;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+      border: 1px solid var(--border);
     }
 
-    .video-wrapper iframe {
+    /* Lọc nịnh mắt (tăng độ tương phản + bão hòa màu chuẩn rạp) */
+    .video-viewport iframe {
       width: 100%;
       height: 100%;
       border: none;
+      filter: contrast(1.06) saturate(1.12);
     }
 
-    .btn-close {
-      margin-top: 16px;
-      background: #333;
+    .player-meta {
+      margin-top: 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .player-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .player-sub {
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .episodes-box {
+      margin-top: 14px;
+    }
+
+    .episodes-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .ep-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .ep-btn {
+      background: #0d101a;
+      border: 1px solid var(--border);
       color: #fff;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
-      width: 100%;
     }
 
-    /* Bottom Navigation Bar trên di động */
-    .bottom-nav {
+    .ep-btn.active {
+      background: var(--accent);
+      color: #000;
+      font-weight: 800;
+      border-color: var(--accent);
+    }
+
+    /* Bottom Navigation trên điện thoại */
+    .mobile-bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       height: 56px;
-      background: rgba(26, 28, 35, 0.98);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(14, 17, 26, 0.98);
+      border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
       align-items: center;
-      z-index: 90;
+      z-index: 999;
     }
 
-    .nav-item {
+    @media (min-width: 768px) {
+      .mobile-bottom-nav {
+        display: none;
+      }
+    }
+
+    .m-nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      color: var(--text-muted);
-      font-size: 0.7rem;
+      gap: 2px;
+      color: var(--text-sub);
       text-decoration: none;
-      gap: 3px;
+      font-size: 0.7rem;
+      cursor: pointer;
     }
 
-    .nav-item.active {
+    .m-nav-item.active {
       color: var(--accent);
     }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <header>
-    <div class="top-bar">
-      <div class="logo">FLIXMOBILE</div>
-      <span style="font-size: 0.8rem; color: var(--text-muted);">VN</span>
-    </div>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Tìm tên phim, diễn viên..." oninput="filterMovies()">
+    <div class="nav-container">
+      <div class="brand-logo" onclick="loadCategory('moi-cap-nhat')">
+        🎬 PHIM<span>NHÀ</span>
+      </div>
+
+      <div class="search-wrapper">
+        <input type="text" class="search-input" id="search-input" placeholder="Tìm tên phim, diễn viên..." oninput="handleSearchLive(this.value)">
+        <div class="suggest-box" id="suggest-box"></div>
+      </div>
+
+      <nav class="nav-links">
+        <a class="nav-link active" onclick="loadCategory('moi-cap-nhat', this)">Mới Cập Nhật</a>
+        <a class="nav-link" onclick="loadCategory('phim-bo', this)">Phim Bộ</a>
+        <a class="nav-link" onclick="loadCategory('phim-le', this)">Phim Lẻ</a>
+        <a class="nav-link" onclick="loadCategory('hoat-hinh', this)">Hoạt Hình</a>
+      </nav>
     </div>
   </header>
 
-  <!-- Banner nổi bật -->
-  <section class="hero" id="heroBanner">
-    <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop" alt="Hero Banner">
-    <div class="hero-overlay">
-      <div class="hero-title">Oppenheimer</div>
-      <p style="font-size: 0.75rem; color: #ccc; margin-bottom: 8px;">Tiểu sử, Lịch sử | 2023</p>
-      <button class="btn-play" onclick="openPlayer('Oppenheimer', 'https://www.youtube.com/embed/uYPbbksJxIg')">Xem Trailer</button>
+  <!-- Banner nổi bật phong cách Rổ Phim -->
+  <div class="hero-container" id="hero-section">
+    <div class="hero-card">
+      <img id="hero-img" class="hero-backdrop" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&auto=format&fit=crop" alt="Hero">
+      <div class="hero-overlay">
+        <h1 class="hero-title-main" id="hero-title">ĐANG TẢI PHIM...</h1>
+        <div class="hero-subtitle" id="hero-origin">Loading...</div>
+        <div class="hero-tags">
+          <span class="badge-tag gold">FHD 1080P</span>
+          <span class="badge-tag" id="hero-year">2026</span>
+          <span class="badge-tag" id="hero-lang">Vietsub / Thuyết Minh</span>
+        </div>
+        <p class="hero-desc" id="hero-desc">Hệ thống đang đồng bộ danh sách phim chất lượng cao từ máy chủ...</p>
+        <div class="hero-actions">
+          <button class="btn-hero-play" id="hero-btn-play" onclick="">▶ Xem Ngay</button>
+        </div>
+      </div>
     </div>
-  </section>
-
-  <!-- Phim thịnh hành -->
-  <div class="section-title">Phim Thịnh Hành</div>
-  <div class="movie-scroll-list" id="trendingList"></div>
-
-  <!-- Phim đề xuất -->
-  <div class="section-title">Phim Hành Động Mới</div>
-  <div class="movie-scroll-list" id="actionList"></div>
-
-  <!-- Modal phát Trailer/Video -->
-  <div class="modal" id="videoModal">
-    <div class="video-wrapper">
-      <iframe id="videoIframe" src="" allowfullscreen allow="autoplay"></iframe>
-    </div>
-    <button class="btn-close" onclick="closePlayer()">Đóng trình phát</button>
   </div>
 
-  <!-- Thanh điều hướng đáy -->
-  <nav class="bottom-nav">
-    <a href="#" class="nav-item active">🏠<span>Trang chủ</span></a>
-    <a href="#" class="nav-item">🔥<span>Xu hướng</span></a>
-    <a href="#" class="nav-item">⭐<span>Yêu thích</span></a>
-    <a href="#" class="nav-item">👤<span>Tài khoản</span></a>
+  <!-- Danh sách phim phân theo mục -->
+  <main class="content-container">
+    <div class="section-head">
+      <h2 class="section-title" id="list-title">Phim Mới Cập Nhật</h2>
+    </div>
+    <div class="movie-scroll" id="movies-grid"></div>
+
+    <div class="section-head">
+      <h2 class="section-title">Phim Bộ Đang Hot</h2>
+    </div>
+    <div class="movie-scroll" id="series-grid"></div>
+
+    <div class="section-head">
+      <h2 class="section-title">Phim Lẻ Chiếu Rạp</h2>
+    </div>
+    <div class="movie-scroll" id="movies-single-grid"></div>
+  </main>
+
+  <!-- Modal Trình phát video độc lập -->
+  <div class="player-overlay" id="player-modal">
+    <div class="player-wrap">
+      <button class="btn-back" onclick="closePlayer()">✕ Quay lại danh sách</button>
+      
+      <div class="video-viewport">
+        <iframe id="video-iframe" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+      </div>
+
+      <div class="player-meta">
+        <h2 class="player-title" id="player-title">Tên Phim</h2>
+        <div class="player-sub" id="player-sub">Tên gốc</div>
+        
+        <div class="episodes-box">
+          <div class="episodes-title">
+            <span>DANH SÁCH TẬP PHIM (FULL HD VIP)</span>
+            <span style="font-size:0.75rem; color:var(--accent);">★ Đã khóa 1080p nịnh mắt</span>
+          </div>
+          <div class="ep-list" id="episodes-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation điện thoại -->
+  <nav class="mobile-bottom-nav">
+    <div class="m-nav-item active" onclick="loadCategory('moi-cap-nhat')">🏠<span>Trang chủ</span></div>
+    <div class="m-nav-item" onclick="loadCategory('phim-bo')">📺<span>Phim bộ</span></div>
+    <div class="m-nav-item" onclick="loadCategory('phim-le')">🍿<span>Phim lẻ</span></div>
+    <div class="m-nav-item" onclick="loadCategory('hoat-hinh')">🍙<span>Anime</span></div>
   </nav>
 
   <script>
-    // Dữ liệu mẫu (có thể thay bằng API sau)
-    const movies = [
-      {
-        id: 1,
-        title: "Dune: Part Two",
-        category: "trending",
-        year: 2024,
-        rating: 8.6,
-        poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop",
-        videoUrl: "https://www.youtube.com/embed/Way9Dexny3w"
-      },
-      {
-        id: 2,
-        title: "Interstellar",
-        category: "trending",
-        year: 2014,
-        rating: 8.7,
-        poster: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=400&auto=format&fit=crop",
-        videoUrl: "https://www.youtube.com/embed/zSWdZVtXT7E"
-      },
-      {
-        id: 3,
-        title: "The Batman",
-        category: "action",
-        year: 2022,
-        rating: 7.8,
-        poster: "https://images.unsplash.com/photo-1509281373149-e957c6296406?w=400&auto=format&fit=crop",
-        videoUrl: "https://www.youtube.com/embed/mqqft2x_Aa4"
-      },
-      {
-        id: 4,
-        title: "Spider-Man",
-        category: "action",
-        year: 2021,
-        rating: 8.2,
-        poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?w=400&auto=format&fit=crop",
-        videoUrl: "https://www.youtube.com/embed/JfVOs4VSpmA"
-      },
-      {
-        id: 5,
-        title: "Inception",
-        category: "trending",
-        year: 2010,
-        rating: 8.8,
-        poster: "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=400&auto=format&fit=crop",
-        videoUrl: "https://www.youtube.com/embed/YoHD9XEInc0"
+    const API_BASE = "https://phimapi.com";
+    let searchTimeout = null;
+
+    // Chuẩn hóa đường link ảnh để không bao giờ bị vỡ poster
+    function formatPoster(url) {
+      if (!url) return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400";
+      if (url.startsWith("http://") || url.startsWith("https://")) return url;
+      return `https://phimimg.com/${url.replace(/^\/+/, '')}`;
+    }
+
+    // Tự động tải phim theo danh mục
+    async function fetchMovies(endpoint) {
+      try {
+        const res = await fetch(`${API_BASE}/${endpoint}`);
+        const data = await res.json();
+        return data.items || [];
+      } catch (err) {
+        console.error("Lỗi nạp API:", err);
+        return [];
       }
-    ];
+    }
 
-    function renderMovies(items) {
-      const trendingEl = document.getElementById("trendingList");
-      const actionEl = document.getElementById("actionList");
+    // Đổ dữ liệu ra danh sách cuộn ngang
+    function renderList(items, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
 
-      trendingEl.innerHTML = "";
-      actionEl.innerHTML = "";
+      items.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "movie-card";
+        card.onclick = () => openMovie(item.slug);
 
-      items.forEach(movie => {
-        const cardHtml = `
-          <div class="movie-card" onclick="openPlayer('${movie.title}', '${movie.videoUrl}')">
-            <div class="poster-wrap">
-              <img src="${movie.poster}" alt="${movie.title}" loading="lazy">
-              <span class="badge-rating">★ ${movie.rating}</span>
-            </div>
-            <div class="card-title">${movie.title}</div>
-            <div class="card-meta">${movie.year}</div>
+        card.innerHTML = `
+          <div class="poster-box">
+            <img src="${formatPoster(item.poster_url || item.thumb_url)}" alt="${item.name}" loading="lazy">
+            <span class="badge-top">${item.year || '2026'}</span>
+            <span class="badge-quality">FHD</span>
           </div>
+          <div class="movie-name">${item.name}</div>
+          <div class="movie-origin-name">${item.origin_name || ''}</div>
         `;
-
-        if (movie.category === "trending") {
-          trendingEl.innerHTML += cardHtml;
-        } else {
-          actionEl.innerHTML += cardHtml;
-        }
+        container.appendChild(card);
       });
     }
 
-    function filterMovies() {
-      const query = document.getElementById("searchInput").value.toLowerCase();
-      const filtered = movies.filter(m => m.title.toLowerCase().includes(query));
-      renderMovies(filtered);
+    // Tải thông tin chi tiết và phát phim
+    async function openMovie(slug) {
+      document.getElementById("suggest-box").style.display = "none";
+      try {
+        const res = await fetch(`${API_BASE}/phim/${slug}`);
+        const data = await res.json();
+        const movie = data.movie;
+        const episodes = data.episodes || [];
+
+        document.getElementById("player-title").innerText = movie.name;
+        document.getElementById("player-sub").innerText = `${movie.origin_name} (${movie.year}) • ${movie.quality || 'Full HD'}`;
+
+        const epContainer = document.getElementById("episodes-container");
+        epContainer.innerHTML = "";
+
+        if (episodes.length > 0 && episodes[0].server_data.length > 0) {
+          const serverData = episodes[0].server_data;
+          
+          serverData.forEach((ep, idx) => {
+            const btn = document.createElement("button");
+            btn.className = `ep-btn ${idx === 0 ? 'active' : ''}`;
+            btn.innerText = ep.name.includes("Tập") ? ep.name : `Tập ${ep.name}`;
+            btn.onclick = () => {
+              document.querySelectorAll(".ep-btn").forEach(b => b.classList.remove("active"));
+              btn.classList.add("active");
+              playStream(ep.link_embed);
+            };
+            epContainer.appendChild(btn);
+          });
+
+          // Tự động phát tập 1 ở chất lượng cao nhất
+          playStream(serverData[0].link_embed);
+        }
+
+        document.getElementById("player-modal").style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (err) {
+        alert("Không thể tải tập phim này, vui lòng chọn phim khác!");
+      }
     }
 
-    function openPlayer(title, url) {
-      const modal = document.getElementById("videoModal");
-      const iframe = document.getElementById("videoIframe");
-      iframe.src = url + "?autoplay=1";
-      modal.classList.add("active");
+    function playStream(embedUrl) {
+      const iframe = document.getElementById("video-iframe");
+      iframe.src = embedUrl;
     }
 
     function closePlayer() {
-      const modal = document.getElementById("videoModal");
-      const iframe = document.getElementById("videoIframe");
+      const iframe = document.getElementById("video-iframe");
       iframe.src = "";
-      modal.classList.remove("active");
+      document.getElementById("player-modal").style.display = "none";
     }
 
-    // Khởi chạy khi load trang
-    renderMovies(movies);
+    // Tìm kiếm trực tiếp hiển thị gợi ý (Live Search Auto-complete)
+    function handleSearchLive(keyword) {
+      clearTimeout(searchTimeout);
+      const box = document.getElementById("suggest-box");
+      const val = keyword.trim();
+
+      if (!val) {
+        box.style.display = "none";
+        return;
+      }
+
+      searchTimeout = setTimeout(async () => {
+        try {
+          const res = await fetch(`${API_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(val)}&limit=8`);
+          const data = await res.json();
+          const items = (data.data && data.data.items) ? data.data.items : [];
+
+          if (items.length === 0) {
+            box.innerHTML = `<div style="padding:12px; font-size:0.8rem; color:var(--text-sub); text-align:center;">Không tìm thấy phim phù hợp</div>`;
+          } else {
+            box.innerHTML = items.map(m => `
+              <div class="suggest-item" onclick="openMovie('${m.slug}')">
+                <img class="suggest-thumb" src="${formatPoster(m.poster_url || m.thumb_url)}" alt="${m.name}">
+                <div class="suggest-info">
+                  <div class="suggest-title">${m.name}</div>
+                  <div class="suggest-meta">${m.origin_name || ''} • ${m.year || '2026'} • <b style="color:var(--accent);">FHD</b></div>
+                </div>
+              </div>
+            `).join('');
+          }
+          box.style.display = "block";
+        } catch (e) {
+          box.style.display = "none";
+        }
+      }, 300);
+    }
+
+    // Đổi danh mục
+    async function loadCategory(cat, el) {
+      if (el) {
+        document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
+        el.classList.add("active");
+      }
+      
+      let endpoint = "danh-sach/phim-moi-cap-nhat?page=1";
+      let title = "Phim Mới Cập Nhật";
+
+      if (cat === "phim-bo") {
+        endpoint = "v1/api/danh-sach/phim-bo?page=1";
+        title = "Phim Bộ Đặc Sắc";
+      } else if (cat === "phim-le") {
+        endpoint = "v1/api/danh-sach/phim-le?page=1";
+        title = "Phim Lẻ Chọn Lọc";
+      } else if (cat === "hoat-hinh") {
+        endpoint = "v1/api/danh-sach/hoat-hinh?page=1";
+        title = "Anime & Hoạt Hình";
+      }
+
+      document.getElementById("list-title").innerText = title;
+      const res = await fetch(`${API_BASE}/${endpoint}`);
+      const data = await res.json();
+      const items = (data.data && data.data.items) ? data.data.items : (data.items || []);
+      renderList(items, "movies-grid");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Khởi tạo trang ban đầu
+    async function initApp() {
+      // 1. Lấy phim mới nhất đổ vào Hero & Grid chính
+      const newMovies = await fetchMovies("danh-sach/phim-moi-cap-nhat?page=1");
+      if (newMovies.length > 0) {
+        const top = newMovies[0];
+        document.getElementById("hero-title").innerText = top.name;
+        document.getElementById("hero-origin").innerText = top.origin_name || "Official Release";
+        document.getElementById("hero-year").innerText = top.year || "2026";
+        document.getElementById("hero-desc").innerText = `Thưởng thức siêu phẩm ${top.name} với độ phân giải Full HD cao nhất, máy chủ phát siêu tốc không quảng cáo chen ngang.`;
+        document.getElementById("hero-img").src = formatPoster(top.poster_url || top.thumb_url);
+        document.getElementById("hero-btn-play").onclick = () => openMovie(top.slug);
+
+        renderList(newMovies, "movies-grid");
+      }
+
+      // 2. Lấy phim bộ
+      const seriesRes = await fetch(`${API_BASE}/v1/api/danh-sach/phim-bo?page=1`);
+      const seriesData = await seriesRes.json();
+      renderList((seriesData.data && seriesData.data.items) || [], "series-grid");
+
+      // 3. Lấy phim lẻ
+      const singlesRes = await fetch(`${API_BASE}/v1/api/danh-sach/phim-le?page=1`);
+      const singlesData = await singlesRes.json();
+      renderList((singlesData.data && singlesData.data.items) || [], "movies-single-grid");
+    }
+
+    // Đóng popup gợi ý khi bấm ra ngoài
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".search-wrapper")) {
+        document.getElementById("suggest-box").style.display = "none";
+      }
+    });
+
+    initApp();
   </script>
 </body>
 </html>
