@@ -4,21 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-  <title>Phim Nhà - Xem Phim Hay Chuẩn HD</title>
+  <title>Phim Nhà - Xem Phim Chuẩn Netflix</title>
   
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   
   <style>
     :root {
-      --bg-main: #0a0c13;
-      --bg-card: #141824;
-      --bg-card-hover: #1e2436;
-      --accent: #ffb703;
-      --accent-red: #e50914;
-      --text: #ffffff;
-      --text-sub: #94a3b8;
-      --border: rgba(255, 255, 255, 0.08);
-      --radius: 10px;
+      --netflix-black: #141414;
+      --netflix-card: #181818;
+      --netflix-card-hover: #232323;
+      --netflix-red: #E50914;
+      --netflix-red-hover: #b80710;
+      --text-white: #FFFFFF;
+      --text-grey: #A3A3A3;
+      --border-dark: #2A2A2A;
+      --radius-sm: 4px;
+      --radius-md: 8px;
     }
 
     * {
@@ -30,17 +31,18 @@
     }
 
     body {
-      background-color: var(--bg-main);
-      color: var(--text);
-      line-height: 1.5;
+      background-color: var(--netflix-black);
+      color: var(--text-white);
+      line-height: 1.4;
       padding-bottom: 75px;
+      overflow-x: hidden;
     }
 
-    /* --- MÀN HÌNH KHÓA MÃ PIN --- */
+    /* --- MÀN HÌNH KHÓA MÃ PIN NETFLIX PROFILE --- */
     #lock-screen {
       position: fixed;
       inset: 0;
-      background: #07090e;
+      background: #000000;
       z-index: 99999;
       display: flex;
       flex-direction: column;
@@ -50,19 +52,41 @@
     }
 
     .lock-box {
-      background: #121622;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 30px 24px;
+      background: var(--netflix-card);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 35px 25px;
       width: 100%;
-      max-width: 320px;
+      max-width: 330px;
       text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.9);
     }
 
-    .lock-icon { font-size: 2.2rem; margin-bottom: 12px; }
-    .lock-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; }
-    .lock-desc { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 20px; }
+    .lock-avatar {
+      width: 70px;
+      height: 70px;
+      background: var(--netflix-red);
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+    }
+
+    .lock-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .lock-desc {
+      font-size: 0.8rem;
+      color: var(--text-grey);
+      margin-bottom: 22px;
+    }
 
     .pin-input {
       width: 100%;
@@ -71,100 +95,109 @@
       font-size: 1.6rem;
       font-weight: 900;
       padding: 10px;
-      background: #090b12;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      color: var(--accent);
+      background: #0b0b0b;
+      border: 1.5px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      color: var(--netflix-red);
       outline: none;
       margin-bottom: 16px;
       transition: border-color 0.2s;
     }
 
-    .pin-input:focus { border-color: var(--accent); }
+    .pin-input:focus { border-color: var(--netflix-red); }
 
     .btn-unlock {
       width: 100%;
-      background: var(--accent);
-      color: #000;
+      background: var(--netflix-red);
+      color: #fff;
       border: none;
       padding: 12px;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       font-weight: 800;
       font-size: 0.9rem;
+      letter-spacing: 0.5px;
       cursor: pointer;
+      transition: background 0.2s;
     }
 
+    .btn-unlock:hover { background: var(--netflix-red-hover); }
+
     .pin-error {
-      color: #ef4444;
+      color: var(--netflix-red);
       font-size: 0.8rem;
       font-weight: bold;
       margin-top: 12px;
       display: none;
     }
 
-    /* --- HEADER & LIVE SEARCH --- */
+    /* --- HEADER CHUẨN NETFLIX --- */
     header {
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(10, 12, 19, 0.95);
+      background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(20,20,20,0.9) 100%);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 12px 18px;
     }
 
     .nav-container {
-      max-width: 1200px;
+      max-width: 1350px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 16px;
     }
 
     .brand-logo {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 1.25rem;
+      gap: 6px;
+      font-size: 1.45rem;
       font-weight: 900;
-      color: #fff;
+      color: var(--netflix-red);
+      letter-spacing: 1px;
       text-decoration: none;
       white-space: nowrap;
       cursor: pointer;
+      text-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
     }
 
-    .brand-logo span { color: var(--accent); }
+    .brand-logo span { color: #fff; }
 
     .search-wrapper {
       position: relative;
       flex: 1;
-      max-width: 500px;
+      max-width: 480px;
     }
 
     .search-input {
       width: 100%;
-      background: #151a28;
-      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid var(--border-dark);
       color: #fff;
-      padding: 8px 14px;
-      border-radius: 20px;
+      padding: 9px 16px;
+      border-radius: var(--radius-sm);
       font-size: 0.85rem;
       outline: none;
-      transition: border-color 0.2s;
+      transition: 0.2s;
     }
 
-    .search-input:focus { border-color: var(--accent); }
+    .search-input:focus {
+      border-color: #fff;
+      background: #000;
+    }
 
     .suggest-box {
       position: absolute;
-      top: calc(100% + 8px);
+      top: calc(100% + 6px);
       left: 0;
       right: 0;
-      background: #141824;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      background: var(--netflix-card);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.9);
       max-height: 380px;
       overflow-y: auto;
       display: none;
@@ -173,21 +206,21 @@
 
     .suggest-item {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       padding: 8px 12px;
       align-items: center;
       cursor: pointer;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
     }
 
-    .suggest-item:hover { background: #1f273d; }
+    .suggest-item:hover { background: var(--netflix-card-hover); }
 
     .suggest-thumb {
-      width: 40px;
-      height: 56px;
+      width: 38px;
+      height: 52px;
       object-fit: cover;
-      border-radius: 4px;
-      background: #2a3147;
+      border-radius: 2px;
+      background: #252525;
       flex-shrink: 0;
     }
 
@@ -201,11 +234,11 @@
       text-overflow: ellipsis;
     }
 
-    .suggest-meta { font-size: 0.72rem; color: var(--text-sub); }
+    .suggest-meta { font-size: 0.72rem; color: var(--text-grey); }
 
     .nav-links {
       display: none;
-      gap: 16px;
+      gap: 18px;
       align-items: center;
     }
 
@@ -214,42 +247,43 @@
     }
 
     .nav-link {
-      color: var(--text-sub);
+      color: var(--text-grey);
       text-decoration: none;
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
+      transition: color 0.15s;
     }
 
-    .nav-link:hover, .nav-link.active { color: var(--accent); }
+    .nav-link:hover, .nav-link.active { color: #fff; font-weight: 700; }
 
     .btn-relock {
-      background: #1d2334;
-      border: 1px solid var(--border);
-      color: var(--text-sub);
-      padding: 5px 10px;
-      border-radius: 6px;
+      background: #262626;
+      border: 1px solid var(--border-dark);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
       font-size: 0.75rem;
       font-weight: bold;
       cursor: pointer;
     }
 
-    /* --- HERO BANNER RỔ PHIM (DYNAMIC CAROUSEL) --- */
+    /* --- HERO BANNER RỰC RỠ NETFLIX (10-12 PHIM) --- */
     .hero-container {
       position: relative;
-      max-width: 1200px;
-      margin: 12px auto;
+      max-width: 1350px;
+      margin: 10px auto;
       padding: 0 16px;
     }
 
     .hero-card {
       position: relative;
-      border-radius: 16px;
+      border-radius: var(--radius-md);
       overflow: hidden;
-      aspect-ratio: 16 / 9;
-      min-height: 290px;
-      max-height: 480px;
-      background: #181d2c;
+      aspect-ratio: 16 / 8.5;
+      min-height: 320px;
+      max-height: 520px;
+      background: #000;
     }
 
     .hero-backdrop {
@@ -257,40 +291,43 @@
       height: 100%;
       object-fit: cover;
       object-position: center 20%;
-      transition: opacity 0.5s ease-in-out;
+      transition: opacity 0.4s ease-in-out;
     }
 
+    /* Lớp phủ gradient màu đen chuẩn rạp Netflix */
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(10,12,19,0.15) 0%, rgba(10,12,19,0.75) 55%, rgba(10,12,19,0.98) 100%);
+      background: linear-gradient(77deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.1) 85%),
+                  linear-gradient(180deg, transparent 40%, rgba(20,20,20,0.98) 100%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 16px;
+      padding: 20px;
     }
 
     @media (min-width: 768px) {
-      .hero-overlay { padding: 30px; }
+      .hero-overlay { padding: 36px; }
     }
 
     .hero-title-main {
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 900;
-      text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
+      max-width: 600px;
       line-height: 1.2;
+      text-transform: uppercase;
     }
 
     @media (min-width: 768px) {
-      .hero-title-main { font-size: 2.1rem; }
+      .hero-title-main { font-size: 2.3rem; }
     }
 
     .hero-subtitle {
-      font-size: 0.92rem;
-      color: var(--accent);
-      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-grey);
+      font-weight: 600;
       margin-bottom: 8px;
     }
 
@@ -298,35 +335,35 @@
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .badge-tag {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
       font-size: 0.68rem;
       padding: 2px 7px;
-      border-radius: 4px;
+      border-radius: var(--radius-sm);
       font-weight: 700;
     }
 
-    .badge-tag.gold {
-      background: rgba(255, 183, 3, 0.2);
-      border-color: var(--accent);
-      color: var(--accent);
+    .badge-tag.red {
+      background: var(--netflix-red);
+      border-color: var(--netflix-red);
+      color: #fff;
     }
 
     .hero-desc {
-      font-size: 0.8rem;
-      color: #cbd5e1;
-      line-height: 1.4;
+      font-size: 0.82rem;
+      color: #D1D5DB;
+      line-height: 1.45;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      margin-bottom: 12px;
-      max-width: 620px;
+      margin-bottom: 16px;
+      max-width: 580px;
     }
 
     .hero-bottom-row {
@@ -337,27 +374,29 @@
     }
 
     .btn-hero-play {
-      background: var(--accent);
+      background: #FFFFFF;
       color: #000;
       border: none;
-      padding: 9px 22px;
-      border-radius: 25px;
-      font-size: 0.85rem;
+      padding: 10px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
+      gap: 8px;
+      transition: background 0.15s;
     }
 
-    /* Thumbnail slider nhỏ ở góc banner giống Rổ Phim */
+    .btn-hero-play:hover { background: rgba(255,255,255,0.75); }
+
+    /* Dải phim trượt ở góc banner: Đầy đủ 10-12 phim */
     .hero-thumbs {
       display: flex;
       gap: 6px;
       overflow-x: auto;
-      max-width: 320px;
-      padding-bottom: 2px;
+      max-width: 420px;
+      padding-bottom: 4px;
       scrollbar-width: none;
     }
 
@@ -365,21 +404,22 @@
 
     .hero-thumb-item {
       width: 44px;
-      height: 60px;
-      border-radius: 6px;
+      height: 62px;
+      border-radius: var(--radius-sm);
       overflow: hidden;
       border: 2px solid transparent;
       cursor: pointer;
-      opacity: 0.55;
+      opacity: 0.5;
       transition: 0.2s;
       flex-shrink: 0;
-      background: #2a3147;
+      background: #222;
     }
 
     .hero-thumb-item.active {
-      border-color: var(--accent);
+      border-color: var(--netflix-red);
       opacity: 1;
-      transform: scale(1.06);
+      transform: scale(1.08);
+      box-shadow: 0 4px 10px rgba(229, 9, 20, 0.5);
     }
 
     .hero-thumb-item img {
@@ -388,9 +428,9 @@
       object-fit: cover;
     }
 
-    /* --- GRID PHIM & CUỘN --- */
+    /* --- LƯỚI PHIM CHỐNG VỠ 100% --- */
     .content-container {
-      max-width: 1200px;
+      max-width: 1350px;
       margin: 0 auto;
       padding: 0 16px;
     }
@@ -399,38 +439,27 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 22px 0 14px;
+      margin: 24px 0 14px;
     }
 
     .section-title {
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      letter-spacing: 0.5px;
     }
 
     .section-title::before {
       content: "";
       width: 4px;
-      height: 16px;
-      background: var(--accent);
+      height: 18px;
+      background: var(--netflix-red);
       border-radius: 2px;
     }
 
-    /* Dạng lưới cuộn ngang cho trang chủ */
-    .movie-scroll {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-    }
-
-    .movie-scroll::-webkit-scrollbar { display: none; }
-
-    /* Lưới nhiều cột khi duyệt theo trang (Pagination) */
+    /* Lưới phân trang cố định: Đều tăm tắp, không thể bị xô lệch */
     .movie-grid-paged {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -438,101 +467,105 @@
     }
 
     @media (min-width: 640px) {
-      .movie-grid-paged { grid-template-columns: repeat(4, 1fr); }
+      .movie-grid-paged { grid-template-columns: repeat(4, 1fr); gap: 14px; }
     }
 
-    @media (min-width: 900px) {
-      .movie-grid-paged { grid-template-columns: repeat(6, 1fr); }
+    @media (min-width: 960px) {
+      .movie-grid-paged { grid-template-columns: repeat(6, 1fr); gap: 16px; }
     }
 
     .movie-card {
-      scroll-snap-align: start;
+      width: 100%;
+      min-width: 0; /* Ngăn chặn hiện tượng tràn ô */
       cursor: pointer;
       display: flex;
       flex-direction: column;
+      transition: transform 0.25s ease;
     }
 
-    .movie-scroll .movie-card {
-      flex: 0 0 125px;
+    .movie-card:hover {
+      transform: translateY(-4px);
     }
 
-    @media (min-width: 768px) {
-      .movie-scroll .movie-card { flex: 0 0 160px; }
-    }
-
+    /* Khóa cứng tỷ lệ 2:3 chuẩn rạp: Chống tuyệt đối vỡ layout */
     .poster-box {
       position: relative;
       width: 100%;
-      aspect-ratio: 2 / 3;
-      border-radius: 8px;
+      padding-top: 145%; /* Khóa tỷ lệ dọc chính xác */
+      border-radius: var(--radius-sm);
       overflow: hidden;
-      background: var(--bg-card);
-      margin-bottom: 6px;
+      background: #1f1f1f;
+      margin-bottom: 8px;
     }
 
     .poster-box img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
     .badge-top {
       position: absolute;
       top: 6px;
       left: 6px;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.8);
       font-size: 0.68rem;
       font-weight: 700;
       padding: 2px 6px;
-      border-radius: 4px;
+      border-radius: 2px;
     }
 
     .badge-quality {
       position: absolute;
       bottom: 6px;
       right: 6px;
-      background: var(--accent);
-      color: #000;
+      background: var(--netflix-red);
+      color: #fff;
       font-size: 0.65rem;
       font-weight: 900;
       padding: 1px 5px;
-      border-radius: 3px;
+      border-radius: 2px;
     }
 
     .movie-name {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: #fff;
     }
 
     .movie-origin-name {
       font-size: 0.72rem;
-      color: var(--text-sub);
+      color: var(--text-grey);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* --- PHÂN TRANG (PAGINATION) --- */
+    /* --- PHÂN TRANG NETFLIX --- */
     .pagination-wrap {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 6px;
-      margin: 30px 0 10px;
+      margin: 35px 0 15px;
       flex-wrap: wrap;
     }
 
     .page-btn {
-      background: #141824;
-      border: 1px solid var(--border);
-      color: var(--text-main);
+      background: var(--netflix-card);
+      border: 1px solid var(--border-dark);
+      color: var(--text-white);
       min-width: 38px;
       height: 38px;
       padding: 0 10px;
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
@@ -542,43 +575,43 @@
       transition: 0.15s;
     }
 
-    .page-btn:hover { background: #222b40; }
+    .page-btn:hover { background: var(--netflix-card-hover); }
 
     .page-btn.active {
-      background: var(--accent);
-      color: #000;
-      border-color: var(--accent);
+      background: var(--netflix-red);
+      color: #fff;
+      border-color: var(--netflix-red);
     }
 
     .page-btn.dots {
       pointer-events: none;
       border: none;
       background: transparent;
-      color: var(--text-sub);
+      color: var(--text-grey);
     }
 
-    /* --- PLAYER TRÌNH PHÁT --- */
+    /* --- TRÌNH PHÁT VIDEO --- */
     .player-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: #080a10;
+      background: #000000;
       z-index: 2000;
       overflow-y: auto;
       padding: 12px;
     }
 
     .player-wrap {
-      max-width: 1000px;
+      max-width: 1050px;
       margin: 0 auto;
     }
 
     .btn-back {
-      background: #1b2133;
-      border: 1px solid var(--border);
+      background: #222;
+      border: 1px solid var(--border-dark);
       color: #fff;
       padding: 8px 16px;
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       font-size: 0.85rem;
       font-weight: bold;
       cursor: pointer;
@@ -590,9 +623,9 @@
       width: 100%;
       aspect-ratio: 16 / 9;
       background: #000;
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       overflow: hidden;
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-dark);
     }
 
     #native-player {
@@ -613,20 +646,20 @@
 
     .player-meta {
       margin-top: 14px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
+      background: var(--netflix-card);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 18px;
     }
 
-    .player-title { font-size: 1.2rem; font-weight: 800; }
-    .player-sub { color: var(--accent); font-size: 0.85rem; margin-bottom: 10px; }
+    .player-title { font-size: 1.25rem; font-weight: 800; }
+    .player-sub { color: var(--netflix-red); font-size: 0.85rem; margin-bottom: 12px; }
 
     .episodes-box { margin-top: 14px; }
     .episodes-title {
       font-size: 0.9rem;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
     }
@@ -635,26 +668,26 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      max-height: 180px;
+      max-height: 190px;
       overflow-y: auto;
     }
 
     .ep-btn {
-      background: #0d101a;
-      border: 1px solid var(--border);
+      background: #111;
+      border: 1px solid var(--border-dark);
       color: #fff;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
       font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
     }
 
     .ep-btn.active {
-      background: var(--accent);
-      color: #000;
+      background: var(--netflix-red);
+      color: #fff;
       font-weight: 800;
-      border-color: var(--accent);
+      border-color: var(--netflix-red);
     }
 
     /* Bottom Nav Điện Thoại */
@@ -664,8 +697,8 @@
       left: 0;
       right: 0;
       height: 56px;
-      background: rgba(14, 17, 26, 0.98);
-      border-top: 1px solid var(--border);
+      background: rgba(15, 15, 15, 0.98);
+      border-top: 1px solid rgba(255,255,255,0.08);
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -681,26 +714,26 @@
       flex-direction: column;
       align-items: center;
       gap: 2px;
-      color: var(--text-sub);
+      color: var(--text-grey);
       text-decoration: none;
       font-size: 0.7rem;
       cursor: pointer;
     }
 
-    .m-nav-item.active { color: var(--accent); }
+    .m-nav-item.active { color: var(--netflix-red); }
   </style>
 </head>
 <body>
 
-  <!-- MÀN HÌNH KHÓA PIN 2301 -->
+  <!-- MÀN HÌNH KHÓA NETFLIX (MÃ PIN 2301) -->
   <div id="lock-screen">
     <div class="lock-box">
-      <div class="lock-icon">🔒</div>
+      <div class="lock-avatar">🍿</div>
       <div class="lock-title">PHIM NHÀ RIÊNG TƯ</div>
-      <div class="lock-desc">Nhập mã PIN 4 số để truy cập</div>
+      <div class="lock-desc">Nhập mã PIN để tiếp tục xem phim</div>
       <input type="password" id="pin-input" class="pin-input" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="••••" autocomplete="off">
       <button class="btn-unlock" onclick="verifyPin()">MỞ KHÓA</button>
-      <div class="pin-error" id="pin-error">Mã PIN không chính xác!</div>
+      <div class="pin-error" id="pin-error">Mã PIN không đúng!</div>
     </div>
   </div>
 
@@ -708,7 +741,7 @@
   <header>
     <div class="nav-container">
       <div class="brand-logo" onclick="switchCategory('moi-cap-nhat', 1)">
-        🎬 PHIM<span>NHÀ</span>
+        PHIM<span>NHÀ</span>
       </div>
 
       <div class="search-wrapper">
@@ -726,43 +759,40 @@
     </div>
   </header>
 
-  <!-- BANNER TỰ ĐỘNG CẬP NHẬT KIỂU RỔ PHIM -->
+  <!-- BANNER TỰ ĐỘNG CẬP NHẬT (10-12 SIÊU PHẨM HOT NHẤT) -->
   <div class="hero-container" id="hero-section">
     <div class="hero-card">
       <img id="hero-img" class="hero-backdrop" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&auto=format&fit=crop" alt="Hero">
       <div class="hero-overlay">
-        <h1 class="hero-title-main" id="hero-title">ĐANG TẢI DỮ LIỆU...</h1>
+        <h1 class="hero-title-main" id="hero-title">ĐANG TẢI...</h1>
         <div class="hero-subtitle" id="hero-origin">Loading...</div>
         <div class="hero-tags" id="hero-tags">
-          <span class="badge-tag gold">FHD 1080P</span>
+          <span class="badge-tag red">FHD 1080P</span>
           <span class="badge-tag" id="hero-year">2026</span>
           <span class="badge-tag" id="hero-lang">Vietsub / Thuyết Minh</span>
         </div>
-        <p class="hero-desc" id="hero-desc">Đang tải tóm tắt phim chuẩn từ máy chủ...</p>
+        <p class="hero-desc" id="hero-desc">Đang tải tóm tắt phim mới nhất...</p>
         
         <div class="hero-bottom-row">
           <button class="btn-hero-play" id="hero-btn-play">▶ Xem Ngay</button>
-          <!-- Thumbnail bar mini ở góc banner giống hệt Rổ Phim -->
           <div class="hero-thumbs" id="hero-thumbs"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- NỘI DUNG CHÍNH (CÓ PHÂN TRANG) -->
+  <!-- NỘI DUNG CHÍNH (CÓ PHÂN TRANG & KHUNG ẢNH CHUẨN RẠP) -->
   <main class="content-container">
     <div class="section-head" id="main-section-anchor">
       <h2 class="section-title" id="list-title">Phim Mới Cập Nhật</h2>
     </div>
     
-    <!-- Lưới hiển thị danh sách phim -->
     <div id="movies-container" class="movie-grid-paged"></div>
 
-    <!-- KHU VỰC PHÂN TRANG 1 2 3 4 5... -->
     <div class="pagination-wrap" id="pagination-box"></div>
   </main>
 
-  <!-- TRÌNH PHÁT VIDEO SẠCH -->
+  <!-- TRÌNH PHÁT VIDEO KHÔNG QUẢNG CÁO -->
   <div class="player-overlay" id="player-modal">
     <div class="player-wrap">
       <button class="btn-back" onclick="closePlayer()">✕ Quay lại danh sách</button>
@@ -779,7 +809,7 @@
         <div class="episodes-box">
           <div class="episodes-title">
             <span>DANH SÁCH TẬP PHIM</span>
-            <span style="font-size:0.75rem; color:var(--accent);">🛡️ Không có quảng cáo cờ bạc</span>
+            <span style="font-size:0.75rem; color:var(--netflix-red);">🛡️ Không có quảng cáo cờ bạc</span>
           </div>
           <div class="ep-list" id="episodes-container"></div>
         </div>
@@ -809,7 +839,7 @@
     let searchTimeout = null;
     let hlsInstance = null;
 
-    // --- XÁC THỰC MÃ PIN 2301 ---
+    // --- MÃ PIN NETFLIX ---
     function checkAuth() {
       const isUnlocked = localStorage.getItem("PHIMNHA_AUTH_TOKEN");
       if (isUnlocked === "unlocked_2301") {
@@ -850,7 +880,7 @@
       location.reload();
     }
 
-    // --- CHUẨN HÓA POSTER ---
+    // --- CHUẨN HÓA ẢNH BÌA ---
     function formatPoster(url) {
       if (!url) return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400";
       if (url.startsWith("http://") || url.startsWith("https://")) return url;
@@ -858,19 +888,19 @@
     }
 
     function cleanDescription(text) {
-      if (!text) return "Không có mô tả chi tiết cho phim này.";
+      if (!text) return "Thưởng thức bộ phim với chất lượng âm thanh và hình ảnh cao nhất.";
       const div = document.createElement("div");
       div.innerHTML = text;
       return div.textContent || div.innerText || "";
     }
 
-    // --- BANNER TỰ ĐỘNG CẬP NHẬT KIỂU RỔ PHIM ---
+    // --- BANNER 10-12 PHIM TỰ ĐỘNG CẬP NHẬT ---
     async function setupHeroCarousel(items) {
-      const topFive = items.slice(0, 5);
+      // Lấy 12 phim mới nhất
+      const topItems = items.slice(0, 12);
       heroMovies = [];
 
-      // Lấy chi tiết thật của 5 phim này (gồm cả tóm tắt nội dung)
-      for (let m of topFive) {
+      for (let m of topItems) {
         try {
           const res = await fetch(`${API_BASE}/phim/${m.slug}`);
           const data = await res.json();
@@ -882,7 +912,6 @@
 
       if (heroMovies.length === 0) return;
 
-      // Render danh sách thumbnail nhỏ ở góc banner
       const thumbBox = document.getElementById("hero-thumbs");
       thumbBox.innerHTML = "";
       heroMovies.forEach((m, idx) => {
@@ -896,12 +925,11 @@
 
       selectHeroIndex(0);
 
-      // Tự động xoay tua chuyển phim sau mỗi 6 giây
       if (heroTimer) clearInterval(heroTimer);
       heroTimer = setInterval(() => {
         currentHeroIndex = (currentHeroIndex + 1) % heroMovies.length;
         selectHeroIndex(currentHeroIndex);
-      }, 6000);
+      }, 5500);
     }
 
     function selectHeroIndex(idx) {
@@ -926,16 +954,16 @@
       
       const tagBox = document.getElementById("hero-tags");
       tagBox.innerHTML = `
-        <span class="badge-tag gold">${m.quality || 'FHD 1080P'}</span>
+        <span class="badge-tag red">${m.quality || 'FHD 1080P'}</span>
         <span class="badge-tag">${m.year || '2026'}</span>
-        <span class="badge-tag">${m.episode_current || 'Hoàn tất'}</span>
+        <span class="badge-tag">${m.episode_current || 'Đang cập nhật'}</span>
         <span class="badge-tag">${m.lang || 'Vietsub'}</span>
       `;
 
       document.getElementById("hero-btn-play").onclick = () => openMovie(m.slug);
     }
 
-    // --- TẢI PHIM THEO DANH MỤC VÀ TRANG (PAGINATION) ---
+    // --- TẢI DANH MỤC & PHÂN TRANG ---
     async function loadCategoryData(cat, page = 1) {
       currentCategory = cat;
       currentPage = page;
@@ -960,7 +988,7 @@
       document.getElementById("list-title").innerText = title;
 
       const container = document.getElementById("movies-container");
-      container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-sub);">Đang tải phim trang ${page}...</div>`;
+      container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px; color:var(--text-grey);">Đang tải phim trang ${page}...</div>`;
 
       try {
         const res = await fetch(`${API_BASE}/${endpoint}`);
@@ -978,12 +1006,11 @@
         renderGrid(items);
         renderPagination(currentPage, totalPages);
 
-        // Nếu là trang đầu tiên của "Mới Cập Nhật", setup banner động
         if (cat === "moi-cap-nhat" && page === 1 && heroMovies.length === 0) {
           setupHeroCarousel(items);
         }
       } catch (err) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#ef4444;">Không thể nạp dữ liệu từ máy chủ.</div>`;
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px; color:var(--netflix-red);">Không thể kết nối máy chủ phim.</div>`;
       }
     }
 
@@ -996,13 +1023,12 @@
       document.getElementById("main-section-anchor").scrollIntoView({ behavior: "smooth" });
     }
 
-    // Đổ danh sách phim ra lưới
     function renderGrid(items) {
       const container = document.getElementById("movies-container");
       container.innerHTML = "";
 
       if (items.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-sub);">Không có phim nào ở trang này.</div>`;
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-grey);">Không có phim nào ở trang này.</div>`;
         return;
       }
 
@@ -1024,12 +1050,10 @@
       });
     }
 
-    // --- VẼ CÁC NÚT PHÂN TRANG 1, 2, 3, 4, 5... ---
     function renderPagination(current, total) {
       const box = document.getElementById("pagination-box");
       box.innerHTML = "";
 
-      // Nút Về Trang Trước
       if (current > 1) {
         const prevBtn = document.createElement("button");
         prevBtn.className = "page-btn";
@@ -1038,9 +1062,8 @@
         box.appendChild(prevBtn);
       }
 
-      // Thuật toán hiển thị dải trang thông minh
       let pages = [];
-      const delta = 2; // Hiển thị 2 trang xung quanh trang hiện tại
+      const delta = 2;
 
       for (let i = 1; i <= total; i++) {
         if (i === 1 || i === total || (i >= current - delta && i <= current + delta)) {
@@ -1063,7 +1086,6 @@
         box.appendChild(btn);
       });
 
-      // Nút Tới Trang Sau
       if (current < total) {
         const nextBtn = document.createElement("button");
         nextBtn.className = "page-btn";
@@ -1078,7 +1100,7 @@
       document.getElementById("main-section-anchor").scrollIntoView({ behavior: "smooth" });
     }
 
-    // --- MỞ XEM PHIM VÀ CHẶN QUẢNG CÁO CỜ BẠC ---
+    // --- PHÁT PHIM VÀ CHẶN QUẢNG CÁO ---
     async function openMovie(slug) {
       document.getElementById("suggest-box").style.display = "none";
       try {
@@ -1114,7 +1136,7 @@
         document.getElementById("player-modal").style.display = "block";
         window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (err) {
-        alert("Không thể tải phim này, vui lòng thử lại sau!");
+        alert("Không thể tải phim này, vui lòng chọn phim khác!");
       }
     }
 
@@ -1163,7 +1185,7 @@
       document.getElementById("player-modal").style.display = "none";
     }
 
-    // --- TÌM KIẾM GỢI Ý TRỰC TIẾP ---
+    // --- TÌM KIẾM TRỰC TIẾP ---
     function handleSearchLive(keyword) {
       clearTimeout(searchTimeout);
       const box = document.getElementById("suggest-box");
@@ -1181,14 +1203,14 @@
           const items = (data.data && data.data.items) ? data.data.items : [];
 
           if (items.length === 0) {
-            box.innerHTML = `<div style="padding:12px; font-size:0.8rem; color:var(--text-sub); text-align:center;">Không tìm thấy phim phù hợp</div>`;
+            box.innerHTML = `<div style="padding:12px; font-size:0.8rem; color:var(--text-grey); text-align:center;">Không tìm thấy phim phù hợp</div>`;
           } else {
             box.innerHTML = items.map(m => `
               <div class="suggest-item" onclick="openMovie('${m.slug}')">
                 <img class="suggest-thumb" src="${formatPoster(m.poster_url || m.thumb_url)}" alt="${m.name}">
                 <div class="suggest-info">
                   <div class="suggest-title">${m.name}</div>
-                  <div class="suggest-meta">${m.origin_name || ''} • ${m.year || '2026'} • <b style="color:var(--accent);">FHD</b></div>
+                  <div class="suggest-meta">${m.origin_name || ''} • ${m.year || '2026'} • <b style="color:var(--netflix-red);">FHD</b></div>
                 </div>
               </div>
             `).join('');
@@ -1213,7 +1235,6 @@
       }
     });
 
-    // Khởi chạy
     checkAuth();
   </script>
 </body>
