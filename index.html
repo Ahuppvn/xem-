@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-  <title>Phim Nhà - Chuẩn Trải Nghiệm Netflix</title>
+  <title>Phim Nhà - Rạp Phim Riêng Tư</title>
   
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   
@@ -38,7 +38,7 @@
       overflow-x: hidden;
     }
 
-    /* --- MÀN HÌNH KHÓA MÃ PIN 2301 --- */
+    /* --- MÀN HÌNH KHÓA PIN 2301 --- */
     #lock-screen {
       position: fixed;
       inset: 0;
@@ -51,18 +51,18 @@
       padding: 20px;
     }
 
-    .lock-box {
+    .box-dialog {
       background: var(--netflix-card);
       border: 1px solid var(--border-dark);
       border-radius: var(--radius-md);
       padding: 35px 25px;
       width: 100%;
-      max-width: 320px;
+      max-width: 340px;
       text-align: center;
       box-shadow: 0 15px 40px rgba(0,0,0,0.9);
     }
 
-    .lock-avatar {
+    .dialog-icon {
       width: 65px;
       height: 65px;
       background: var(--netflix-red);
@@ -74,8 +74,8 @@
       margin-bottom: 16px;
     }
 
-    .lock-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 6px; }
-    .lock-desc { font-size: 0.8rem; color: var(--text-grey); margin-bottom: 20px; }
+    .dialog-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+    .dialog-desc { font-size: 0.8rem; color: var(--text-grey); margin-bottom: 20px; }
 
     .pin-input {
       width: 100%;
@@ -94,7 +94,7 @@
 
     .pin-input:focus { border-color: var(--netflix-red); }
 
-    .btn-unlock {
+    .btn-action {
       width: 100%;
       background: var(--netflix-red);
       color: #fff;
@@ -104,7 +104,10 @@
       font-weight: 800;
       font-size: 0.9rem;
       cursor: pointer;
+      transition: 0.2s;
     }
+
+    .btn-action:hover { background: var(--netflix-red-hover); }
 
     .pin-error {
       color: var(--netflix-red);
@@ -114,69 +117,64 @@
       display: none;
     }
 
-    /* --- MÀN HÌNH CHỌN PROFILE (AI ĐANG XEM?) --- */
-    #profile-screen {
+    /* --- MÀN HÌNH ĐẶT TÊN CÁ NHÂN --- */
+    #welcome-screen {
       position: fixed;
       inset: 0;
-      background: #141414;
+      background: #000;
       z-index: 99990;
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
     }
 
-    .profile-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 28px;
-      letter-spacing: 0.5px;
+    .name-input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #0b0b0b;
+      border: 1.5px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      outline: none;
+      margin-bottom: 16px;
+      text-align: center;
     }
 
-    .profile-list {
+    .name-input:focus { border-color: #fff; }
+
+    .avatar-selector {
       display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
       justify-content: center;
-      max-width: 500px;
-    }
-
-    .profile-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       gap: 10px;
-      cursor: pointer;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
 
-    .profile-avatar-box {
-      width: 80px;
-      height: 80px;
+    .avatar-opt {
+      width: 44px;
+      height: 44px;
+      background: #252525;
       border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.2rem;
+      font-size: 1.3rem;
+      cursor: pointer;
       border: 2px solid transparent;
-      transition: transform 0.2s, border-color 0.2s;
-      background: #252525;
+      transition: 0.15s;
     }
 
-    .profile-item:hover .profile-avatar-box {
-      border-color: #fff;
-      transform: scale(1.08);
+    .avatar-opt.active {
+      border-color: var(--netflix-red);
+      background: #333;
+      transform: scale(1.1);
     }
 
-    .profile-name {
-      font-size: 0.85rem;
-      color: var(--text-grey);
-      font-weight: 600;
-    }
-
-    .profile-item:hover .profile-name { color: #fff; }
-
-    /* --- HEADER NETFLIX --- */
+    /* --- HEADER --- */
     header {
       position: sticky;
       top: 0;
@@ -302,14 +300,14 @@
       background: #222;
       border: 1px solid var(--border-dark);
       color: #fff;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: var(--radius-sm);
       cursor: pointer;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.82rem;
+      font-weight: 700;
     }
 
-    /* --- HERO BANNER (12 PHIM) --- */
+    /* --- HERO BANNER (12 PHIM TỰ ĐỘNG CẬP NHẬT) --- */
     .hero-container {
       position: relative;
       max-width: 1350px;
@@ -463,7 +461,7 @@
       object-fit: cover;
     }
 
-    /* --- DANH SÁCH & LƯỚI PHIM --- */
+    /* --- LƯỚI VÀ HÀNG CUỘN --- */
     .content-container {
       max-width: 1350px;
       margin: 0 auto;
@@ -493,12 +491,11 @@
       border-radius: 2px;
     }
 
-    /* Hàng phim đang xem dở (Cuộn ngang) */
     .scroll-row {
       display: flex;
       gap: 12px;
       overflow-x: auto;
-      padding-bottom: 10px;
+      padding-bottom: 12px;
       scrollbar-width: none;
     }
 
@@ -507,13 +504,14 @@
     .scroll-card {
       flex: 0 0 140px;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
     }
 
     @media (min-width: 768px) {
       .scroll-card { flex: 0 0 170px; }
     }
 
-    /* Lưới phân trang cố định 2:3 chuẩn rạp */
     .movie-grid-paged {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -558,7 +556,6 @@
       object-fit: cover;
     }
 
-    /* Thanh tiến trình màu đỏ (Progress Bar) */
     .progress-bar-bg {
       position: absolute;
       bottom: 0;
@@ -657,7 +654,7 @@
       color: var(--text-grey);
     }
 
-    /* --- TRÌNH PHÁT VIDEO & NÚT TIỆN ÍCH --- */
+    /* --- TRÌNH PHÁT VIDEO --- */
     .player-overlay {
       display: none;
       position: fixed;
@@ -732,7 +729,6 @@
       display: none;
     }
 
-    /* Toast thông báo tiếp tục xem */
     .resume-toast {
       position: absolute;
       top: 12px;
@@ -839,22 +835,38 @@
 </head>
 <body>
 
-  <!-- 1. MÀN HÌNH KHÓA MÃ PIN 2301 -->
+  <!-- 1. MÀN HÌNH KHÓA PIN 2301 -->
   <div id="lock-screen">
-    <div class="lock-box">
-      <div class="lock-avatar">🍿</div>
-      <div class="lock-title">PHIM NHÀ RIÊNG TƯ</div>
-      <div class="lock-desc">Nhập mã PIN để truy cập</div>
+    <div class="box-dialog">
+      <div class="dialog-icon">🔒</div>
+      <div class="dialog-title">PHIM NHÀ RIÊNG TƯ</div>
+      <div class="dialog-desc">Nhập mã PIN 4 số để truy cập</div>
       <input type="password" id="pin-input" class="pin-input" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="••••" autocomplete="off">
-      <button class="btn-unlock" onclick="verifyPin()">MỞ KHÓA</button>
+      <button class="btn-action" onclick="verifyPin()">MỞ KHÓA</button>
       <div class="pin-error" id="pin-error">Mã PIN không đúng!</div>
     </div>
   </div>
 
-  <!-- 2. MÀN HÌNH CHỌN HỒ SƠ (AI ĐANG XEM?) -->
-  <div id="profile-screen">
-    <h2 class="profile-title">Ai đang xem?</h2>
-    <div class="profile-list" id="profile-list"></div>
+  <!-- 2. MÀN HÌNH ĐẶT TÊN CÁ NHÂN (CHỈ HỎI LẦN ĐẦU) -->
+  <div id="welcome-screen">
+    <div class="box-dialog">
+      <div class="dialog-icon" id="welcome-avatar-preview">😎</div>
+      <div class="dialog-title">BẠN TÊN LÀ GÌ?</div>
+      <div class="dialog-desc">Hệ thống sẽ lưu lịch sử xem riêng cho bạn</div>
+      
+      <input type="text" id="custom-name-input" class="name-input" placeholder="Nhập tên của bạn..." maxlength="15">
+      
+      <div class="avatar-selector">
+        <div class="avatar-opt active" onclick="selectAvatar('😎', this)">😎</div>
+        <div class="avatar-opt" onclick="selectAvatar('🍿', this)">🍿</div>
+        <div class="avatar-opt" onclick="selectAvatar('🔥', this)">🔥</div>
+        <div class="avatar-opt" onclick="selectAvatar('🐱', this)">🐱</div>
+        <div class="avatar-opt" onclick="selectAvatar('👑', this)">👑</div>
+        <div class="avatar-opt" onclick="selectAvatar('🎮', this)">🎮</div>
+      </div>
+
+      <button class="btn-action" onclick="saveCustomUser()">BẮT ĐẦU XEM PHIM</button>
+    </div>
   </div>
 
   <!-- 3. HEADER -->
@@ -874,16 +886,18 @@
         <a class="nav-link" onclick="switchCategory('phim-bo', 1, this)">Phim Bộ</a>
         <a class="nav-link" onclick="switchCategory('phim-le', 1, this)">Phim Lẻ</a>
         <a class="nav-link" onclick="showFavorites(this)">⭐ Yêu Thích</a>
-        <div class="header-user-btn" onclick="showProfileSelect()">
-          <span id="header-avatar">👤</span>
-          <span id="header-username">Hồ sơ</span>
+        
+        <div class="header-user-btn" onclick="openEditProfile()">
+          <span id="header-avatar">😎</span>
+          <span id="header-username">Bạn</span>
         </div>
-        <button class="btn-back" style="padding:4px 8px;" onclick="reLockApp()">🔒 Khóa</button>
+
+        <button class="btn-back" style="padding:5px 10px;" onclick="lockApp()">🔒 Khóa</button>
       </nav>
     </div>
   </header>
 
-  <!-- BANNER TỰ ĐỘNG (12 PHIM) -->
+  <!-- BANNER TỰ ĐỘNG CẬP NHẬT (12 PHIM) -->
   <div class="hero-container" id="hero-section">
     <div class="hero-card">
       <img id="hero-img" class="hero-backdrop" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&auto=format&fit=crop" alt="Hero">
@@ -905,10 +919,8 @@
     </div>
   </div>
 
-  <!-- NỘI DUNG CHÍNH -->
   <main class="content-container">
-    
-    <!-- MỤC 1: TIẾP TỤC XEM (HIỆN KHI CÓ LỊCH SỬ) -->
+    <!-- TIẾP TỤC XEM (TỰ ĐỘNG LƯU TRÊN TRÌNH DUYỆT THƯỜNG) -->
     <div id="continue-watching-section" style="display:none;">
       <div class="section-head">
         <h2 class="section-title">Tiếp Tục Xem</h2>
@@ -916,7 +928,7 @@
       <div class="scroll-row" id="continue-watching-list"></div>
     </div>
 
-    <!-- MỤC 2: DANH SÁCH DUYỆT PHIM THEO TRANG -->
+    <!-- DANH SÁCH DUYỆT THEO TRANG -->
     <div class="section-head" id="main-section-anchor">
       <h2 class="section-title" id="list-title">Phim Mới Cập Nhật</h2>
     </div>
@@ -925,7 +937,7 @@
     <div class="pagination-wrap" id="pagination-box"></div>
   </main>
 
-  <!-- TRÌNH PHÁT VIDEO CHUẨN TỪNG GIÂY -->
+  <!-- TRÌNH PHÁT VIDEO -->
   <div class="player-overlay" id="player-modal">
     <div class="player-wrap">
       <div class="player-top-actions">
@@ -934,7 +946,6 @@
       </div>
       
       <div class="video-viewport">
-        <!-- Toast thông báo tiếp tục phát từ phút thứ mấy -->
         <div class="resume-toast" id="resume-toast">
           <span id="resume-toast-text">Đang phát tiếp từ 00:00</span>
           <button onclick="restartPlayback()">Xem từ đầu</button>
@@ -959,26 +970,20 @@
     </div>
   </div>
 
-  <!-- BOTTOM NAVIGATION DI ĐỘNG -->
   <nav class="mobile-bottom-nav">
     <div class="m-nav-item active" onclick="switchCategory('moi-cap-nhat', 1)">🏠<span>Trang chủ</span></div>
     <div class="m-nav-item" onclick="switchCategory('phim-bo', 1)">📺<span>Phim bộ</span></div>
     <div class="m-nav-item" onclick="showFavorites()">⭐<span>Yêu thích</span></div>
-    <div class="m-nav-item" onclick="showProfileSelect()">👤<span>Hồ sơ</span></div>
+    <div class="m-nav-item" onclick="openEditProfile()">👤<span id="nav-username">Hồ sơ</span></div>
   </nav>
 
   <script>
     const CORRECT_PIN = "2301";
     const API_BASE = "https://phimapi.com";
 
-    // --- HỆ THỐNG HỒ SƠ MẶC ĐỊNH ---
-    const DEFAULT_PROFILES = [
-      { id: "p1", name: "Hùng", avatar: "😎" },
-      { id: "p2", name: "Bạn bè", avatar: "🍿" },
-      { id: "p3", name: "Gia đình", avatar: "🏡" }
-    ];
+    let selectedAvatarEmoji = "😎";
+    let currentUser = null;
 
-    let currentProfile = null;
     let currentCategory = "moi-cap-nhat";
     let currentPage = 1;
     let totalPages = 50;
@@ -989,17 +994,16 @@
     let searchTimeout = null;
     let hlsInstance = null;
 
-    // Phim và tập hiện đang mở trong trình phát
     let activeMovie = null;
     let activeEpIndex = 0;
     let resumeTargetTime = 0;
 
-    // --- 1. MÃ PIN & KHỞI ĐỘNG ---
+    // --- 1. XÁC THỰC MÃ PIN & KIỂM TRA TÊN NGƯỜI DÙNG ---
     function checkAuth() {
-      const isUnlocked = localStorage.getItem("PHIMNHA_AUTH_TOKEN");
-      if (isUnlocked === "unlocked_2301") {
+      const isUnlocked = localStorage.getItem("PHIMNHA_PIN_UNLOCKED");
+      if (isUnlocked === "true") {
         document.getElementById("lock-screen").style.display = "none";
-        initProfileSystem();
+        checkUserProfile();
       } else {
         document.getElementById("lock-screen").style.display = "flex";
         setTimeout(() => document.getElementById("pin-input").focus(), 200);
@@ -1010,10 +1014,10 @@
       const input = document.getElementById("pin-input").value;
       const errBox = document.getElementById("pin-error");
       if (input === CORRECT_PIN) {
-        localStorage.setItem("PHIMNHA_AUTH_TOKEN", "unlocked_2301");
+        localStorage.setItem("PHIMNHA_PIN_UNLOCKED", "true");
         errBox.style.display = "none";
         document.getElementById("lock-screen").style.display = "none";
-        initProfileSystem();
+        checkUserProfile();
       } else {
         errBox.style.display = "block";
         document.getElementById("pin-input").value = "";
@@ -1028,79 +1032,74 @@
       if (e.key === "Enter") verifyPin();
     });
 
-    function reLockApp() {
-      localStorage.removeItem("PHIMNHA_AUTH_TOKEN");
+    function lockApp() {
+      localStorage.removeItem("PHIMNHA_PIN_UNLOCKED");
       location.reload();
     }
 
-    // --- 2. HỆ THỐNG PROFILE (AI ĐANG XEM?) ---
-    function getProfiles() {
-      const saved = localStorage.getItem("PHIMNHA_PROFILES");
-      return saved ? JSON.parse(saved) : DEFAULT_PROFILES;
-    }
-
-    function initProfileSystem() {
-      const activeId = localStorage.getItem("PHIMNHA_ACTIVE_PROFILE");
-      const profiles = getProfiles();
-      const found = profiles.find(p => p.id === activeId);
-
-      if (found) {
-        setProfile(found);
+    // --- 2. HỆ THỐNG ĐẶT TÊN CÁ NHÂN ---
+    function checkUserProfile() {
+      const savedUser = localStorage.getItem("PHIMNHA_USER_INFO");
+      if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        applyUserToUI();
+        initApp();
+        renderContinueWatching();
       } else {
-        showProfileSelect();
+        // Chưa có tên -> hiện màn hình đặt tên
+        document.getElementById("welcome-screen").style.display = "flex";
+        setTimeout(() => document.getElementById("custom-name-input").focus(), 200);
       }
     }
 
-    function showProfileSelect() {
-      const pScreen = document.getElementById("profile-screen");
-      const pList = document.getElementById("profile-list");
-      const profiles = getProfiles();
-
-      pList.innerHTML = profiles.map(p => `
-        <div class="profile-item" onclick="chooseProfile('${p.id}')">
-          <div class="profile-avatar-box">${p.avatar}</div>
-          <div class="profile-name">${p.name}</div>
-        </div>
-      `).join('');
-
-      pScreen.style.display = "flex";
+    function selectAvatar(emoji, el) {
+      selectedAvatarEmoji = emoji;
+      document.querySelectorAll(".avatar-opt").forEach(e => e.classList.remove("active"));
+      el.classList.add("active");
+      document.getElementById("welcome-avatar-preview").innerText = emoji;
     }
 
-    function chooseProfile(id) {
-      const profiles = getProfiles();
-      const p = profiles.find(item => item.id === id);
-      if (p) {
-        localStorage.setItem("PHIMNHA_ACTIVE_PROFILE", p.id);
-        setProfile(p);
-      }
-    }
+    function saveCustomUser() {
+      let name = document.getElementById("custom-name-input").value.trim();
+      if (!name) name = "Bạn";
 
-    function setProfile(p) {
-      currentProfile = p;
-      document.getElementById("profile-screen").style.display = "none";
-      document.getElementById("header-avatar").innerText = p.avatar;
-      document.getElementById("header-username").innerText = p.name;
+      currentUser = {
+        name: name,
+        avatar: selectedAvatarEmoji
+      };
+
+      // Lưu vĩnh viễn vào trình duyệt thường
+      localStorage.setItem("PHIMNHA_USER_INFO", JSON.stringify(currentUser));
+      document.getElementById("welcome-screen").style.display = "none";
       
+      applyUserToUI();
       initApp();
       renderContinueWatching();
     }
 
-    // --- 3. LỊCH SỬ XEM CHUẨN TỪNG GIÂY (RESUME PLAYBACK) ---
-    function getHistoryKey() {
-      return `PHIMNHA_HISTORY_${currentProfile.id}`;
+    function applyUserToUI() {
+      if (!currentUser) return;
+      document.getElementById("header-avatar").innerText = currentUser.avatar;
+      document.getElementById("header-username").innerText = currentUser.name;
+      const navUser = document.getElementById("nav-username");
+      if (navUser) navUser.innerText = currentUser.name;
     }
 
+    function openEditProfile() {
+      document.getElementById("custom-name-input").value = currentUser ? currentUser.name : "";
+      document.getElementById("welcome-screen").style.display = "flex";
+    }
+
+    // --- 3. LỊCH SỬ XEM CHUẨN XÁC TỪNG GIÂY ---
     function getHistory() {
-      if (!currentProfile) return [];
-      const saved = localStorage.getItem(getHistoryKey());
+      const saved = localStorage.getItem("PHIMNHA_USER_HISTORY");
       return saved ? JSON.parse(saved) : [];
     }
 
     function savePlaybackProgress(currentTime, duration) {
-      if (!activeMovie || !currentProfile || !currentTime || currentTime < 5) return;
+      if (!activeMovie) return;
 
       let history = getHistory();
-      // Loại bỏ phim cũ nếu đã có trong danh sách
       history = history.filter(item => item.slug !== activeMovie.slug);
 
       const record = {
@@ -1110,16 +1109,14 @@
         poster: activeMovie.poster_url || activeMovie.thumb_url,
         epIndex: activeEpIndex,
         epName: activeMovie.episodes[0]?.server_data[activeEpIndex]?.name || 'Tập 1',
-        time: Math.floor(currentTime),
+        time: Math.floor(currentTime || 0),
         duration: Math.floor(duration || 0),
         updatedAt: Date.now()
       };
 
-      // Đưa lên đầu danh sách
       history.unshift(record);
-      // Giữ tối đa 15 phim gần nhất
       if (history.length > 15) history.pop();
-      localStorage.setItem(getHistoryKey(), JSON.stringify(history));
+      localStorage.setItem("PHIMNHA_USER_HISTORY", JSON.stringify(history));
 
       renderContinueWatching();
     }
@@ -1146,7 +1143,7 @@
               <span class="badge-top">${item.epName}</span>
             </div>
             <div class="movie-name">${item.title}</div>
-            <div class="movie-origin-name">Đã xem đến ${mins}p</div>
+            <div class="movie-origin-name">Đã xem ${mins}p</div>
           </div>
         `;
       }).join('');
@@ -1157,14 +1154,22 @@
       await openMovie(slug, epIndex);
     }
 
-    // --- 4. DANH SÁCH YÊU THÍCH (MY LIST) ---
-    function getFavKey() {
-      return `PHIMNHA_FAVORITES_${currentProfile.id}`;
-    }
+    // Tự động lưu tiến độ khi người dùng tắt app hoặc chuyển tab
+    window.addEventListener("pagehide", () => {
+      const video = document.getElementById("native-player");
+      if (activeMovie && video) savePlaybackProgress(video.currentTime, video.duration);
+    });
 
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        const video = document.getElementById("native-player");
+        if (activeMovie && video) savePlaybackProgress(video.currentTime, video.duration);
+      }
+    });
+
+    // --- 4. DANH SÁCH YÊU THÍCH ---
     function getFavorites() {
-      if (!currentProfile) return [];
-      const saved = localStorage.getItem(getFavKey());
+      const saved = localStorage.getItem("PHIMNHA_USER_FAVORITES");
       return saved ? JSON.parse(saved) : [];
     }
 
@@ -1177,7 +1182,7 @@
       const btn = document.getElementById("btn-fav");
       if (isCurrentMovieFav()) {
         btn.classList.add("saved");
-        btn.innerText = "✓ Đã thêm vào Yêu thích";
+        btn.innerText = "✓ Đã lưu Yêu thích";
       } else {
         btn.classList.remove("saved");
         btn.innerText = "+ Thêm vào Yêu thích";
@@ -1185,7 +1190,7 @@
     }
 
     function toggleFavoriteCurrent() {
-      if (!activeMovie || !currentProfile) return;
+      if (!activeMovie) return;
       let favs = getFavorites();
 
       if (isCurrentMovieFav()) {
@@ -1200,7 +1205,7 @@
         });
       }
 
-      localStorage.setItem(getFavKey(), JSON.stringify(favs));
+      localStorage.setItem("PHIMNHA_USER_FAVORITES", JSON.stringify(favs));
       updateFavButton();
     }
 
@@ -1217,7 +1222,7 @@
       document.getElementById("main-section-anchor").scrollIntoView({ behavior: "smooth" });
     }
 
-    // --- 5. CHUẨN HÓA ẢNH & BANNER CAROUSEL (12 PHIM) ---
+    // --- 5. FORMAT & HERO BANNER (12 PHIM) ---
     function formatPoster(url) {
       if (!url) return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400";
       if (url.startsWith("http://") || url.startsWith("https://")) return url;
@@ -1426,7 +1431,7 @@
       document.getElementById("main-section-anchor").scrollIntoView({ behavior: "smooth" });
     }
 
-    // --- 7. PHÁT PHIM & THEO DÕI TIẾN ĐỘ (TRACKING TỪNG GIÂY) ---
+    // --- 7. PHÁT PHIM & THEO DÕI TIẾN ĐỘ ---
     async function openMovie(slug, epIndexToPlay = 0) {
       document.getElementById("suggest-box").style.display = "none";
       try {
@@ -1439,7 +1444,6 @@
         document.getElementById("player-sub").innerText = `${activeMovie.origin_name} (${activeMovie.year}) • ${activeMovie.quality || 'Full HD'}`;
         updateFavButton();
 
-        // Kiểm tra xem trong lịch sử đã từng xem phim này chưa
         if (resumeTargetTime === 0) {
           const hist = getHistory().find(h => h.slug === slug);
           if (hist) {
@@ -1459,16 +1463,18 @@
             btn.className = `ep-btn ${idx === epIndexToPlay ? 'active' : ''}`;
             btn.innerText = ep.name.includes("Tập") ? ep.name : `Tập ${ep.name}`;
             btn.onclick = () => {
-              resumeTargetTime = 0; // Đổi tập khác thì xem từ đầu
+              resumeTargetTime = 0;
               document.querySelectorAll(".ep-btn").forEach(b => b.classList.remove("active"));
               btn.classList.add("active");
               activeEpIndex = idx;
+              savePlaybackProgress(0, 0);
               playStream(ep.link_m3u8, ep.link_embed);
             };
             epContainer.appendChild(btn);
           });
 
           activeEpIndex = epIndexToPlay;
+          savePlaybackProgress(resumeTargetTime, 0);
           playStream(serverData[epIndexToPlay].link_m3u8, serverData[epIndexToPlay].link_embed);
         }
 
@@ -1495,7 +1501,7 @@
         video.style.display = "block";
 
         const startPlayback = () => {
-          if (resumeTargetTime > 10) {
+          if (resumeTargetTime > 5) {
             video.currentTime = resumeTargetTime;
             const mins = Math.floor(resumeTargetTime / 60);
             const secs = Math.floor(resumeTargetTime % 60);
@@ -1529,16 +1535,15 @@
       const video = document.getElementById("native-player");
       video.currentTime = 0;
       resumeTargetTime = 0;
+      savePlaybackProgress(0, video.duration);
       document.getElementById("resume-toast").style.display = "none";
     }
 
-    // Tự động lưu tiến độ xem mỗi khi thời gian video thay đổi
     const videoElement = document.getElementById("native-player");
     let lastSaveTime = 0;
     videoElement.addEventListener("timeupdate", () => {
       const now = Date.now();
-      // Lưu mỗi 4 giây 1 lần để máy chạy mượt mà
-      if (now - lastSaveTime > 4000) {
+      if (now - lastSaveTime > 3000) {
         lastSaveTime = now;
         savePlaybackProgress(videoElement.currentTime, videoElement.duration);
       }
@@ -1611,7 +1616,6 @@
       }
     });
 
-    // Khởi chạy toàn bộ hệ thống
     checkAuth();
   </script>
 </body>
