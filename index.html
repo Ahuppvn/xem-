@@ -649,7 +649,7 @@
 
   <div class="toast-msg" id="toastMsg"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span id="toastContent"></span></div>
 
-  <!-- ==================== HỆ THỐNG JAVASCRIPT ĐÃ SỬA LỖI AVATAR ==================== -->
+  <!-- ==================== HỆ THỐNG JAVASCRIPT ĐÃ TỐI ƯU TOÀN DIỆN ==================== -->
   <script>
     const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     firebase.initializeApp(firebaseConfig);
@@ -694,25 +694,62 @@
     }
 
     // ========================================================
-    // QUẢN LÝ AVATAR CHUẨN: ƯU TIÊN LOCALSTORAGE & FIRESTORE
+    // QUẢN LÝ ĐỊNH DANH & AVATAR BỀN VỮNG
     // ========================================================
-    let guestId = sessionStorage.getItem('phimnha_guest_id');
+    let guestId = localStorage.getItem('phimnha_guest_id');
     if (!guestId) {
       guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
-      sessionStorage.setItem('phimnha_guest_id', guestId);
+      localStorage.setItem('phimnha_guest_id', guestId);
     }
 
     function getMyUid() { return currentUser ? currentUser.uid : guestId; }
     function getMyName() { return currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : `Khách #${guestId.slice(-4)}`; }
     
-    // Hàm lấy Avatar thông minh: Luôn lấy ảnh mới nhất đã lưu, không bao giờ bị trả về robot mặc định
     function getMyAvatar() { 
       if (currentUser) {
         const localSaved = localStorage.getItem('phimnha_avatar_' + currentUser.uid);
         if (localSaved) return localSaved;
         if (currentUser.photoURL && !currentUser.photoURL.includes('seed=Felix')) return currentUser.photoURL;
       }
-      return defaultAvatar; 
+      return `https://api.dicebear.com/7.x/bottts/svg?seed=${guestId}`; 
+    }
+
+    // ========================================================
+    // MỞ KHÓA ÂM THANH TRÊN MOBILE (CHỐNG CHẶN AUDIO)
+    // ========================================================
+    let globalAudioCtx = null;
+    function getAudioContext() {
+      if (!globalAudioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) globalAudioCtx = new AudioContext();
+      }
+      if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
+        globalAudioCtx.resume().catch(()=>{});
+      }
+      return globalAudioCtx;
+    }
+
+    // Kích hoạt ngay khi người dùng chạm màn hình lần đầu
+    ['click', 'touchstart'].forEach(evt => {
+      document.addEventListener(evt, () => { getAudioContext(); }, { once: true });
+    });
+
+    function playSoftChime() {
+      try {
+        const audioCtx = getAudioContext();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.36);
+      } catch (e) {}
     }
 
     // ========================================================
@@ -741,7 +778,6 @@
       document.getElementById('inputCustomAvatarUrl').value = url;
     }
 
-    // XỬ LÝ CHỌN FILE ẢNH TỪ MÁY / MOBILE
     function handleAvatarFileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -782,22 +818,16 @@
       reader.readAsDataURL(file);
     }
 
-    // LƯU AVATAR AN TOÀN (KHẮC PHỤC TRIỆT ĐỂ LỖI KẸT 2048 BYTES)
     async function applyAvatarUpdate(url) {
       if (!currentUser) return;
       try {
-        // 1. Lưu ngay vào LocalStorage để không bao giờ bị mất khi bấm X hay F5
         localStorage.setItem('phimnha_avatar_' + currentUser.uid, url);
-        
-        // 2. Cập nhật ngay lập tức giao diện
         document.getElementById('profileModalAvatar').src = url;
         renderAuthUI(currentUser);
 
-        // 3. Đồng bộ lên Firestore (Hỗ trợ dung lượng ảnh tới 1MB)
         db.collection('users').doc(currentUser.uid).set({ avatar: url }, { merge: true }).catch(()=>{});
         db.collection('user_stats').doc(currentUser.uid).set({ avatar: url }, { merge: true }).catch(()=>{});
 
-        // 4. Chỉ updateProfile của Auth nếu link ngắn (< 2000 ký tự) để không bị lỗi 2048 bytes
         if (url.length < 2000) {
           currentUser.updateProfile({ photoURL: url }).catch(()=>{});
         }
@@ -864,7 +894,6 @@
     async function loadProfileStats() {
       if (!currentUser) return;
       try {
-        // Tải ảnh từ Firestore nếu máy mới chưa có trong LocalStorage
         const userDoc = await db.collection('users').doc(currentUser.uid).get();
         if (userDoc.exists && userDoc.data().avatar) {
           const avt = userDoc.data().avatar;
@@ -1033,25 +1062,8 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 5: CHỌC VĂN MINH & ÂM THANH ÊM ÁI
+    // TÍNH NĂNG 5: CHỌC VĂN MINH — ĐÃ KHẮC PHỤC TRIỆT ĐỂ LỆCH GIỜ
     // ========================================================
-    function playSoftChime() {
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.36);
-      } catch (e) {}
-    }
-
     const pokeCooldowns = {};
     async function pokeUser(targetUid, targetName) {
       const now = Date.now();
@@ -1076,31 +1088,44 @@
       }
     }
 
+    // LẮNG NGHE CHỌC THEO TO_UID: CHỐNG LỖI LỆCH MÚI GIỜ HOÀN TOÀN
+    let isInitialPokeLoad = true;
     let pokeNotificationTimeout = null;
-    const sessionStartTime = Date.now() - 5000;
+    let unsubscribePokes = null;
 
-    db.collection('pokes')
-      .where('timestamp', '>', sessionStartTime)
-      .onSnapshot(snapshot => {
-        snapshot.docChanges().forEach(change => {
-          if (change.type === 'added') {
-            const data = change.doc.data();
-            if (data.toUid === getMyUid() && data.fromUid !== getMyUid()) {
-              triggerPokeNotice(data);
-            }
+    function initPokeListener() {
+      if (unsubscribePokes) unsubscribePokes();
+      isInitialPokeLoad = true;
+
+      unsubscribePokes = db.collection('pokes')
+        .where('toUid', '==', getMyUid())
+        .onSnapshot(snapshot => {
+          if (isInitialPokeLoad) {
+            isInitialPokeLoad = false;
+            return; // Bỏ qua các tin chọc cũ trước khi mở trang
           }
+          snapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+              const data = change.doc.data();
+              if (data.fromUid !== getMyUid()) {
+                triggerPokeNotice(data);
+              }
+            }
+          });
         });
-      });
+    }
 
     function triggerPokeNotice(data) {
       const dndUntil = localStorage.getItem('phimnha_dnd_until');
       if (dndUntil && Date.now() < parseInt(dndUntil)) return;
 
       playSoftChime();
-      if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+      if (navigator.vibrate) {
+        try { navigator.vibrate([100, 50, 100]); } catch(e){}
+      }
 
       const toast = document.getElementById('pokeNotification');
-      document.getElementById('pokeSenderAvatar').src = data.fromAvatar;
+      document.getElementById('pokeSenderAvatar').src = data.fromAvatar || defaultAvatar;
       document.getElementById('pokeSenderName').innerText = `${data.fromName} vừa chọc bạn!`;
       
       const btnBack = document.getElementById('btnPokeBack');
@@ -1111,7 +1136,7 @@
 
       toast.style.display = 'flex';
       clearTimeout(pokeNotificationTimeout);
-      pokeNotificationTimeout = setTimeout(() => { toast.style.display = 'none'; }, 6000);
+      pokeNotificationTimeout = setTimeout(() => { toast.style.display = 'none'; }, 6500);
     }
 
     function mutePoke24h() {
@@ -1186,7 +1211,7 @@
     }
 
     // ========================================================
-    // ONLINE PRESENCE THỜI GIAN THỰC
+    // TÍNH NĂNG 7: ONLINE PRESENCE THỜI GIAN THỰC (BÙ TRỪ LỆCH GIỜ)
     // ========================================================
     function updateOnlinePresence() {
       const uid = getMyUid();
@@ -1202,14 +1227,21 @@
       }, { merge: true }).catch(() => {});
     }
 
+    // Gửi tín hiệu online mỗi 20s và ngay khi người dùng bật lại màn hình điện thoại
     setInterval(updateOnlinePresence, 20000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') updateOnlinePresence();
+    });
 
     db.collection('online_presence').onSnapshot(snapshot => {
       const now = Date.now();
       let activeUsers = [];
       snapshot.forEach(doc => {
         const data = doc.data();
-        if (data.lastSeen && (now - data.lastSeen < 60000)) activeUsers.push(data);
+        // Cho phép dung sai chênh lệch đồng hồ lên đến 3 phút (180.000ms)
+        if (data.lastSeen && Math.abs(now - data.lastSeen) < 180000) {
+          activeUsers.push(data);
+        }
       });
       
       window.currentOnlineList = activeUsers;
@@ -1217,9 +1249,14 @@
       document.getElementById('onlineCountText').innerText = count;
       const modalCount = document.getElementById('modalOnlineCount');
       if (modalCount) modalCount.innerText = count;
+
+      // Nếu người dùng đang mở modal online thì tự động cập nhật danh sách ngay lập tức!
+      if (document.getElementById('onlineUsersModal').style.display === 'flex') {
+        renderOnlineUsersList();
+      }
     });
 
-    function showOnlineUsersModal() {
+    function renderOnlineUsersList() {
       const list = window.currentOnlineList || [];
       const wrap = document.getElementById('onlineUsersListContent');
       if (!list || list.length === 0) {
@@ -1241,6 +1278,10 @@
           </div>
         `).join('');
       }
+    }
+
+    function showOnlineUsersModal() {
+      renderOnlineUsersList();
       document.getElementById('onlineUsersModal').style.display = 'flex';
     }
 
@@ -1248,7 +1289,6 @@
     auth.onAuthStateChanged(async user => {
       currentUser = user;
       if (user) {
-        // Đồng bộ avatar từ Firestore nếu máy mới chưa có trong localStorage
         const localAvt = localStorage.getItem('phimnha_avatar_' + user.uid);
         if (!localAvt) {
           try {
@@ -1261,6 +1301,7 @@
       }
       renderAuthUI(user);
       updateOnlinePresence();
+      initPokeListener(); // Cập nhật lại kênh lắng nghe chọc đúng theo UID
       if (document.getElementById('playerModal').style.display === 'flex') updateCommentInputUI();
     });
 
@@ -1423,7 +1464,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 7: TRÌNH PHÁT VÀ CHỌN THUYẾT MINH / VIETSUB
+    // TÍNH NĂNG 8: TRÌNH PHÁT VÀ CHỌN THUYẾT MINH / VIETSUB
     // ========================================================
     function parseServerBadge(serverName) {
       const nameLower = serverName.toLowerCase();
@@ -1749,6 +1790,7 @@
     window.onload = () => {
       checkDisclaimerNotice();
       updateOnlinePresence();
+      initPokeListener();
       initWatchTimeTracker();
       initVideoProgressTracking();
       initDoubleTapAndShortcuts();
