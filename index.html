@@ -51,7 +51,8 @@
 
     /* HEADER ACTIONS */
     .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .online-badge { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .online-badge { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: var(--transition); }
+    .online-badge:hover { background: rgba(16, 185, 129, 0.22); transform: scale(1.03); }
     .online-badge .dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; animation: pulse 1.8s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
     
@@ -163,6 +164,27 @@
     .btn-agree-disclaimer { width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); }
     .btn-agree-disclaimer:hover { background: var(--primary-hover); }
 
+    /* MODAL AI ĐANG ONLINE (REALTIME) */
+    .online-user-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 10px;
+      transition: var(--transition);
+    }
+    .online-user-item:hover { background: rgba(255, 255, 255, 0.08); }
+    .online-user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #10b981;
+      flex-shrink: 0;
+    }
+
     /* CÁC MODAL PHỤ */
     .library-modal, .auth-modal, .troll-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 16px; }
     .library-card { background: var(--surface); width: 100%; max-width: 800px; height: 80vh; border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
@@ -177,41 +199,29 @@
     .form-group input, .form-group select { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; outline:none;}
     .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; gap: 8px; align-items: center;}
 
-    /* ========================================================= */
-    /* TỐI ƯU CỰC MẠNH CHO ĐIỆN THOẠI (FIX LỖI THANH TÌM KIẾM)  */
-    /* ========================================================= */
+    /* TỐI ƯU CỰC MẠNH CHO ĐIỆN THOẠI */
     @media (max-width: 680px) {
       header { padding: 10px 12px; gap: 8px; }
       .brand span { display: none; }
-      .btn-library span { display: none; } /* Chỉ hiện icon dấu trang trên đt */
-      .online-badge span { display: none; } /* Chỉ hiện chấm tròn và số online */
-      .user-profile-btn span { display: none; } /* Ẩn chữ tên người dùng để nhường chỗ */
+      .btn-library span { display: none; }
+      .online-badge span { display: none; }
+      .user-profile-btn span { display: none; }
       .user-profile-btn { padding: 3px; }
 
-      /* Khi focus vào ô tìm kiếm: Tự động bung rộng chiếm toàn thanh header */
       .search-box:focus-within {
         position: absolute;
-        left: 10px;
-        right: 10px;
-        top: 8px;
-        bottom: 8px;
-        max-width: none;
-        z-index: 1500;
+        left: 10px; right: 10px; top: 8px; bottom: 8px;
+        max-width: none; z-index: 1500;
       }
       .search-box:focus-within input {
         border-color: var(--primary);
         box-shadow: 0 0 20px rgba(0,0,0,0.9);
         padding-right: 40px;
       }
-      
-      /* Bảng kết quả tìm kiếm TRÀN VIỀN trên điện thoại, không còn bị kẹt cột 35px */
       .search-results-dropdown {
         position: fixed !important;
-        top: 60px !important;
-        left: 12px !important;
-        right: 12px !important;
-        width: auto !important;
-        max-height: 65vh !important;
+        top: 60px !important; left: 12px !important; right: 12px !important;
+        width: auto !important; max-height: 65vh !important;
         border-radius: 14px !important;
         box-shadow: 0 16px 40px rgba(0,0,0,0.95) !important;
       }
@@ -227,7 +237,7 @@
 </head>
 <body>
 
-  <!-- BẢNG THÔNG BÁO KHUYẾN CÁO VĂN MINH (HIỆN KHI MỚI VÀO WEB) -->
+  <!-- BẢNG THÔNG BÁO MIỄN TRỪ TRÁCH NHIỆM -->
   <div class="disclaimer-modal" id="disclaimerModal">
     <div class="disclaimer-card">
       <div class="disclaimer-icon"><i class="fa-solid fa-shield-halved"></i></div>
@@ -248,11 +258,26 @@
     </div>
   </div>
 
+  <!-- MODAL DANH SÁCH AI ĐANG ONLINE -->
+  <div class="auth-modal" id="onlineUsersModal">
+    <div class="auth-card" style="max-width: 440px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="font-weight: 800; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+          <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981;"></span>
+          Người Dùng Đang Online (<span id="modalOnlineCount">0</span>)
+        </h3>
+        <button class="btn-tool" onclick="document.getElementById('onlineUsersModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="onlineUsersListContent" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+        <!-- Danh sách tải từ Firebase -->
+      </div>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <header>
     <a href="#" class="brand" onclick="location.reload()"><i class="fa-solid fa-play"></i> <span>PHIM NHÀ</span></a>
     
-    <!-- KHUNG TÌM KIẾM ĐÃ TỐI ƯU CHO MOBILE -->
     <div class="search-box" id="searchBoxContainer">
       <i class="fa-solid fa-magnifying-glass"></i>
       <input type="text" id="liveSearchInput" placeholder="Tìm kiếm phim...">
@@ -262,7 +287,13 @@
     
     <div class="header-actions">
       <button class="btn-library" id="btnLibrary" onclick="openLibraryModal()"><i class="fa-solid fa-bookmark"></i> <span class="hide-mobile">Tủ Phim</span></button>
-      <div class="online-badge"><div class="dot"></div><span>Online: </span><strong id="onlineCountText">1</strong></div>
+      
+      <!-- NÚT BẤM XEM AI ĐANG ONLINE -->
+      <div class="online-badge" onclick="showOnlineUsersModal()" title="Bấm để xem danh sách đang online">
+        <div class="dot"></div>
+        <span>Online: </span><strong id="onlineCountText">1</strong>
+      </div>
+
       <div id="authContainer"><button class="btn-auth" onclick="document.getElementById('authModal').style.display='flex'"><i class="fa-regular fa-user"></i></button></div>
     </div>
   </header>
@@ -301,7 +332,6 @@
       <div class="video-wrapper"><video id="videoPlayer" controls crossorigin playsinline></video></div>
 
       <div class="player-details-container">
-        <!-- CỘT TRÁI -->
         <div class="player-col-left">
           <div class="movie-metadata">
             <div class="movie-metadata-header">
@@ -321,7 +351,6 @@
             <div class="episodes-grid" id="episodesList"></div>
           </div>
 
-          <!-- BÌNH LUẬN & TRẢ LỜI -->
           <div class="comment-section">
             <h3 class="comment-title">Bình Luận (<span id="commentCount">0</span>)</h3>
             <div id="commentInputBox"></div>
@@ -329,7 +358,6 @@
           </div>
         </div>
 
-        <!-- CỘT PHẢI -->
         <div class="player-col-right">
           <h3 class="related-title">Có Thể Bạn Thích</h3>
           <div class="related-grid" id="relatedMoviesGrid"></div>
@@ -399,7 +427,7 @@
     let allMoviesCache = []; let currentPage = 1; let totalPages = 50;
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
 
-    // 0. BẢNG THÔNG BÁO MIỄN TRỪ TRÁCH NHIỆM (HIỆN MỖI PHIÊN MỞ TRÌNH DUYỆT)
+    // 0. BẢNG THÔNG BÁO MIỄN TRỪ TRÁCH NHIỆM
     function checkDisclaimerNotice() {
       const accepted = sessionStorage.getItem('phimnha_disclaimer_accepted');
       if (!accepted) {
@@ -419,6 +447,77 @@
       return "https://phimimg.com/" + path.replace(/^\//, '');
     }
 
+    // ========================================================
+    // HỆ THỐNG ONLINE PRESENCE THỜI GIAN THỰC (ĐÃ SỬA CHUẨN)
+    // ========================================================
+    let guestId = sessionStorage.getItem('phimnha_guest_id');
+    if (!guestId) {
+      guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
+      sessionStorage.setItem('phimnha_guest_id', guestId);
+    }
+
+    function updateOnlinePresence() {
+      const uid = currentUser ? currentUser.uid : guestId;
+      const name = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : `Khách #${guestId.slice(-4)}`;
+      const avatar = currentUser ? (currentUser.photoURL || defaultAvatar) : `https://api.dicebear.com/7.x/bottts/svg?seed=${guestId}`;
+      const isWatching = currentPlayingMovie ? currentPlayingMovie.name : null;
+
+      db.collection('online_presence').doc(uid).set({
+        uid: uid,
+        name: name,
+        avatar: avatar,
+        isMember: !!currentUser,
+        status: isWatching ? `🎬 Đang xem: ${isWatching}` : '🟢 Đang lướt web',
+        lastSeen: Date.now()
+      }, { merge: true }).catch(() => {});
+    }
+
+    // Nhịp tim cập nhật mỗi 20 giây
+    setInterval(updateOnlinePresence, 20000);
+
+    // Lắng nghe danh sách ai đang online thời gian thực
+    db.collection('online_presence').onSnapshot(snapshot => {
+      const now = Date.now();
+      let activeUsers = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.lastSeen && (now - data.lastSeen < 60000)) {
+          activeUsers.push(data);
+        }
+      });
+      
+      window.currentOnlineList = activeUsers;
+      const count = Math.max(activeUsers.length, 1);
+      document.getElementById('onlineCountText').innerText = count;
+      const modalCount = document.getElementById('modalOnlineCount');
+      if (modalCount) modalCount.innerText = count;
+    });
+
+    // Mở modal hiển thị danh sách người dùng kèm Avatar
+    function showOnlineUsersModal() {
+      const list = window.currentOnlineList || [];
+      const wrap = document.getElementById('onlineUsersListContent');
+      if (!list || list.length === 0) {
+        wrap.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Đang tải danh sách người dùng...</p>`;
+      } else {
+        wrap.innerHTML = list.map(u => `
+          <div class="online-user-item">
+            <img src="${u.avatar}" class="online-user-avatar">
+            <div style="flex:1; overflow:hidden;">
+              <div style="font-weight:700; font-size:0.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:6px;">
+                ${u.name}
+                ${u.isMember ? '<span style="font-size:0.68rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 6px; border-radius:4px;">Thành viên</span>' : ''}
+              </div>
+              <div style="font-size:0.75rem; color:#10b981; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                ${u.status || '🟢 Đang trực tuyến'}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      document.getElementById('onlineUsersModal').style.display = 'flex';
+    }
+
     // 1. TÀI KHOẢN VÀ AVATAR
     auth.onAuthStateChanged(user => {
       currentUser = user;
@@ -433,6 +532,7 @@
         authContainer.innerHTML = `<button class="btn-auth" onclick="document.getElementById('authModal').style.display='flex'"><i class="fa-regular fa-user"></i></button>`;
         btnLib.style.display = 'none';
       }
+      updateOnlinePresence();
       if (document.getElementById('playerModal').style.display === 'flex') updateCommentInputUI();
     });
 
@@ -449,7 +549,7 @@
     function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
     function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
-    // 2. LIVE SEARCH (TỐI ƯU CỰC MẠNH CHO MOBILE)
+    // 2. LIVE SEARCH
     const searchInput = document.getElementById('liveSearchInput');
     const dropdown = document.getElementById('searchResultsDropdown');
     const clearBtn = document.getElementById('searchClearBtn');
@@ -599,6 +699,8 @@
           renderGrid('relatedMoviesGrid', related);
           
           checkFavoriteStatus(); saveToHistory(m); loadComments(m.slug);
+          updateOnlinePresence(); // Cập nhật trạng thái đang xem phim
+
           document.getElementById('playerModal').style.display = 'flex'; document.getElementById('playerModal').scrollTo(0,0);
         }
       } catch (err) { showToast("Lỗi tải phim!"); }
@@ -615,7 +717,14 @@
         video.src = m3u8Url; video.addEventListener('loadedmetadata', function() { video.play(); });
       }
     }
-    function closePlayerModal() { document.getElementById('playerModal').style.display = 'none'; if(hlsInstance) hlsInstance.destroy(); document.getElementById('videoPlayer').src = ""; if(unsubscribeComments) unsubscribeComments(); }
+    function closePlayerModal() { 
+      document.getElementById('playerModal').style.display = 'none'; 
+      if(hlsInstance) hlsInstance.destroy(); 
+      document.getElementById('videoPlayer').src = ""; 
+      if(unsubscribeComments) unsubscribeComments();
+      currentPlayingMovie = null;
+      updateOnlinePresence();
+    }
     let isCinemaMode = false;
     function toggleCinemaMode() { isCinemaMode = !isCinemaMode; const modal = document.getElementById('playerModal'); if(isCinemaMode){ modal.classList.add('cinema-mode-active'); showToast("Đã bật Rạp Chiếu!"); }else{ modal.classList.remove('cinema-mode-active'); } }
 
@@ -765,6 +874,7 @@
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
     window.onload = () => {
       checkDisclaimerNotice();
+      updateOnlinePresence();
       fetchMovies(1);
     };
   </script>
