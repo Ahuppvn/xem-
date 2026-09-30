@@ -17,6 +17,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
+  <!-- HLS.JS: VŨ KHÍ TIÊU DIỆT QUẢNG CÁO CỜ BẠC -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
   <style>
     :root {
       --primary: #e50914;
@@ -41,638 +44,163 @@
       padding-bottom: calc(20px + env(safe-area-inset-bottom));
     }
 
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: #262b3a; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-    /* Header */
+    /* HEADER */
     header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(9, 10, 15, 0.88);
-      backdrop-filter: blur(16px);
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(9, 10, 15, 0.88); backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
+      padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
     }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: var(--text);
-      font-size: 1.3rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
+    .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-size: 1.3rem; font-weight: 800; white-space: nowrap; }
     .brand i { color: var(--primary); font-size: 1.4rem; }
-    .search-box {
-      flex: 1;
-      max-width: 440px;
-      position: relative;
-    }
-    .search-box input {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      padding: 9px 16px 9px 38px;
-      color: #fff;
-      font-size: 0.9rem;
-      outline: none;
-      transition: var(--transition);
-    }
-    .search-box input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 14px rgba(229, 9, 20, 0.35);
-    }
-    .search-box i {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-    .search-results-dropdown {
-      position: absolute;
-      top: 115%;
-      left: 0;
-      right: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      max-height: 380px;
-      overflow-y: auto;
-      display: none;
-      z-index: 1100;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
-    }
-    .search-item {
-      display: flex;
-      gap: 12px;
-      padding: 10px 14px;
-      cursor: pointer;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: var(--transition);
-    }
-    .search-item:hover { background: rgba(255,255,255,0.06); }
-    .search-item img { width: 44px; height: 58px; object-fit: cover; border-radius: 6px; }
-
-    /* Header Actions */
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .online-badge {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #10b981;
-      padding: 6px 12px;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-    .online-badge .dot {
-      width: 7px;
-      height: 7px;
-      background: #10b981;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #10b981;
-      animation: pulse 1.8s infinite;
-    }
+    
+    .search-box { flex: 1; max-width: 440px; position: relative; }
+    .search-box input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 50px; padding: 9px 16px 9px 38px; color: #fff; outline: none; transition: var(--transition); }
+    .search-box input:focus { border-color: var(--primary); }
+    .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+    
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    .online-badge { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .online-badge .dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; animation: pulse 1.8s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+    
+    .btn-auth { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 50px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .btn-library { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid var(--border); padding: 8px 14px; border-radius: 50px; cursor: pointer; display: none; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; }
+    .btn-library:hover { background: rgba(255,255,255,0.2); }
+    .user-profile-btn { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); padding: 4px 10px 4px 4px; border-radius: 50px; cursor: pointer; }
+    .user-avatar-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
 
-    .btn-auth {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 0.88rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-      transition: var(--transition);
-    }
-    .btn-auth:hover { background: var(--primary-hover); transform: translateY(-1px); }
-    .user-profile-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 4px 10px 4px 4px;
-      border-radius: 50px;
-      cursor: pointer;
-    }
-    .user-avatar-img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid var(--primary);
-    }
-
-    /* CINEMATIC HERO POSTER */
-    .hero-container {
-      position: relative;
-      width: 100%;
-      height: 60vh;
-      min-height: 420px;
-      max-height: 650px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-    .hero-backdrop {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center top;
-      transition: background-image 0.8s ease-in-out;
-      transform: scale(1.02);
-    }
-    .hero-vignette {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(0deg, var(--bg) 0%, rgba(9,10,15,0.7) 40%, rgba(9,10,15,0.2) 100%),
-                  linear-gradient(90deg, var(--bg) 0%, rgba(9,10,15,0.85) 35%, transparent 100%);
-    }
-    .hero-content {
-      position: absolute;
-      bottom: 30px;
-      left: 36px;
-      max-width: 620px;
-      z-index: 10;
-    }
-    .hero-badges {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .badge-tag {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(8px);
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
+    /* HERO POSTER */
+    .hero-container { position: relative; width: 100%; height: 60vh; min-height: 420px; overflow: hidden; margin-bottom: 20px; }
+    .hero-backdrop { position: absolute; inset: 0; background-size: cover; background-position: center top; transition: background-image 0.8s; transform: scale(1.02); }
+    .hero-vignette { position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg) 0%, rgba(9,10,15,0.7) 40%, rgba(9,10,15,0.2) 100%), linear-gradient(90deg, var(--bg) 0%, rgba(9,10,15,0.85) 35%, transparent 100%); }
+    .hero-content { position: absolute; bottom: 30px; left: 36px; max-width: 620px; z-index: 10; }
+    .hero-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .badge-tag { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px); padding: 3px 8px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; }
     .badge-tag.red { background: var(--primary); color: #fff; }
-    .badge-tag.gold { background: #eab308; color: #000; }
-    .hero-title {
-      font-size: 2.4rem;
-      font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 10px;
-      text-shadow: 0 4px 16px rgba(0,0,0,0.8);
-    }
-    .hero-desc {
-      font-size: 0.9rem;
-      color: #cbd5e1;
-      margin-bottom: 16px;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-    }
-    .hero-buttons { display: flex; gap: 10px; }
-    .btn-hero-play {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 10px 22px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
-      transition: var(--transition);
-    }
-    .btn-hero-play:hover { background: var(--primary-hover); transform: scale(1.03); }
-    .btn-hero-fav {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(10px);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 10px 18px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+    .hero-title { font-size: 2.4rem; font-weight: 800; line-height: 1.15; margin-bottom: 10px; }
+    .hero-desc { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 10px 22px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
 
-    /* FILTERS SECTION */
-    .filter-container {
-      max-width: 1400px;
-      margin: 0 auto 20px;
-      padding: 0 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .filter-select {
-      background: var(--surface);
-      color: #fff;
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 8px;
-      outline: none;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-
-    /* MOVIE GRID */
-    .section-wrap {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      scroll-margin-top: 80px;
-    }
-    .section-title {
-      font-size: 1.35rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .section-title::before {
-      content: '';
-      width: 4px;
-      height: 18px;
-      background: var(--primary);
-      border-radius: 2px;
-      display: inline-block;
-    }
-    .movie-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 14px;
-    }
-    .movie-card {
-      background: var(--surface-card);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      position: relative;
-      transition: var(--transition);
-    }
-    .movie-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 22px rgba(0,0,0,0.6);
-      border-color: rgba(229, 9, 20, 0.4);
-    }
-    .movie-poster-wrap {
-      position: relative;
-      padding-top: 145%;
-      overflow: hidden;
-    }
-    .movie-poster-wrap img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-    .movie-card:hover .movie-poster-wrap img { transform: scale(1.05); }
-    .badge-episode {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: rgba(0,0,0,0.72);
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 2px 7px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      border-radius: 4px;
-      color: #38bdf8;
-    }
+    /* LỌC & GRID PHIM */
+    .filter-container { max-width: 1400px; margin: 0 auto 20px; padding: 0 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .filter-select { background: var(--surface); color: #fff; border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; outline: none; }
+    
+    .section-wrap { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+    .section-title { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .section-title::before { content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px; }
+    .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+    .movie-card { background: var(--surface-card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); cursor: pointer; position: relative; transition: var(--transition); }
+    .movie-card:hover { transform: translateY(-5px); border-color: rgba(229, 9, 20, 0.4); }
+    .movie-poster-wrap { position: relative; padding-top: 145%; }
+    .movie-poster-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .badge-episode { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.72); border: 1px solid rgba(255,255,255,0.1); padding: 2px 7px; font-size: 0.7rem; font-weight: 700; border-radius: 4px; color: #38bdf8; }
     .movie-info { padding: 9px 11px; }
-    .movie-name {
-      font-weight: 700;
-      font-size: 0.9rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 3px;
-    }
-    .movie-meta {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-    }
+    .movie-name { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
 
-    /* ======================================================== */
-    /* CỤM PHÂN TRANG TỐI ƯU CỰC MẠNH CHO ĐIỆN THOẠI & PC      */
-    /* ======================================================== */
-    .pagination-wrapper {
-      margin: 32px auto 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-    }
-    .pagination-bar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 6px 10px;
-      border-radius: 50px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-    }
-    .page-btn {
-      min-width: 40px;
-      height: 40px;
-      padding: 0 10px;
-      border-radius: 50px;
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text);
-      font-weight: 700;
-      font-size: 0.88rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transition);
-      user-select: none;
-    }
-    .page-btn:hover:not(:disabled) {
-      background: rgba(255,255,255,0.08);
-      color: #fff;
-    }
-    .page-btn.active {
-      background: var(--primary) !important;
-      color: #fff !important;
-      box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);
-      border-color: var(--primary);
-    }
-    .page-btn:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-    }
-    .page-dots {
-      color: var(--text-muted);
-      padding: 0 3px;
-      font-weight: 700;
-      font-size: 0.85rem;
-    }
+    /* PHÂN TRANG */
+    .pagination-wrapper { margin: 32px auto 40px; display: flex; justify-content: center; width: 100%; }
+    .pagination-bar { display: flex; gap: 6px; background: var(--surface); padding: 6px 10px; border-radius: 50px; }
+    .page-btn { min-width: 40px; height: 40px; padding: 0 10px; border-radius: 50px; background: transparent; border: none; color: var(--text); font-weight: 700; cursor: pointer; }
+    .page-btn.active { background: var(--primary) !important; color: #fff !important; }
 
-    /* PLAYER MODAL */
-    .player-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      backdrop-filter: blur(12px);
-      z-index: 2000;
-      display: none;
-      flex-direction: column;
-      overflow-y: auto;
-      padding: 14px;
-    }
+    /* PLAYER MODAL (CHỐNG QUẢNG CÁO) */
+    .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
-    .cinema-mode-active .player-details { opacity: 0.08; filter: blur(3px); pointer-events: none; }
-    .player-box { max-width: 1050px; width: 100%; margin: 0 auto; }
-    .player-top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
+    .cinema-mode-active .player-details-container { opacity: 0.1; filter: blur(3px); pointer-events: none; }
+    .player-box { max-width: 1200px; width: 100%; margin: 0 auto; }
+    .player-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .player-tools { display: flex; gap: 8px; }
-    .btn-tool {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: #fff;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-tool:hover { border-color: var(--primary); }
-    .video-wrapper {
-      position: relative;
-      padding-top: 56.25%;
-      background: #000;
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-    .video-wrapper iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    .episodes-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 16px 0;
-      max-height: 150px;
-      overflow-y: auto;
-    }
-    .btn-ep {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: #fff;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-ep.active { background: var(--primary); }
+    .btn-tool { background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    
+    .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+    /* Sử dụng thẻ Video sạch sẽ (HLS.js) chặn quảng cáo */
+    .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; }
+
+    /* LƯỚI BỐ CỤC THÔNG MINH CHO TRÌNH PHÁT */
+    .player-details-container { margin-top: 20px; display: grid; grid-template-columns: 2.2fr 1fr; gap: 24px; align-items: start; }
+    
+    /* CỘT TRÁI: THÔNG TIN PHIM + CHỌN TẬP + BÌNH LUẬN */
+    .player-col-left { display: flex; flex-direction: column; gap: 20px; }
+    
+    .movie-metadata { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
+    .movie-metadata-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+    .movie-metadata-title { font-size: 1.5rem; font-weight: 800; }
+    .btn-fav { background: rgba(229, 9, 20, 0.1); color: var(--primary); border: 1px solid rgba(229, 9, 20, 0.3); padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+    .btn-fav.active { background: var(--primary); color: #fff; }
+    .movie-meta-tags { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .meta-tag { background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+    .movie-desc-text { font-size: 0.92rem; color: #cbd5e1; margin-bottom: 12px; line-height: 1.6; }
+    .movie-cast-info { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+    .movie-cast-info span { color: #fff; }
+
+    .episodes-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; max-height: 180px; overflow-y: auto; }
+    .btn-ep { background: var(--surface-card); border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s;}
+    .btn-ep.active { background: var(--primary); border-color: var(--primary); }
+    .btn-ep:hover:not(.active) { background: rgba(255,255,255,0.1); }
+
+    /* === KHU VỰC BÌNH LUẬN === */
+    .comment-section { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
+    .comment-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--primary); padding-left: 8px; }
+    .comment-input-wrap { display: flex; gap: 12px; margin-bottom: 24px; }
+    .comment-input-wrap img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
+    .comment-input-area { flex: 1; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+    .comment-input-area textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: #fff; resize: vertical; min-height: 70px; outline: none; font-size: 0.9rem; font-family: inherit;}
+    .comment-input-area textarea:focus { border-color: var(--primary); }
+    .btn-send-cmt { background: var(--primary); color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .btn-send-cmt:hover { background: var(--primary-hover); }
+
+    .comment-list { display: flex; flex-direction: column; gap: 16px; }
+    .comment-item { display: flex; gap: 12px; }
+    .comment-item img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
+    .comment-content-box { background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; flex: 1; border: 1px solid var(--border); }
+    .c-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;}
+    .c-time { font-size: 0.75rem; color: var(--text-muted); font-weight: normal; }
+    .c-text { font-size: 0.92rem; margin-bottom: 12px; line-height: 1.5; color: #e2e8f0; word-break: break-word; white-space: pre-wrap;}
+    .c-actions { display: flex; gap: 16px; }
+    .btn-action { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; transition: 0.2s; font-weight: 600;}
+    .btn-action:hover { color: #fff; }
+    .btn-action.liked { color: #3b82f6; } /* Xanh dương cho Like */
+    .btn-action.disliked { color: #ef4444; } /* Đỏ cho Dislike */
+
+    /* CỘT PHẢI: ĐỀ XUẤT LIÊN QUAN */
+    .player-col-right { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
+    .related-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--primary); padding-left: 8px; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+
+    /* MODAL TỦ PHIM */
+    .library-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 16px; }
+    .library-card { background: var(--surface); width: 100%; max-width: 800px; height: 80vh; border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+    .lib-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .lib-tabs { display: flex; gap: 16px; }
+    .lib-tab { background: none; border: none; color: var(--text-muted); font-size: 1.1rem; font-weight: 700; cursor: pointer; padding-bottom: 4px; }
+    .lib-tab.active { color: #fff; border-bottom: 2px solid var(--primary); }
+    .lib-content { padding: 20px; overflow-y: auto; flex: 1; }
+    .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
 
     /* AUTH MODAL */
-    .auth-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      z-index: 3000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .auth-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      width: 100%;
-      max-width: 420px;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-    }
-    .auth-tabs {
-      display: flex;
-      margin-bottom: 18px;
-      background: rgba(0,0,0,0.3);
-      padding: 4px;
-      border-radius: 10px;
-    }
-    .auth-tab-btn {
-      flex: 1;
-      padding: 8px;
-      text-align: center;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-weight: 700;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .auth-tab-btn.active { background: var(--primary); color: #fff; }
-    .form-group { margin-bottom: 12px; position: relative; }
-    .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
-    .input-wrap { position: relative; }
-    .input-wrap input {
-      width: 100%;
-      background: #090a0f;
-      border: 1px solid var(--border);
-      padding: 10px 40px 10px 14px;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 0.92rem;
-      outline: none;
-    }
-    .input-wrap input:focus { border-color: var(--primary); }
-    .btn-eye {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    .avatar-list {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-    .avatar-item {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      cursor: pointer;
-      object-fit: cover;
-      background: #202434;
-      flex-shrink: 0;
-    }
-    .avatar-item.active { border-color: var(--primary); transform: scale(1.1); }
-    .avatar-url-input {
-      width: 100%;
-      background: #090a0f;
-      border: 1px solid var(--border);
-      padding: 8px 12px;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 0.8rem;
-      outline: none;
-      margin-bottom: 12px;
-    }
+    .auth-modal, .troll-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 16px; }
+    .auth-card, .troll-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 420px; border-radius: 16px; padding: 24px; }
+    .form-group { margin-bottom: 12px; }
+    .input-wrap input { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; color: #fff; }
+    .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; align-items: center; gap: 8px; }
 
-    /* TROLL MODAL */
-    .troll-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 3500;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
+    /* TỐI ƯU GIAO DIỆN ĐIỆN THOẠI */
+    @media (max-width: 992px) {
+      .player-details-container { grid-template-columns: 1fr; } /* Gộp thành 1 cột trên iPad/Điện thoại */
     }
-    .troll-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      max-width: 400px;
-      width: 100%;
-      padding: 22px;
-      border-radius: 16px;
-    }
-
-    /* TOAST */
-    .toast-msg {
-      position: fixed;
-      bottom: 24px;
-      right: 20px;
-      background: var(--surface);
-      border: 1px solid var(--primary);
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 8px;
-      z-index: 9999;
-      display: none;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* TỐI ƯU GIAO DIỆN ĐIỆN THOẠI (MOBILE SPECIFIC) */
     @media (max-width: 680px) {
-      header { padding: 10px 14px; gap: 8px; }
-      .brand span { display: none; } /* Chỉ hiện logo icon trên mobile */
-      .hero-content { left: 16px; bottom: 20px; right: 16px; }
-      .hero-title { font-size: 1.6rem; }
+      header { padding: 10px 14px; }
+      .brand span { display: none; }
       .movie-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .header-actions .online-badge span { display: none; }
-      
-      /* Phân trang siêu gọn gàng trên mobile */
-      .pagination-wrapper { margin: 24px auto 36px; }
-      .pagination-bar { gap: 3px; padding: 4px 6px; }
-      .page-btn {
-        min-width: 36px;
-        height: 36px;
-        font-size: 0.82rem;
-        padding: 0 6px;
-      }
-      .page-btn.nav-text span { display: none; } /* Ẩn chữ Trước/Sau trên điện thoại, chỉ hiện mũi tên < > */
+      .movie-metadata-header { flex-direction: column; }
+      .comment-input-wrap img { display: none; } /* Ẩn avatar ô nhập để rộng chỗ gõ phím trên đt */
     }
   </style>
 </head>
@@ -687,17 +215,18 @@
     <div class="search-box">
       <i class="fa-solid fa-magnifying-glass"></i>
       <input type="text" id="liveSearchInput" placeholder="Tìm kiếm phim...">
-      <div class="search-results-dropdown" id="searchResultsDropdown"></div>
     </div>
 
     <div class="header-actions">
-      <!-- ONLINE PRESENCE -->
-      <div class="online-badge" onclick="showOnlineUsersModal()" title="Xem danh sách online">
+      <button class="btn-library" id="btnLibrary" onclick="openLibraryModal()">
+        <i class="fa-solid fa-bookmark"></i> <span class="hide-mobile">Tủ Phim</span>
+      </button>
+
+      <div class="online-badge" onclick="showOnlineUsersModal()">
         <div class="dot"></div>
         <span>Online: </span><strong id="onlineCountText">1</strong>
       </div>
 
-      <!-- AUTH BUTTON -->
       <div id="authContainer">
         <button class="btn-auth" onclick="openAuthModal('login')">
           <i class="fa-regular fa-user"></i>
@@ -706,19 +235,18 @@
     </div>
   </header>
 
-  <!-- CINEMATIC HERO POSTER -->
+  <!-- HERO BANNER -->
   <div class="hero-container" id="heroContainer">
     <div class="hero-backdrop" id="heroBackdrop"></div>
     <div class="hero-vignette"></div>
     <div class="hero-content">
       <div class="hero-badges">
         <span class="badge-tag red">THỊNH HÀNH</span>
-        <span class="badge-tag gold">4K NASA</span>
         <span class="badge-tag" id="heroYear">2026</span>
         <span class="badge-tag" id="heroQuality">FHD Vietsub</span>
       </div>
       <h1 class="hero-title" id="heroTitle">Đang Tải Phim Nổi Bật...</h1>
-      <p class="hero-desc" id="heroDesc">Khám phá vũ trụ phim bom tấn với chất lượng truyền tải mượt mà không quảng cáo.</p>
+      <p class="hero-desc" id="heroDesc"></p>
       <div class="hero-buttons">
         <button class="btn-hero-play" id="btnHeroPlay">
           <i class="fa-solid fa-play"></i> Xem Ngay
@@ -727,175 +255,113 @@
     </div>
   </div>
 
-  <!-- MULTI-CRITERIA FILTERS -->
-  <div class="filter-container">
-    <select class="filter-select" id="filterCategory" onchange="resetAndLoad()">
-      <option value="">Tất cả Thể loại</option>
-      <option value="hanh-dong">Hành Động</option>
-      <option value="co-trang">Cổ Trang</option>
-      <option value="hoat-hinh">Hoạt Hình</option>
-      <option value="kinh-di">Kinh Dị</option>
-      <option value="tinh-cam">Tình Cảm</option>
-      <option value="vien-tuong">Viễn Tưởng</option>
-    </select>
-    <select class="filter-select" id="filterCountry" onchange="resetAndLoad()">
-      <option value="">Tất cả Quốc gia</option>
-      <option value="trung-quoc">Trung Quốc</option>
-      <option value="han-quoc">Hàn Quốc</option>
-      <option value="au-my">Âu Mỹ</option>
-      <option value="nhat-ban">Nhật Bản</option>
-      <option value="viet-nam">Việt Nam</option>
-    </select>
-  </div>
-
-  <!-- MOVIE LIST SECTION -->
   <div class="section-wrap" id="moviesSection">
-    <div class="section-header">
-      <h2 class="section-title">Danh Sách Phim Mới Cập Nhật</h2>
-    </div>
-    
-    <!-- GRID PHIM -->
+    <div class="section-header"><h2 class="section-title">Danh Sách Phim Mới</h2></div>
     <div class="movie-grid" id="mainMovieGrid"></div>
-
-    <!-- CỤM PHÂN TRANG (PAGINATION) ĐÃ ĐƯỢC TỐI ƯU -->
-    <div class="pagination-wrapper">
-      <div class="pagination-bar" id="paginationBar"></div>
-    </div>
+    <div class="pagination-wrapper"><div class="pagination-bar" id="paginationBar"></div></div>
   </div>
 
-  <!-- VIDEO PLAYER MODAL -->
+  <!-- PLAYER MODAL -->
   <div class="player-modal" id="playerModal">
     <div class="player-box">
       <div class="player-top-bar">
         <h3 id="playerMovieTitle" style="font-size:1.1rem; font-weight:700;">Tên Phim</h3>
         <div class="player-tools">
-          <button class="btn-tool" onclick="toggleCinemaMode()">
-            <i class="fa-solid fa-moon"></i> Rạp Chiếu
-          </button>
-          <button class="btn-tool" onclick="openTrollSettingsModal()">
-            <i class="fa-solid fa-sliders"></i> Sao Hỏa
-          </button>
-          <button class="btn-tool" onclick="closePlayerModal()">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
+          <button class="btn-tool" onclick="toggleCinemaMode()"><i class="fa-solid fa-moon"></i></button>
+          <button class="btn-tool" onclick="closePlayerModal()"><i class="fa-solid fa-xmark"></i></button>
         </div>
       </div>
 
+      <!-- TRÌNH PHÁT VIDEO CHỐNG QUẢNG CÁO -->
       <div class="video-wrapper">
-        <iframe id="videoIframe" allowfullscreen src=""></iframe>
+        <video id="videoPlayer" controls crossorigin playsinline></video>
       </div>
 
-      <div class="player-details">
-        <div class="episodes-grid" id="episodesList"></div>
+      <!-- BỐ CỤC THÔNG MINH BÊN DƯỚI -->
+      <div class="player-details-container">
+        
+        <!-- CỘT TRÁI: THÔNG TIN + TẬP + BÌNH LUẬN -->
+        <div class="player-col-left">
+          
+          <!-- Thông Tin Phim -->
+          <div class="movie-metadata">
+            <div class="movie-metadata-header">
+              <h2 class="movie-metadata-title" id="metaTitle">Tên Phim Chi Tiết</h2>
+              <button class="btn-fav" id="btnToggleFav" onclick="toggleFavorite()">
+                <i class="fa-regular fa-heart" id="favIcon"></i> <span id="favText">Yêu Thích</span>
+              </button>
+            </div>
+            
+            <div class="movie-meta-tags">
+              <span class="meta-tag" id="metaYear" style="background:var(--primary);">2026</span>
+              <span class="meta-tag" id="metaQuality">FHD</span>
+              <span class="meta-tag" id="metaLang">Vietsub</span>
+              <span class="meta-tag" id="metaTime">120 phút</span>
+            </div>
+
+            <p class="movie-desc-text" id="metaDesc"></p>
+            <div class="movie-cast-info">
+              <p><strong>Đạo diễn:</strong> <span id="metaDirector"></span></p>
+              <p style="margin-top:4px;"><strong>Diễn viên:</strong> <span id="metaActor"></span></p>
+            </div>
+
+            <hr style="border:0; border-top:1px solid var(--border); margin:16px 0;">
+            <h3 style="font-size:1rem; margin-bottom:8px;">Danh Sách Tập:</h3>
+            <div class="episodes-grid" id="episodesList"></div>
+          </div>
+
+          <!-- Khu Vực Bình Luận & Tương Tác -->
+          <div class="comment-section">
+            <h3 class="comment-title">Bình Luận (<span id="commentCount">0</span>)</h3>
+            
+            <div id="commentInputBox">
+              <!-- JS Render chỗ này tùy theo việc đã Login hay chưa -->
+            </div>
+
+            <div class="comment-list" id="commentList">
+              <!-- Danh sách bình luận load từ Firebase -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CỘT PHẢI: PHIM ĐỀ XUẤT -->
+        <div class="player-col-right">
+          <h3 class="related-title">Có Thể Bạn Sẽ Thích</h3>
+          <div class="related-grid" id="relatedMoviesGrid">
+            <!-- Render ngẫu nhiên các bộ phim -->
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- TROLL SETTINGS MODAL -->
-  <div class="troll-modal" id="trollModal">
-    <div class="troll-card">
-      <h3 style="margin-bottom: 14px; font-weight: 800; color: #f59e0b;">
-        <i class="fa-solid fa-satellite-dish"></i> Cài Đặt Độ Trễ Sao Hỏa
-      </h3>
-      <div class="form-group">
-        <label>Độ phân giải (Đã khóa cứng 1080p):</label>
-        <select class="filter-select" style="width: 100%;" onchange="triggerTrollQuality(this.value)">
-          <option value="1080p">1080p FHD Chuẩn Rạp</option>
-          <option value="4k">4K Siêu Nét Trạm Không Gian NASA</option>
-          <option value="8k">8K Siêu Cấp Sao Hỏa Vũ Trụ</option>
-          <option value="144p">144p Nồi Cơm Điện Siêu Mượt</option>
-        </select>
+  <!-- CÁC MODAL PHỤ (TỦ PHIM, AUTH, TOAST) GIỮ NGUYÊN -->
+  <div class="library-modal" id="libraryModal">
+    <div class="library-card">
+      <div class="lib-header">
+        <div class="lib-tabs">
+          <button class="lib-tab active" id="tabHistory" onclick="switchLibTab('history')">Lịch Sử Xem</button>
+          <button class="lib-tab" id="tabFavorites" onclick="switchLibTab('favorites')">Phim Yêu Thích</button>
+        </div>
+        <button class="btn-tool" onclick="document.getElementById('libraryModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="form-group">
-        <label>Độ trễ truyền tín hiệu:</label>
-        <select class="filter-select" style="width: 100%;" onchange="triggerTrollLatency(this.value)">
-          <option value="earth">Trái Đất (0.01ms - Bắt sóng tức thì)</option>
-          <option value="moon">Mặt Trăng (1.28 giây - Trễ nhẹ)</option>
-          <option value="mars">Sao Hỏa (14.6 phút - Rover Curiosity)</option>
-        </select>
-      </div>
-      <button class="btn-hero-play" style="width: 100%; justify-content: center; margin-top: 10px;" onclick="closeTrollModal()">
-        Áp Dụng
-      </button>
+      <div class="lib-content" id="libContentGrid"></div>
     </div>
   </div>
 
-  <!-- AUTH MODAL -->
   <div class="auth-modal" id="authModal">
     <div class="auth-card">
-      <div class="auth-tabs">
-        <button class="auth-tab-btn active" id="tabBtnLogin" onclick="switchAuthTab('login')">Đăng Nhập</button>
-        <button class="auth-tab-btn" id="tabBtnRegister" onclick="switchAuthTab('register')">Đăng Ký</button>
-      </div>
-
-      <div class="form-group">
-        <label>Tên tài khoản:</label>
-        <div class="input-wrap">
-          <input type="text" id="authUsername" placeholder="Tên tài khoản tự nghĩ">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Mật khẩu:</label>
-        <div class="input-wrap">
-          <input type="password" id="authPassword" placeholder="Tối thiểu 6 ký tự">
-          <button class="btn-eye" type="button" onclick="togglePasswordVisibility('authPassword', this)">
-            <i class="fa-regular fa-eye"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- XÁC NHẬN MẬT KHẨU -->
-      <div class="form-group" id="confirmPassGroup" style="display: none;">
-        <label>Xác nhận mật khẩu:</label>
-        <div class="input-wrap">
-          <input type="password" id="authConfirmPassword" placeholder="Nhập lại mật khẩu">
-          <button class="btn-eye" type="button" onclick="togglePasswordVisibility('authConfirmPassword', this)">
-            <i class="fa-regular fa-eye"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- CHỌN AVATAR -->
-      <div id="avatarPickerGroup" style="display: none;">
-        <label style="font-size:0.8rem;color:var(--text-muted);margin-bottom:6px;display:block;">Chọn Avatar hoặc dán Link ảnh:</label>
-        <div class="avatar-list" id="avatarOptionList"></div>
-        <input type="text" class="avatar-url-input" id="customAvatarUrl" placeholder="Dán URL ảnh đại diện bất kỳ...">
-      </div>
-
-      <button class="btn-hero-play" style="width: 100%; justify-content: center; margin-top: 10px;" id="authSubmitBtn" onclick="handleAuthSubmit()">
-        ĐĂNG NHẬP
-      </button>
-
-      <p id="authErrorMsg" style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; text-align: center; display: none;"></p>
-      
-      <div style="text-align: right; margin-top: 10px;">
-        <button onclick="closeAuthModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">Đóng lại</button>
-      </div>
+      <div class="form-group"><input type="text" id="authUsername" placeholder="Tên tài khoản (Ví dụ: admin123)"></div>
+      <div class="form-group"><input type="password" id="authPassword" placeholder="Mật khẩu (Tối thiểu 6 ký tự)"></div>
+      <button class="btn-hero-play" style="width: 100%; justify-content: center;" onclick="handleAuthSubmit()">ĐĂNG NHẬP / ĐĂNG KÝ</button>
+      <p id="authErrorMsg" style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: none;"></p>
+      <button onclick="document.getElementById('authModal').style.display='none'" style="margin-top: 10px; background:none; border:none; color:var(--text-muted); cursor:pointer; width:100%;">Đóng</button>
     </div>
   </div>
 
-  <!-- ONLINE USERS MODAL -->
-  <div class="auth-modal" id="onlineUsersModal">
-    <div class="auth-card">
-      <h3 style="margin-bottom: 14px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
-        <span class="dot" style="width:10px;height:10px;background:#10b981;border-radius:50%;"></span>
-        Người Dùng Đang Xem Phim
-      </h3>
-      <div id="onlineUsersListContent" style="max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
-        <p style="color: var(--text-muted); font-size: 0.85rem;">Đang tải danh sách...</p>
-      </div>
-      <button class="btn-hero-play" style="width: 100%; justify-content: center; margin-top: 16px;" onclick="document.getElementById('onlineUsersModal').style.display='none'">
-        Đóng
-      </button>
-    </div>
-  </div>
-
-  <!-- TOAST NOTIFICATION -->
-  <div class="toast-msg" id="toastMsg">
-    <i class="fa-solid fa-circle-check" style="color: #10b981;"></i>
-    <span id="toastContent">Thông báo</span>
-  </div>
+  <div class="toast-msg" id="toastMsg"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span id="toastContent"></span></div>
 
   <!-- JAVASCRIPT LOGIC CHÍNH -->
   <script>
@@ -903,147 +369,75 @@
     const firebaseConfig = {
       apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8",
       authDomain: "web-phim-chill.firebaseapp.com",
-      projectId: "web-phim-chill",
-      storageBucket: "web-phim-chill.firebasestorage.app",
-      messagingSenderId: "430053487359",
-      appId: "1:430053487359:web:36562aecb0a4f634cd2ca",
-      measurementId: "G-29BVBWBM4T"
+      projectId: "web-phim-chill"
     };
-
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
     let currentUser = null;
-    let selectedAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
-    let currentPage = 1;
-    let totalPages = 50; // Mặc định từ phimapi
-    let currentHeroIndex = 0;
+    let currentPlayingMovie = null; 
+    let hlsInstance = null; 
+    let unsubscribeComments = null; // Biến ngắt kết nối lắng nghe comment
+    let allMoviesCache = [];
+    const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
 
-    const sampleAvatars = [
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Felix",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Shadow",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=King",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Queen",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Ninja"
-    ];
-
-    function initAvatarPicker() {
-      const wrap = document.getElementById('avatarOptionList');
-      wrap.innerHTML = sampleAvatars.map((url, i) => `
-        <img src="${url}" class="avatar-item ${i === 0 ? 'active' : ''}" onclick="selectAvatarItem('${url}', this)">
-      `).join('');
-    }
-    function selectAvatarItem(url, el) {
-      document.querySelectorAll('.avatar-item').forEach(x => x.classList.remove('active'));
-      el.classList.add('active');
-      selectedAvatar = url;
-    }
-
-    function togglePasswordVisibility(inputId, btn) {
-      const input = document.getElementById(inputId);
-      const icon = btn.querySelector('i');
-      if (input.type === "password") {
-        input.type = "text";
-        icon.className = "fa-regular fa-eye-slash";
-      } else {
-        input.type = "password";
-        icon.className = "fa-regular fa-eye";
-      }
-    }
-
-    // 2. THEO DÕI AUTH & ONLINE PRESENCE
+    // 2. THEO DÕI ĐĂNG NHẬP
     auth.onAuthStateChanged(user => {
       currentUser = user;
       const authContainer = document.getElementById('authContainer');
+      const btnLib = document.getElementById('btnLibrary');
+      
       if (user) {
-        const displayName = user.displayName || user.email.split('@')[0];
-        const photo = user.photoURL || selectedAvatar;
-        authContainer.innerHTML = `
-          <div class="user-profile-btn" onclick="logoutAccount()">
-            <img src="${photo}" class="user-avatar-img">
-            <span style="font-size:0.85rem;font-weight:700;">${displayName}</span>
-          </div>
-        `;
-        heartbeatOnline(user.uid, displayName, photo);
+        const name = user.email.split('@')[0];
+        authContainer.innerHTML = `<div class="user-profile-btn" onclick="auth.signOut()"><span style="font-size:0.85rem;font-weight:700;padding:0 6px;">${name} (Thoát)</span></div>`;
+        btnLib.style.display = 'flex';
       } else {
-        authContainer.innerHTML = `
-          <button class="btn-auth" onclick="openAuthModal('login')">
-            <i class="fa-regular fa-user"></i>
-          </button>
-        `;
+        authContainer.innerHTML = `<button class="btn-auth" onclick="document.getElementById('authModal').style.display='flex'"><i class="fa-regular fa-user"></i></button>`;
+        btnLib.style.display = 'none';
+      }
+      
+      // Nếu Modal phim đang mở, cập nhật lại khung gõ bình luận
+      if (document.getElementById('playerModal').style.display === 'flex') {
+        updateCommentInputUI();
       }
     });
 
-    function heartbeatOnline(uid, name, avatar) {
-      const userRef = db.collection('online_presence').doc(uid);
-      userRef.set({ name, avatar, lastSeen: Date.now() });
-      setInterval(() => {
-        if (currentUser) {
-          userRef.set({ name, avatar, lastSeen: Date.now() }, { merge: true });
-        }
-      }, 30000);
-    }
-
-    db.collection('online_presence').onSnapshot(snapshot => {
-      const now = Date.now();
-      let activeUsers = [];
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        if (now - data.lastSeen < 65000) activeUsers.push(data);
-      });
-      document.getElementById('onlineCountText').innerText = Math.max(activeUsers.length, 1);
-      window.currentOnlineList = activeUsers;
-    });
-
-    function showOnlineUsersModal() {
-      const list = window.currentOnlineList || [];
-      const wrap = document.getElementById('onlineUsersListContent');
-      if (list.length === 0) {
-        wrap.innerHTML = `<p style="color:var(--text-muted);font-size:0.85rem;">Bạn đang là người duy nhất khám phá vũ trụ lúc này!</p>`;
-      } else {
-        wrap.innerHTML = list.map(u => `
-          <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);padding:8px 12px;border-radius:8px;">
-            <img src="${u.avatar}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;">
-            <div>
-              <div style="font-weight:700;font-size:0.85rem;">${u.name}</div>
-              <span style="font-size:0.75rem;color:#10b981;">● Đang online</span>
-            </div>
-          </div>
-        `).join('');
+    async function handleAuthSubmit() {
+      const u = document.getElementById('authUsername').value.trim();
+      const p = document.getElementById('authPassword').value;
+      if (!u || p.length < 6) return showError("Tài khoản và mật khẩu (>=6 ký tự)!");
+      const email = u + "@phimnha.vn";
+      try {
+        await auth.signInWithEmailAndPassword(email, p);
+        document.getElementById('authModal').style.display='none';
+        showToast("Đăng nhập thành công!");
+      } catch (e) {
+        try {
+          const cred = await auth.createUserWithEmailAndPassword(email, p);
+          await cred.user.updateProfile({ displayName: u, photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${u}` });
+          document.getElementById('authModal').style.display='none';
+          showToast("Đăng ký thành công!");
+        } catch(err) { showError("Lỗi: " + err.message); }
       }
-      document.getElementById('onlineUsersModal').style.display = 'flex';
     }
+    function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
+    function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
-    // 3. NẠP DỮ LIỆU PHIM & PHÂN TRANG (PAGINATION LOGIC)
+    // 3. TẢI PHIM TỪ API
     async function fetchMovies(page = 1) {
-      currentPage = page;
-      const grid = document.getElementById('mainMovieGrid');
-      grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách phim...</p>`;
-
+      document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;">Đang tải...</p>`;
       try {
         const res = await fetch(`https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=${page}`);
         const data = await res.json();
-        if (data && data.items) {
-          if (data.pagination && data.pagination.totalPages) {
-            totalPages = data.pagination.totalPages;
-          }
-          renderMovieGrid(data.items);
-          renderPagination(currentPage, totalPages);
-
-          // Khởi tạo hero nếu là trang 1 lần đầu
-          if (page === 1 && currentHeroIndex === 0) {
-            initCinematicHero(data.items);
-          }
-        }
-      } catch (err) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#ef4444;">Không thể tải danh sách phim. Vui lòng thử lại sau!</p>`;
-      }
+        allMoviesCache = data.items;
+        renderGrid('mainMovieGrid', data.items);
+        if(page === 1) updateHeroView(data.items[0]);
+      } catch (e) {}
     }
 
-    function renderMovieGrid(movies) {
-      const grid = document.getElementById('mainMovieGrid');
-      grid.innerHTML = movies.map(m => `
+    function renderGrid(containerId, movies) {
+      document.getElementById(containerId).innerHTML = movies.map(m => `
         <div class="movie-card" onclick="openPlayer('${m.slug}')">
           <div class="movie-poster-wrap">
             <img src="${m.poster_url.startsWith('http') ? m.poster_url : 'https://phimimg.com/' + m.poster_url}" loading="lazy">
@@ -1051,295 +445,308 @@
           </div>
           <div class="movie-info">
             <div class="movie-name">${m.name}</div>
-            <div class="movie-meta">
-              <span>${m.year || 2026}</span>
-              <span style="color:#eab308;"><i class="fa-solid fa-star"></i> 9.8</span>
-            </div>
+            <div class="movie-meta"><span>${m.year||2026}</span></div>
           </div>
         </div>
       `).join('');
     }
 
-    // THUẬT TOÁN TẠO CỤM PHÂN TRANG TỐI ƯU CỰC MƯỢT
-    function renderPagination(current, total) {
-      const bar = document.getElementById('paginationBar');
-      if (total <= 1) { bar.innerHTML = ''; return; }
-
-      const isMobile = window.innerWidth <= 680;
-      const delta = isMobile ? 1 : 2; // Trên điện thoại chỉ hiện 1 số 2 bên, máy tính hiện 2 số
-
-      let html = '';
-
-      // Nút Trước (Prev)
-      html += `
-        <button class="page-btn nav-text" ${current === 1 ? 'disabled' : ''} onclick="goToPage(${current - 1})" title="Trang trước">
-          <i class="fa-solid fa-chevron-left"></i> <span>Trước</span>
-        </button>
-      `;
-
-      // Trang 1 luôn hiển thị
-      html += `<button class="page-btn ${current === 1 ? 'active' : ''}" onclick="goToPage(1)">1</button>`;
-
-      let range = [];
-      for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
-        range.push(i);
-      }
-
-      if (range.length > 0 && range[0] > 2) {
-        html += `<span class="page-dots">...</span>`;
-      }
-
-      range.forEach(p => {
-        html += `<button class="page-btn ${p === current ? 'active' : ''}" onclick="goToPage(${p})">${p}</button>`;
-      });
-
-      if (range.length > 0 && range[range.length - 1] < total - 1) {
-        html += `<span class="page-dots">...</span>`;
-      }
-
-      // Trang cuối cùng
-      if (total > 1) {
-        html += `<button class="page-btn ${current === total ? 'active' : ''}" onclick="goToPage(${total})">${total}</button>`;
-      }
-
-      // Nút Sau (Next)
-      html += `
-        <button class="page-btn nav-text" ${current === total ? 'disabled' : ''} onclick="goToPage(${current + 1})" title="Trang tiếp">
-          <span>Sau</span> <i class="fa-solid fa-chevron-right"></i>
-        </button>
-      `;
-
-      bar.innerHTML = html;
-    }
-
-    // Chuyển trang và Tự Động Lướt Lên Đầu Màn Hình
-    function goToPage(page) {
-      if (page < 1 || page > totalPages || page === currentPage) return;
-      fetchMovies(page);
-      
-      // Cuộn mượt mà lên đầu phần danh sách phim
-      const section = document.getElementById('moviesSection');
-      if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    function resetAndLoad() {
-      fetchMovies(1);
-    }
-
-    // 4. HERO BANNER CINEMATIC
-    function initCinematicHero(movies) {
-      if (!movies || movies.length === 0) return;
-      updateHeroView(movies[0]);
-
-      setInterval(() => {
-        currentHeroIndex = (currentHeroIndex + 1) % Math.min(movies.length, 5);
-        updateHeroView(movies[currentHeroIndex]);
-      }, 7000);
-    }
-
     function updateHeroView(m) {
-      const backdrop = document.getElementById('heroBackdrop');
-      const imgUrl = m.thumb_url.startsWith('http') ? m.thumb_url : 'https://phimimg.com/' + m.thumb_url;
-      backdrop.style.backgroundImage = `url('${imgUrl}')`;
+      document.getElementById('heroBackdrop').style.backgroundImage = `url('https://phimimg.com/${m.thumb_url}')`;
       document.getElementById('heroTitle').innerText = m.name;
-      document.getElementById('heroYear').innerText = m.year || 2026;
-      document.getElementById('heroDesc').innerText = `Bộ phim "${m.name}" (${m.origin_name}) hiện đang làm mưa làm gió với chất lượng hình ảnh sắc nét, lồng tiếng chuẩn xác và tốc độ truyền tải cực cao.`;
-      
       document.getElementById('btnHeroPlay').onclick = () => openPlayer(m.slug);
     }
 
-    // 5. PLAYER VÀ CÁC TIỆN ÍCH TROLL
-    let isCinemaMode = false;
+    // 4. MỞ TRÌNH PHÁT (ANTI-ADS) & NẠP DATA
     async function openPlayer(slug) {
       try {
         const res = await fetch(`https://phimapi.com/phim/${slug}`);
         const data = await res.json();
-        if (data.status && data.episodes && data.episodes[0]) {
-          const epData = data.episodes[0].server_data;
-          document.getElementById('playerMovieTitle').innerText = data.movie.name;
-          const iframe = document.getElementById('videoIframe');
-          iframe.src = epData[0].link_embed;
+        
+        if (data.status) {
+          const m = data.movie;
+          currentPlayingMovie = m;
+          
+          document.getElementById('playerMovieTitle').innerText = m.name;
+          document.getElementById('metaTitle').innerText = m.name + " (" + m.origin_name + ")";
+          document.getElementById('metaYear').innerText = m.year || 2026;
+          document.getElementById('metaQuality').innerText = m.quality || 'FHD';
+          document.getElementById('metaLang').innerText = m.lang || 'Vietsub';
+          document.getElementById('metaTime').innerText = m.time || 'Đang cập nhật';
+          
+          const tempDiv = document.createElement("div");
+          tempDiv.innerHTML = m.content;
+          document.getElementById('metaDesc').innerText = tempDiv.textContent || tempDiv.innerText || "";
+          document.getElementById('metaDirector').innerText = m.director && m.director[0] ? m.director.join(", ") : 'Đang cập nhật';
+          document.getElementById('metaActor').innerText = m.actor && m.actor[0] ? m.actor.join(", ") : 'Đang cập nhật';
 
-          const epList = document.getElementById('episodesList');
-          epList.innerHTML = epData.map((ep, idx) => `
-            <button class="btn-ep ${idx === 0 ? 'active' : ''}" onclick="switchEpisode('${ep.link_embed}', this)">
+          const epData = data.episodes[0].server_data;
+          document.getElementById('episodesList').innerHTML = epData.map((ep, idx) => `
+            <button class="btn-ep ${idx === 0 ? 'active' : ''}" onclick="playEpisode('${ep.link_m3u8}', this)">
               ${ep.name}
             </button>
           `).join('');
 
+          playEpisode(epData[0].link_m3u8, document.querySelector('.btn-ep'));
+
+          // Load Đề xuất ngẫu nhiên
+          const related = allMoviesCache.filter(x => x.slug !== m.slug).sort(() => 0.5 - Math.random()).slice(0, 4);
+          renderGrid('relatedMoviesGrid', related);
+
+          // Cập nhật trạng thái Yêu thích & Lưu Lịch sử
+          checkFavoriteStatus();
+          saveToHistory(m);
+
+          // TẢI HỆ THỐNG BÌNH LUẬN THỜI GIAN THỰC
+          loadComments(m.slug);
+
           document.getElementById('playerModal').style.display = 'flex';
+          document.getElementById('playerModal').scrollTo(0,0);
         }
       } catch (err) {
-        showToast("Không thể tải tập phim này!");
+        showToast("Lỗi tải phim!");
       }
     }
 
-    function switchEpisode(link, btn) {
-      document.querySelectorAll('.btn-ep').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('videoIframe').src = link;
+    // CHỐNG QUẢNG CÁO BẰNG HLS.JS
+    function playEpisode(m3u8Url, btnElement) {
+      if(btnElement) {
+        document.querySelectorAll('.btn-ep').forEach(b => b.classList.remove('active'));
+        btnElement.classList.add('active');
+      }
+
+      const video = document.getElementById('videoPlayer');
+      
+      if (Hls.isSupported()) {
+        if(hlsInstance) hlsInstance.destroy();
+        hlsInstance = new Hls();
+        hlsInstance.loadSource(m3u8Url);
+        hlsInstance.attachMedia(video);
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.play().catch(e=>console.log("Cần click để play"));
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = m3u8Url;
+        video.addEventListener('loadedmetadata', function() { video.play(); });
+      }
     }
 
     function closePlayerModal() {
       document.getElementById('playerModal').style.display = 'none';
-      document.getElementById('videoIframe').src = "";
-      if (isCinemaMode) toggleCinemaMode();
+      if(hlsInstance) hlsInstance.destroy();
+      document.getElementById('videoPlayer').src = "";
+      if(unsubscribeComments) unsubscribeComments(); // Ngắt tải comment khi đóng
     }
 
-    function toggleCinemaMode() {
-      isCinemaMode = !isCinemaMode;
-      const modal = document.getElementById('playerModal');
-      if (isCinemaMode) {
-        modal.classList.add('cinema-mode-active');
-        showToast("Đã kích hoạt chế độ Rạp Chiếu!");
+    // 5. HỆ THỐNG BÌNH LUẬN & LIKE/DISLIKE (FIRESTORE)
+    function loadComments(slug) {
+      if (unsubscribeComments) unsubscribeComments();
+      const list = document.getElementById('commentList');
+      list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Đang tải bình luận...</p>';
+      
+      // Lắng nghe dữ liệu thay đổi lập tức (Realtime)
+      unsubscribeComments = db.collection('movie_comments').doc(slug).collection('comments')
+        .orderBy('timestamp', 'desc')
+        .onSnapshot(snapshot => {
+           document.getElementById('commentCount').innerText = snapshot.size;
+           
+           if (snapshot.empty) {
+             list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Chưa có bình luận nào. Hãy là người đầu tiên bóc tem bộ phim này!</p>';
+             return;
+           }
+
+           let html = '';
+           snapshot.forEach(doc => {
+             const c = doc.data();
+             const cId = doc.id;
+             
+             // Chuyển đổi thời gian đẹp mắt (VD: 30/09/2026, 15:30)
+             const timeStr = new Date(c.timestamp).toLocaleString('vi-VN', {hour: '2-digit', minute:'2-digit', day:'2-digit', month:'2-digit', year:'numeric'});
+             
+             const likes = c.likes || [];
+             const dislikes = c.dislikes || [];
+             const myUid = currentUser ? currentUser.uid : null;
+             
+             // Check xem mình đã ấn like hay dislike chưa để tô màu nút
+             const isLiked = myUid && likes.includes(myUid);
+             const isDisliked = myUid && dislikes.includes(myUid);
+             
+             // Tránh XSS cho nội dung text
+             const safeContent = c.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+             html += `
+               <div class="comment-item">
+                 <img src="${c.avatar}">
+                 <div class="comment-content-box">
+                   <div class="c-name">${c.name} <span class="c-time">${timeStr}</span></div>
+                   <div class="c-text">${safeContent}</div>
+                   <div class="c-actions">
+                     <button class="btn-action ${isLiked ? 'liked' : ''}" onclick="voteComment('${slug}', '${cId}', 'like')">
+                       <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-thumbs-up"></i> ${likes.length || ''}
+                     </button>
+                     <button class="btn-action ${isDisliked ? 'disliked' : ''}" onclick="voteComment('${slug}', '${cId}', 'dislike')">
+                       <i class="${isDisliked ? 'fa-solid' : 'fa-regular'} fa-thumbs-down"></i> ${dislikes.length || ''}
+                     </button>
+                   </div>
+                 </div>
+               </div>
+             `;
+           });
+           list.innerHTML = html;
+        });
+
+        updateCommentInputUI();
+    }
+
+    function updateCommentInputUI() {
+      const box = document.getElementById('commentInputBox');
+      if (currentUser) {
+        const avatar = currentUser.photoURL || defaultAvatar;
+        box.innerHTML = `
+          <div class="comment-input-wrap">
+            <img src="${avatar}">
+            <div class="comment-input-area">
+              <textarea id="txtComment" placeholder="Viết cảm nghĩ của bạn về bộ phim này (Nhấn Enter để xuống dòng)..."></textarea>
+              <button class="btn-send-cmt" onclick="submitComment()">Gửi Bình Luận</button>
+            </div>
+          </div>
+        `;
       } else {
-        modal.classList.remove('cinema-mode-active');
+        box.innerHTML = `
+          <div style="text-align:center; padding: 20px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px dashed rgba(255,255,255,0.2); margin-bottom:24px;">
+            <p style="margin-bottom:12px; color:var(--text-muted);">Vui lòng đăng nhập để tham gia bình luận cùng mọi người</p>
+            <button class="btn-auth" style="margin:0 auto;" onclick="document.getElementById('authModal').style.display='flex'">
+               Đăng Nhập Ngay
+            </button>
+          </div>
+        `;
       }
     }
 
-    function openTrollSettingsModal() { document.getElementById('trollModal').style.display = 'flex'; }
-    function closeTrollModal() { document.getElementById('trollModal').style.display = 'none'; }
-
-    function triggerTrollQuality(val) {
-      if (val === '4k') showToast("🛸 Đã kết nối NASA: Nâng cấp chất lượng 4K!");
-      else if (val === '8k') showToast("🚀 Tín hiệu 8K từ Sao Hỏa: Cực nét, không giật lag!");
-      else if (val === '144p') showToast("🍚 Chế độ Nồi Cơm Điện: Siêu tiết kiệm 3G!");
-      else showToast("✨ 1080p FHD Cinema: Tốc độ mượt mà nhất!");
+    async function submitComment() {
+       if (!currentUser || !currentPlayingMovie) return;
+       const input = document.getElementById('txtComment');
+       const content = input.value.trim();
+       if (!content) return showToast("Vui lòng nhập nội dung!");
+       
+       try {
+         await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add({
+           uid: currentUser.uid,
+           name: currentUser.displayName || currentUser.email.split('@')[0],
+           avatar: currentUser.photoURL || defaultAvatar,
+           content: content,
+           timestamp: Date.now(),
+           likes: [],
+           dislikes: []
+         });
+         input.value = '';
+         showToast("Đã gửi bình luận!");
+       } catch(e) {
+         showToast("Lỗi gửi bình luận");
+       }
     }
 
-    function triggerTrollLatency(val) {
-      if (val === 'mars') {
-        alert("🪐 CẢNH BÁO TÍN HIỆU SAO HỎA:\nGói tin đang bay qua vành đai tiểu hành tinh. Độ trễ dự kiến: 14 phút 36 giây. Chúc phi hành gia xem phim vui vẻ!");
-      } else if (val === 'moon') {
-        showToast("🌕 Ping Mặt Trăng: Tín hiệu phản hồi sau 1.28 giây.");
+    async function voteComment(slug, cId, type) {
+      if (!currentUser) return showToast("Vui lòng đăng nhập để thao tác!");
+      const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
+      
+      try {
+         await db.runTransaction(async (t) => {
+            const doc = await t.get(ref);
+            if (!doc.exists) return;
+            const data = doc.data();
+            let likes = data.likes || [];
+            let dislikes = data.dislikes || [];
+            const uid = currentUser.uid;
+
+            // Xử lý logic Thích / Bỏ thích y hệt Facebook/YouTube
+            if (type === 'like') {
+               if (likes.includes(uid)) { 
+                 likes = likes.filter(id => id !== uid); // Đang like mà ấn lại -> Bỏ like
+               } else { 
+                 likes.push(uid); // Thêm like
+                 dislikes = dislikes.filter(id => id !== uid); // Xóa dislike nếu đang có
+               }
+            } else {
+               if (dislikes.includes(uid)) { 
+                 dislikes = dislikes.filter(id => id !== uid); // Bỏ dislike
+               } else { 
+                 dislikes.push(uid); // Thêm dislike
+                 likes = likes.filter(id => id !== uid); // Xóa like nếu đang có
+               }
+            }
+            t.update(ref, { likes, dislikes });
+         });
+      } catch(e) {
+         console.error(e);
+      }
+    }
+
+    // CÁC HÀM TỦ PHIM (GIỮ NGUYÊN)
+    function saveToHistory(movieObj) {
+      if(!currentUser) return;
+      const ref = db.collection('users').doc(currentUser.uid).collection('history').doc(movieObj.slug);
+      ref.set({ slug: movieObj.slug, name: movieObj.name, thumb_url: movieObj.thumb_url, timestamp: Date.now() });
+    }
+
+    async function checkFavoriteStatus() {
+      if(!currentUser || !currentPlayingMovie) return;
+      const doc = await db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug).get();
+      const btn = document.getElementById('btnToggleFav');
+      if(doc.exists) {
+        btn.classList.add('active'); document.getElementById('favIcon').className = 'fa-solid fa-heart'; document.getElementById('favText').innerText = 'Đã Lưu';
       } else {
-        showToast("🌍 Ping Trái Đất: 0.01ms - Siêu tốc độ!");
+        btn.classList.remove('active'); document.getElementById('favIcon').className = 'fa-regular fa-heart'; document.getElementById('favText').innerText = 'Yêu Thích';
       }
     }
 
-    // 6. AUTH SUBMISSION
-    let currentAuthMode = 'login';
-    function openAuthModal(mode) {
-      currentAuthMode = mode;
-      switchAuthTab(mode);
-      initAvatarPicker();
-      document.getElementById('authModal').style.display = 'flex';
-    }
-    function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
-
-    function switchAuthTab(mode) {
-      currentAuthMode = mode;
-      const isReg = mode === 'register';
-      document.getElementById('tabBtnLogin').classList.toggle('active', !isReg);
-      document.getElementById('tabBtnRegister').classList.toggle('active', isReg);
-      document.getElementById('confirmPassGroup').style.display = isReg ? 'block' : 'none';
-      document.getElementById('avatarPickerGroup').style.display = isReg ? 'block' : 'none';
-      document.getElementById('authSubmitBtn').innerText = isReg ? 'TẠO TÀI KHOẢN' : 'ĐĂNG NHẬP';
-      document.getElementById('authErrorMsg').style.display = 'none';
-    }
-
-    async function handleAuthSubmit() {
-      const username = document.getElementById('authUsername').value.trim();
-      const pass = document.getElementById('authPassword').value;
-      const confirmPass = document.getElementById('authConfirmPassword').value;
-      const customUrl = document.getElementById('customAvatarUrl').value.trim();
-
-      if (!username || !pass) {
-        showError("Vui lòng điền đủ tài khoản và mật khẩu!");
-        return;
-      }
-      if (pass.length < 6) {
-        showError("Mật khẩu phải từ 6 ký tự trở lên!");
-        return;
-      }
-
-      const fakeEmail = username + "@phimnha.vn";
-
-      if (currentAuthMode === 'register') {
-        if (pass !== confirmPass) {
-          showError("Xác nhận mật khẩu chưa khớp! Vui lòng nhập lại.");
-          return;
-        }
-        try {
-          const cred = await auth.createUserWithEmailAndPassword(fakeEmail, pass);
-          const finalAvatar = customUrl || selectedAvatar;
-          await cred.user.updateProfile({ displayName: username, photoURL: finalAvatar });
-          showToast("🎉 Tạo tài khoản thành công!");
-          closeAuthModal();
-        } catch (e) {
-          showError(e.message);
-        }
+    async function toggleFavorite() {
+      if(!currentUser) return showToast("Vui lòng đăng nhập để lưu phim!");
+      const ref = db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug);
+      const btn = document.getElementById('btnToggleFav');
+      if(btn.classList.contains('active')) {
+        await ref.delete(); showToast("Đã bỏ yêu thích!");
       } else {
-        try {
-          await auth.signInWithEmailAndPassword(fakeEmail, pass);
-          showToast("👋 Chào mừng bạn quay trở lại!");
-          closeAuthModal();
-        } catch (e) {
-          showError("Tài khoản hoặc mật khẩu không chính xác!");
-        }
+        await ref.set({ slug: currentPlayingMovie.slug, name: currentPlayingMovie.name, thumb_url: currentPlayingMovie.thumb_url, timestamp: Date.now() });
+        showToast("Đã lưu vào Tủ Phim!");
       }
+      checkFavoriteStatus();
     }
 
-    function showError(msg) {
-      const errBox = document.getElementById('authErrorMsg');
-      errBox.innerText = msg;
-      errBox.style.display = 'block';
+    function openLibraryModal() {
+      if(!currentUser) return;
+      document.getElementById('libraryModal').style.display = 'flex';
+      switchLibTab('history');
     }
 
-    function logoutAccount() {
-      if (confirm("Bạn có chắc muốn đăng xuất?")) {
-        auth.signOut();
-        showToast("Đã đăng xuất tài khoản.");
-      }
+    function switchLibTab(tab) {
+      currentLibTab = tab;
+      document.getElementById('tabHistory').classList.toggle('active', tab === 'history');
+      document.getElementById('tabFavorites').classList.toggle('active', tab === 'favorites');
+      loadLibraryData();
     }
 
-    // 7. LIVE SEARCH TỨC THÌ
-    const searchInput = document.getElementById('liveSearchInput');
-    const dropdown = document.getElementById('searchResultsDropdown');
-    let searchTimeout = null;
-
-    searchInput.addEventListener('input', (e) => {
-      const kw = e.target.value.trim();
-      clearTimeout(searchTimeout);
-      if (!kw) { dropdown.style.display = 'none'; return; }
-
-      searchTimeout = setTimeout(async () => {
-        try {
-          const res = await fetch(`https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(kw)}&limit=6`);
-          const data = await res.json();
-          if (data && data.data && data.data.items) {
-            dropdown.innerHTML = data.data.items.map(m => `
-              <div class="search-item" onclick="openPlayer('${m.slug}'); dropdown.style.display='none';">
-                <img src="https://phimimg.com/${m.poster_url}">
-                <div>
-                  <div style="font-weight:700;font-size:0.9rem;">${m.name}</div>
-                  <div style="font-size:0.75rem;color:var(--text-muted);">${m.year} • ${m.episode_current || 'FHD'}</div>
-                </div>
-              </div>
-            `).join('');
-            dropdown.style.display = 'block';
-          }
-        } catch (err) {}
-      }, 300);
-    });
-
-    function showToast(msg) {
-      const t = document.getElementById('toastMsg');
-      document.getElementById('toastContent').innerText = msg;
-      t.style.display = 'flex';
-      setTimeout(() => { t.style.display = 'none'; }, 3500);
+    async function loadLibraryData() {
+      if(!currentUser) return;
+      const grid = document.getElementById('libContentGrid');
+      grid.innerHTML = '<p>Đang tải dữ liệu...</p>';
+      const snapshot = await db.collection('users').doc(currentUser.uid).collection(currentLibTab).orderBy('timestamp', 'desc').limit(20).get();
+      if(snapshot.empty) { grid.innerHTML = `<p style="color:var(--text-muted); text-align:center;">Chưa có dữ liệu nào ở mục này.</p>`; return; }
+      let html = '<div class="lib-grid">';
+      snapshot.forEach(doc => {
+        const m = doc.data();
+        const img = m.thumb_url.startsWith('http') ? m.thumb_url : 'https://phimimg.com/'+m.thumb_url;
+        html += `
+          <div class="movie-card" onclick="document.getElementById('libraryModal').style.display='none'; openPlayer('${m.slug}')">
+            <div class="movie-poster-wrap"><img src="${img}"></div>
+            <div class="movie-info"><div class="movie-name">${m.name}</div></div>
+          </div>
+        `;
+      });
+      grid.innerHTML = html + '</div>';
     }
 
-    // Tự động điều chỉnh phân trang khi xoay ngang/dọc điện thoại
-    window.addEventListener('resize', () => {
-      renderPagination(currentPage, totalPages);
-    });
-
-    window.onload = () => {
-      fetchMovies(1);
-    };
+    window.onload = () => fetchMovies(1);
   </script>
 </body>
 </html>
