@@ -22,43 +22,19 @@
 
   <style>
     :root {
-      --primary: #e50914;
-      --primary-hover: #ff0f1b;
-      --bg: #090a0f;
-      --surface: #12151e;
-      --surface-card: #181c28;
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --radius: 12px;
+      --primary: #e50914; --primary-hover: #ff0f1b; --bg: #090a0f;
+      --surface: #12151e; --surface-card: #181c28; --border: rgba(255, 255, 255, 0.08);
+      --text: #f3f4f6; --text-muted: #9ca3af; --radius: 12px;
       --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      line-height: 1.5;
-      padding-bottom: calc(20px + env(safe-area-inset-bottom));
-    }
-
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: #262b3a; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.5; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+    ::-webkit-scrollbar { width: 6px; height: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: #262b3a; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
     /* HEADER */
-    header {
-      position: sticky; top: 0; z-index: 1000;
-      background: rgba(9, 10, 15, 0.88); backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
-    }
+    header { position: sticky; top: 0; z-index: 1000; background: rgba(9, 10, 15, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
     .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-size: 1.3rem; font-weight: 800; white-space: nowrap; }
     .brand i { color: var(--primary); font-size: 1.4rem; }
-    
     .search-box { flex: 1; max-width: 440px; position: relative; }
     .search-box input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 50px; padding: 9px 16px 9px 38px; color: #fff; outline: none; transition: var(--transition); }
     .search-box input:focus { border-color: var(--primary); }
@@ -71,7 +47,6 @@
     
     .btn-auth { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 50px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     .btn-library { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid var(--border); padding: 8px 14px; border-radius: 50px; cursor: pointer; display: none; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; }
-    .btn-library:hover { background: rgba(255,255,255,0.2); }
     .user-profile-btn { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); padding: 4px 10px 4px 4px; border-radius: 50px; cursor: pointer; }
     .user-avatar-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
 
@@ -87,174 +62,127 @@
     .hero-desc { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 10px 22px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
 
-    /* LỌC & GRID PHIM */
-    .filter-container { max-width: 1400px; margin: 0 auto 20px; padding: 0 20px; display: flex; gap: 10px; flex-wrap: wrap; }
-    .filter-select { background: var(--surface); color: #fff; border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; outline: none; }
-    
+    /* MOVIE GRID & PAGINATION */
     .section-wrap { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
-    .section-title { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .section-title { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; scroll-margin-top: 80px;}
     .section-title::before { content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px; }
     .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
     .movie-card { background: var(--surface-card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); cursor: pointer; position: relative; transition: var(--transition); }
     .movie-card:hover { transform: translateY(-5px); border-color: rgba(229, 9, 20, 0.4); }
-    .movie-poster-wrap { position: relative; padding-top: 145%; }
+    .movie-poster-wrap { position: relative; padding-top: 145%; overflow: hidden; }
     .movie-poster-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .badge-episode { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.72); border: 1px solid rgba(255,255,255,0.1); padding: 2px 7px; font-size: 0.7rem; font-weight: 700; border-radius: 4px; color: #38bdf8; }
     .movie-info { padding: 9px 11px; }
     .movie-name { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
 
-    /* PHÂN TRANG */
-    .pagination-wrapper { margin: 32px auto 40px; display: flex; justify-content: center; width: 100%; }
-    .pagination-bar { display: flex; gap: 6px; background: var(--surface); padding: 6px 10px; border-radius: 50px; }
-    .page-btn { min-width: 40px; height: 40px; padding: 0 10px; border-radius: 50px; background: transparent; border: none; color: var(--text); font-weight: 700; cursor: pointer; }
+    .pagination-wrapper { margin: 32px auto 40px; display: flex; justify-content: center; align-items: center; width: 100%; }
+    .pagination-bar { display: flex; align-items: center; gap: 6px; background: var(--surface); padding: 6px 10px; border-radius: 50px; border: 1px solid var(--border);}
+    .page-btn { min-width: 40px; height: 40px; padding: 0 10px; border-radius: 50px; background: transparent; border: 1px solid transparent; color: var(--text); font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: var(--transition); }
+    .page-btn:hover:not(:disabled) { background: rgba(255,255,255,0.08); }
     .page-btn.active { background: var(--primary) !important; color: #fff !important; }
+    .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
     /* PLAYER MODAL (CHỐNG QUẢNG CÁO) */
     .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
-    .cinema-mode-active .player-details-container { opacity: 0.1; filter: blur(3px); pointer-events: none; }
+    .cinema-mode-active .player-details-container { opacity: 0.08; filter: blur(3px); pointer-events: none; }
     .player-box { max-width: 1200px; width: 100%; margin: 0 auto; }
     .player-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .player-tools { display: flex; gap: 8px; }
     .btn-tool { background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    
-    .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
-    /* Sử dụng thẻ Video sạch sẽ (HLS.js) chặn quảng cáo */
+    .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
     .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; }
 
-    /* LƯỚI BỐ CỤC THÔNG MINH CHO TRÌNH PHÁT */
     .player-details-container { margin-top: 20px; display: grid; grid-template-columns: 2.2fr 1fr; gap: 24px; align-items: start; }
-    
-    /* CỘT TRÁI: THÔNG TIN PHIM + CHỌN TẬP + BÌNH LUẬN */
     .player-col-left { display: flex; flex-direction: column; gap: 20px; }
     
     .movie-metadata { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
     .movie-metadata-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
     .movie-metadata-title { font-size: 1.5rem; font-weight: 800; }
-    .btn-fav { background: rgba(229, 9, 20, 0.1); color: var(--primary); border: 1px solid rgba(229, 9, 20, 0.3); padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+    .btn-fav { background: rgba(229, 9, 20, 0.1); color: var(--primary); border: 1px solid rgba(229, 9, 20, 0.3); padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
     .btn-fav.active { background: var(--primary); color: #fff; }
-    .movie-meta-tags { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-    .meta-tag { background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
-    .movie-desc-text { font-size: 0.92rem; color: #cbd5e1; margin-bottom: 12px; line-height: 1.6; }
-    .movie-cast-info { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
-    .movie-cast-info span { color: #fff; }
-
+    .meta-tag { background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; margin-right:6px;}
+    .movie-desc-text { font-size: 0.92rem; color: #cbd5e1; margin-top: 12px; line-height: 1.6; }
+    
     .episodes-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; max-height: 180px; overflow-y: auto; }
-    .btn-ep { background: var(--surface-card); border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s;}
+    .btn-ep { background: var(--surface-card); border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
     .btn-ep.active { background: var(--primary); border-color: var(--primary); }
-    .btn-ep:hover:not(.active) { background: rgba(255,255,255,0.1); }
 
-    /* === KHU VỰC BÌNH LUẬN === */
+    /* BÌNH LUẬN & TRẢ LỜI */
     .comment-section { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
     .comment-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--primary); padding-left: 8px; }
     .comment-input-wrap { display: flex; gap: 12px; margin-bottom: 24px; }
     .comment-input-wrap img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
     .comment-input-area { flex: 1; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
-    .comment-input-area textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: #fff; resize: vertical; min-height: 70px; outline: none; font-size: 0.9rem; font-family: inherit;}
-    .comment-input-area textarea:focus { border-color: var(--primary); }
-    .btn-send-cmt { background: var(--primary); color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .btn-send-cmt:hover { background: var(--primary-hover); }
-
+    .comment-input-area textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: #fff; resize: vertical; min-height: 60px; outline: none; font-family: inherit;}
+    .btn-send-cmt { background: var(--primary); color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    
     .comment-list { display: flex; flex-direction: column; gap: 16px; }
     .comment-item { display: flex; gap: 12px; }
     .comment-item img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
     .comment-content-box { background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; flex: 1; border: 1px solid var(--border); }
-    .c-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;}
+    .c-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; display: flex; justify-content: space-between; }
     .c-time { font-size: 0.75rem; color: var(--text-muted); font-weight: normal; }
-    .c-text { font-size: 0.92rem; margin-bottom: 12px; line-height: 1.5; color: #e2e8f0; word-break: break-word; white-space: pre-wrap;}
+    .c-text { font-size: 0.92rem; margin-bottom: 12px; line-height: 1.5; color: #e2e8f0; white-space: pre-wrap;}
     .c-actions { display: flex; gap: 16px; }
-    .btn-action { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; transition: 0.2s; font-weight: 600;}
+    .btn-action { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; font-weight: 600;}
     .btn-action:hover { color: #fff; }
-    .btn-action.liked { color: #3b82f6; } /* Xanh dương cho Like */
-    .btn-action.disliked { color: #ef4444; } /* Đỏ cho Dislike */
+    .btn-action.liked { color: #3b82f6; } .btn-action.disliked { color: #ef4444; }
 
-    /* CỘT PHẢI: ĐỀ XUẤT LIÊN QUAN */
+    /* CỘT PHẢI: ĐỀ XUẤT */
     .player-col-right { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
     .related-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--primary); padding-left: 8px; }
     .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
 
-    /* MODAL TỦ PHIM */
-    .library-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 16px; }
-    .library-card { background: var(--surface); width: 100%; max-width: 800px; height: 80vh; border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
-    .lib-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-    .lib-tabs { display: flex; gap: 16px; }
-    .lib-tab { background: none; border: none; color: var(--text-muted); font-size: 1.1rem; font-weight: 700; cursor: pointer; padding-bottom: 4px; }
+    /* CÁC MODAL PHỤ */
+    .library-modal, .auth-modal, .troll-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 16px; }
+    .library-card { background: var(--surface); width: 100%; max-width: 800px; height: 80vh; border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+    .lib-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+    .lib-tab { background: none; border: none; color: var(--text-muted); font-size: 1.1rem; font-weight: 700; cursor: pointer; }
     .lib-tab.active { color: #fff; border-bottom: 2px solid var(--primary); }
-    .lib-content { padding: 20px; overflow-y: auto; flex: 1; }
-    .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
-
-    /* AUTH MODAL */
-    .auth-modal, .troll-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 16px; }
-    .auth-card, .troll-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 420px; border-radius: 16px; padding: 24px; }
-    .form-group { margin-bottom: 12px; }
-    .input-wrap input { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; color: #fff; }
-    .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; align-items: center; gap: 8px; }
+    .lib-content { padding: 20px; overflow-y: auto; flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px;}
+    
+    .auth-card, .troll-card { background: var(--surface); width: 100%; max-width: 420px; border-radius: 16px; padding: 24px; border: 1px solid var(--border);}
+    .form-group { margin-bottom: 14px; }
+    .form-group input, .form-group select { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; outline:none;}
+    .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; gap: 8px; align-items: center;}
 
     /* TỐI ƯU GIAO DIỆN ĐIỆN THOẠI */
-    @media (max-width: 992px) {
-      .player-details-container { grid-template-columns: 1fr; } /* Gộp thành 1 cột trên iPad/Điện thoại */
-    }
+    @media (max-width: 992px) { .player-details-container { grid-template-columns: 1fr; } }
     @media (max-width: 680px) {
-      header { padding: 10px 14px; }
-      .brand span { display: none; }
-      .movie-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      header { padding: 10px 14px; } .brand span { display: none; }
+      .movie-grid, .lib-content { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .header-actions .online-badge span { display: none; }
-      .movie-metadata-header { flex-direction: column; }
-      .comment-input-wrap img { display: none; } /* Ẩn avatar ô nhập để rộng chỗ gõ phím trên đt */
+      .comment-input-wrap img { display: none; }
+      .pagination-bar { padding: 4px; } .page-btn { min-width: 34px; height: 34px; font-size: 0.82rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
-    <a href="#" class="brand" onclick="location.reload()">
-      <i class="fa-solid fa-play"></i> <span>PHIM NHÀ</span>
-    </a>
-
-    <div class="search-box">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="liveSearchInput" placeholder="Tìm kiếm phim...">
-    </div>
-
+    <a href="#" class="brand" onclick="location.reload()"><i class="fa-solid fa-play"></i> <span>PHIM NHÀ</span></a>
+    <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Tìm kiếm phim..."></div>
     <div class="header-actions">
-      <button class="btn-library" id="btnLibrary" onclick="openLibraryModal()">
-        <i class="fa-solid fa-bookmark"></i> <span class="hide-mobile">Tủ Phim</span>
-      </button>
-
-      <div class="online-badge" onclick="showOnlineUsersModal()">
-        <div class="dot"></div>
-        <span>Online: </span><strong id="onlineCountText">1</strong>
-      </div>
-
-      <div id="authContainer">
-        <button class="btn-auth" onclick="openAuthModal('login')">
-          <i class="fa-regular fa-user"></i>
-        </button>
-      </div>
+      <button class="btn-library" id="btnLibrary" onclick="openLibraryModal()"><i class="fa-solid fa-bookmark"></i> <span class="hide-mobile">Tủ Phim</span></button>
+      <div class="online-badge"><div class="dot"></div><span>Online: </span><strong id="onlineCountText">1</strong></div>
+      <div id="authContainer"><button class="btn-auth" onclick="document.getElementById('authModal').style.display='flex'"><i class="fa-regular fa-user"></i></button></div>
     </div>
   </header>
 
-  <!-- HERO BANNER -->
-  <div class="hero-container" id="heroContainer">
+  <!-- HERO BANNER (ĐÃ PHỤC HỒI ẢNH) -->
+  <div class="hero-container">
     <div class="hero-backdrop" id="heroBackdrop"></div>
     <div class="hero-vignette"></div>
     <div class="hero-content">
-      <div class="hero-badges">
-        <span class="badge-tag red">THỊNH HÀNH</span>
-        <span class="badge-tag" id="heroYear">2026</span>
-        <span class="badge-tag" id="heroQuality">FHD Vietsub</span>
-      </div>
-      <h1 class="hero-title" id="heroTitle">Đang Tải Phim Nổi Bật...</h1>
+      <div class="hero-badges"><span class="badge-tag red">THỊNH HÀNH</span><span class="badge-tag" id="heroYear">2026</span></div>
+      <h1 class="hero-title" id="heroTitle">Đang Tải...</h1>
       <p class="hero-desc" id="heroDesc"></p>
-      <div class="hero-buttons">
-        <button class="btn-hero-play" id="btnHeroPlay">
-          <i class="fa-solid fa-play"></i> Xem Ngay
-        </button>
-      </div>
+      <button class="btn-hero-play" id="btnHeroPlay"><i class="fa-solid fa-play"></i> Xem Ngay</button>
     </div>
   </div>
 
+  <!-- LƯỚI PHIM & PHÂN TRANG (ĐÃ PHỤC HỒI CHUẨN) -->
   <div class="section-wrap" id="moviesSection">
     <div class="section-header"><h2 class="section-title">Danh Sách Phim Mới</h2></div>
     <div class="movie-grid" id="mainMovieGrid"></div>
@@ -267,83 +195,80 @@
       <div class="player-top-bar">
         <h3 id="playerMovieTitle" style="font-size:1.1rem; font-weight:700;">Tên Phim</h3>
         <div class="player-tools">
-          <button class="btn-tool" onclick="toggleCinemaMode()"><i class="fa-solid fa-moon"></i></button>
-          <button class="btn-tool" onclick="closePlayerModal()"><i class="fa-solid fa-xmark"></i></button>
+          <button class="btn-tool" onclick="toggleCinemaMode()"><i class="fa-solid fa-moon"></i> Rạp Chiếu</button>
+          <button class="btn-tool" onclick="document.getElementById('trollModal').style.display='flex'"><i class="fa-solid fa-sliders"></i> Sao Hỏa</button>
+          <button class="btn-tool" onclick="closePlayerModal()"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
       </div>
 
-      <!-- TRÌNH PHÁT VIDEO CHỐNG QUẢNG CÁO -->
-      <div class="video-wrapper">
-        <video id="videoPlayer" controls crossorigin playsinline></video>
-      </div>
+      <div class="video-wrapper"><video id="videoPlayer" controls crossorigin playsinline></video></div>
 
-      <!-- BỐ CỤC THÔNG MINH BÊN DƯỚI -->
       <div class="player-details-container">
-        
-        <!-- CỘT TRÁI: THÔNG TIN + TẬP + BÌNH LUẬN -->
+        <!-- CỘT TRÁI -->
         <div class="player-col-left">
-          
-          <!-- Thông Tin Phim -->
           <div class="movie-metadata">
             <div class="movie-metadata-header">
-              <h2 class="movie-metadata-title" id="metaTitle">Tên Phim Chi Tiết</h2>
-              <button class="btn-fav" id="btnToggleFav" onclick="toggleFavorite()">
-                <i class="fa-regular fa-heart" id="favIcon"></i> <span id="favText">Yêu Thích</span>
-              </button>
+              <h2 class="movie-metadata-title" id="metaTitle">Tên Phim</h2>
+              <button class="btn-fav" id="btnToggleFav" onclick="toggleFavorite()"><i class="fa-regular fa-heart" id="favIcon"></i> <span id="favText">Yêu Thích</span></button>
             </div>
-            
-            <div class="movie-meta-tags">
-              <span class="meta-tag" id="metaYear" style="background:var(--primary);">2026</span>
+            <div>
+              <span class="meta-tag" style="background:var(--primary);" id="metaYear">2026</span>
               <span class="meta-tag" id="metaQuality">FHD</span>
-              <span class="meta-tag" id="metaLang">Vietsub</span>
-              <span class="meta-tag" id="metaTime">120 phút</span>
             </div>
-
             <p class="movie-desc-text" id="metaDesc"></p>
-            <div class="movie-cast-info">
-              <p><strong>Đạo diễn:</strong> <span id="metaDirector"></span></p>
-              <p style="margin-top:4px;"><strong>Diễn viên:</strong> <span id="metaActor"></span></p>
-            </div>
-
-            <hr style="border:0; border-top:1px solid var(--border); margin:16px 0;">
-            <h3 style="font-size:1rem; margin-bottom:8px;">Danh Sách Tập:</h3>
+            <h3 style="font-size:1rem; margin-top:16px; margin-bottom:8px;">Chọn Tập:</h3>
             <div class="episodes-grid" id="episodesList"></div>
           </div>
 
-          <!-- Khu Vực Bình Luận & Tương Tác -->
+          <!-- BÌNH LUẬN VÀ TRẢ LỜI -->
           <div class="comment-section">
             <h3 class="comment-title">Bình Luận (<span id="commentCount">0</span>)</h3>
-            
-            <div id="commentInputBox">
-              <!-- JS Render chỗ này tùy theo việc đã Login hay chưa -->
-            </div>
-
-            <div class="comment-list" id="commentList">
-              <!-- Danh sách bình luận load từ Firebase -->
-            </div>
+            <div id="commentInputBox"></div>
+            <div class="comment-list" id="commentList"></div>
           </div>
-
         </div>
 
-        <!-- CỘT PHẢI: PHIM ĐỀ XUẤT -->
+        <!-- CỘT PHẢI -->
         <div class="player-col-right">
-          <h3 class="related-title">Có Thể Bạn Sẽ Thích</h3>
-          <div class="related-grid" id="relatedMoviesGrid">
-            <!-- Render ngẫu nhiên các bộ phim -->
-          </div>
+          <h3 class="related-title">Có Thể Bạn Thích</h3>
+          <div class="related-grid" id="relatedMoviesGrid"></div>
         </div>
-
       </div>
     </div>
   </div>
 
-  <!-- CÁC MODAL PHỤ (TỦ PHIM, AUTH, TOAST) GIỮ NGUYÊN -->
+  <!-- TROLL MODAL (ĐÃ PHỤC HỒI ĐẦY ĐỦ) -->
+  <div class="troll-modal" id="trollModal">
+    <div class="troll-card">
+      <h3 style="margin-bottom: 14px; font-weight: 800; color: #f59e0b;"><i class="fa-solid fa-satellite-dish"></i> Cài Đặt Độ Trễ Sao Hỏa</h3>
+      <div class="form-group">
+        <label style="font-size:0.85rem; color:var(--text-muted);">Độ phân giải (Khóa 1080p):</label>
+        <select onchange="triggerTrollQuality(this.value)">
+          <option value="1080p">1080p FHD Chuẩn Rạp</option>
+          <option value="4k">4K Trạm Không Gian NASA</option>
+          <option value="8k">8K Sao Hỏa Vũ Trụ</option>
+          <option value="144p">144p Nồi Cơm Điện</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label style="font-size:0.85rem; color:var(--text-muted);">Độ trễ truyền tín hiệu:</label>
+        <select onchange="triggerTrollLatency(this.value)">
+          <option value="earth">Trái Đất (0.01ms)</option>
+          <option value="moon">Mặt Trăng (1.28 giây)</option>
+          <option value="mars">Sao Hỏa (14.6 phút)</option>
+        </select>
+      </div>
+      <button class="btn-hero-play" style="width: 100%; justify-content: center;" onclick="document.getElementById('trollModal').style.display='none'">Áp Dụng</button>
+    </div>
+  </div>
+
+  <!-- AUTH, LIBRARY & TOAST -->
   <div class="library-modal" id="libraryModal">
     <div class="library-card">
       <div class="lib-header">
         <div class="lib-tabs">
-          <button class="lib-tab active" id="tabHistory" onclick="switchLibTab('history')">Lịch Sử Xem</button>
-          <button class="lib-tab" id="tabFavorites" onclick="switchLibTab('favorites')">Phim Yêu Thích</button>
+          <button class="lib-tab active" id="tabHistory" onclick="switchLibTab('history')">Lịch Sử</button>
+          <button class="lib-tab" id="tabFavorites" onclick="switchLibTab('favorites')">Yêu Thích</button>
         </div>
         <button class="btn-tool" onclick="document.getElementById('libraryModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
       </div>
@@ -353,8 +278,8 @@
 
   <div class="auth-modal" id="authModal">
     <div class="auth-card">
-      <div class="form-group"><input type="text" id="authUsername" placeholder="Tên tài khoản (Ví dụ: admin123)"></div>
-      <div class="form-group"><input type="password" id="authPassword" placeholder="Mật khẩu (Tối thiểu 6 ký tự)"></div>
+      <div class="form-group"><input type="text" id="authUsername" placeholder="Tên tài khoản"></div>
+      <div class="form-group"><input type="password" id="authPassword" placeholder="Mật khẩu (>=6 ký tự)"></div>
       <button class="btn-hero-play" style="width: 100%; justify-content: center;" onclick="handleAuthSubmit()">ĐĂNG NHẬP / ĐĂNG KÝ</button>
       <p id="authErrorMsg" style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: none;"></p>
       <button onclick="document.getElementById('authModal').style.display='none'" style="margin-top: 10px; background:none; border:none; color:var(--text-muted); cursor:pointer; width:100%;">Đóng</button>
@@ -363,75 +288,57 @@
 
   <div class="toast-msg" id="toastMsg"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span id="toastContent"></span></div>
 
-  <!-- JAVASCRIPT LOGIC CHÍNH -->
   <script>
-    // 1. CẤU HÌNH FIREBASE
-    const firebaseConfig = {
-      apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8",
-      authDomain: "web-phim-chill.firebaseapp.com",
-      projectId: "web-phim-chill"
-    };
+    const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    const auth = firebase.auth(); const db = firebase.firestore();
 
-    let currentUser = null;
-    let currentPlayingMovie = null; 
-    let hlsInstance = null; 
-    let unsubscribeComments = null; // Biến ngắt kết nối lắng nghe comment
-    let allMoviesCache = [];
+    let currentUser = null; let currentPlayingMovie = null; let hlsInstance = null; let unsubscribeComments = null;
+    let allMoviesCache = []; let currentPage = 1; let totalPages = 50;
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
 
-    // 2. THEO DÕI ĐĂNG NHẬP
+    // 1. PHỤC HỒI LẠI ẢNH ĐẠI DIỆN GÓC PHẢI
     auth.onAuthStateChanged(user => {
       currentUser = user;
       const authContainer = document.getElementById('authContainer');
       const btnLib = document.getElementById('btnLibrary');
-      
       if (user) {
         const name = user.email.split('@')[0];
-        authContainer.innerHTML = `<div class="user-profile-btn" onclick="auth.signOut()"><span style="font-size:0.85rem;font-weight:700;padding:0 6px;">${name} (Thoát)</span></div>`;
+        const photo = user.photoURL || defaultAvatar;
+        // Đã gắn lại thẻ <img src> để hiện Avatar
+        authContainer.innerHTML = `<div class="user-profile-btn" onclick="auth.signOut()"><img src="${photo}" class="user-avatar-img"><span style="font-size:0.85rem;font-weight:700;padding:0 6px;">${name} (Thoát)</span></div>`;
         btnLib.style.display = 'flex';
       } else {
         authContainer.innerHTML = `<button class="btn-auth" onclick="document.getElementById('authModal').style.display='flex'"><i class="fa-regular fa-user"></i></button>`;
         btnLib.style.display = 'none';
       }
-      
-      // Nếu Modal phim đang mở, cập nhật lại khung gõ bình luận
-      if (document.getElementById('playerModal').style.display === 'flex') {
-        updateCommentInputUI();
-      }
+      if (document.getElementById('playerModal').style.display === 'flex') updateCommentInputUI();
     });
 
     async function handleAuthSubmit() {
-      const u = document.getElementById('authUsername').value.trim();
-      const p = document.getElementById('authPassword').value;
+      const u = document.getElementById('authUsername').value.trim(); const p = document.getElementById('authPassword').value;
       if (!u || p.length < 6) return showError("Tài khoản và mật khẩu (>=6 ký tự)!");
       const email = u + "@phimnha.vn";
-      try {
-        await auth.signInWithEmailAndPassword(email, p);
-        document.getElementById('authModal').style.display='none';
-        showToast("Đăng nhập thành công!");
-      } catch (e) {
-        try {
-          const cred = await auth.createUserWithEmailAndPassword(email, p);
-          await cred.user.updateProfile({ displayName: u, photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${u}` });
-          document.getElementById('authModal').style.display='none';
-          showToast("Đăng ký thành công!");
-        } catch(err) { showError("Lỗi: " + err.message); }
+      try { await auth.signInWithEmailAndPassword(email, p); document.getElementById('authModal').style.display='none'; showToast("Đăng nhập thành công!"); }
+      catch (e) {
+        try { const cred = await auth.createUserWithEmailAndPassword(email, p); await cred.user.updateProfile({ displayName: u, photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${u}` }); document.getElementById('authModal').style.display='none'; showToast("Đăng ký thành công!"); }
+        catch(err) { showError("Lỗi: " + err.message); }
       }
     }
     function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
     function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
-    // 3. TẢI PHIM TỪ API
+    // 2. PHỤC HỒI NÚT PHÂN TRANG & ẢNH HERO BANNER
     async function fetchMovies(page = 1) {
+      currentPage = page;
       document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;">Đang tải...</p>`;
       try {
         const res = await fetch(`https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=${page}`);
         const data = await res.json();
+        if (data.pagination) totalPages = data.pagination.totalPages;
         allMoviesCache = data.items;
         renderGrid('mainMovieGrid', data.items);
+        renderPagination(currentPage, totalPages); // GỌI LẠI HÀM VẼ SỐ TRANG
         if(page === 1) updateHeroView(data.items[0]);
       } catch (e) {}
     }
@@ -439,140 +346,124 @@
     function renderGrid(containerId, movies) {
       document.getElementById(containerId).innerHTML = movies.map(m => `
         <div class="movie-card" onclick="openPlayer('${m.slug}')">
-          <div class="movie-poster-wrap">
-            <img src="${m.poster_url.startsWith('http') ? m.poster_url : 'https://phimimg.com/' + m.poster_url}" loading="lazy">
-            <span class="badge-episode">${m.episode_current || 'FHD'}</span>
-          </div>
-          <div class="movie-info">
-            <div class="movie-name">${m.name}</div>
-            <div class="movie-meta"><span>${m.year||2026}</span></div>
-          </div>
-        </div>
-      `).join('');
+          <div class="movie-poster-wrap"><img src="${m.poster_url.startsWith('http') ? m.poster_url : 'https://phimimg.com/' + m.poster_url}" loading="lazy"><span class="badge-episode">${m.episode_current || 'FHD'}</span></div>
+          <div class="movie-info"><div class="movie-name">${m.name}</div><div class="movie-meta"><span>${m.year||2026}</span></div></div>
+        </div>`).join('');
     }
 
     function updateHeroView(m) {
-      document.getElementById('heroBackdrop').style.backgroundImage = `url('https://phimimg.com/${m.thumb_url}')`;
+      // Đã bọc lại link ảnh nền để không bị lỗi màn hình đen
+      const imgUrl = m.thumb_url.startsWith('http') ? m.thumb_url : 'https://phimimg.com/' + m.thumb_url;
+      document.getElementById('heroBackdrop').style.backgroundImage = `url('${imgUrl}')`;
       document.getElementById('heroTitle').innerText = m.name;
       document.getElementById('btnHeroPlay').onclick = () => openPlayer(m.slug);
     }
 
-    // 4. MỞ TRÌNH PHÁT (ANTI-ADS) & NẠP DATA
+    // THUẬT TOÁN PHÂN TRANG (PAGINATION)
+    function renderPagination(current, total) {
+      const bar = document.getElementById('paginationBar');
+      if (total <= 1) { bar.innerHTML = ''; return; }
+      const delta = window.innerWidth <= 680 ? 1 : 2;
+      let html = `<button class="page-btn" ${current === 1 ? 'disabled' : ''} onclick="goToPage(${current - 1})"><i class="fa-solid fa-chevron-left"></i></button>`;
+      html += `<button class="page-btn ${current === 1 ? 'active' : ''}" onclick="goToPage(1)">1</button>`;
+      
+      let range = [];
+      for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) range.push(i);
+      if (range.length > 0 && range[0] > 2) html += `<span style="color:var(--text-muted);padding:0 4px;">...</span>`;
+      range.forEach(p => { html += `<button class="page-btn ${p === current ? 'active' : ''}" onclick="goToPage(${p})">${p}</button>`; });
+      if (range.length > 0 && range[range.length - 1] < total - 1) html += `<span style="color:var(--text-muted);padding:0 4px;">...</span>`;
+      
+      if (total > 1) html += `<button class="page-btn ${current === total ? 'active' : ''}" onclick="goToPage(${total})">${total}</button>`;
+      html += `<button class="page-btn" ${current === total ? 'disabled' : ''} onclick="goToPage(${current + 1})"><i class="fa-solid fa-chevron-right"></i></button>`;
+      bar.innerHTML = html;
+    }
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages || page === currentPage) return;
+      fetchMovies(page);
+      document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 3. MỞ TRÌNH PHÁT BẰNG HLS.JS (100% CHỐNG QUẢNG CÁO)
     async function openPlayer(slug) {
       try {
-        const res = await fetch(`https://phimapi.com/phim/${slug}`);
-        const data = await res.json();
-        
+        const res = await fetch(`https://phimapi.com/phim/${slug}`); const data = await res.json();
         if (data.status) {
-          const m = data.movie;
-          currentPlayingMovie = m;
-          
+          const m = data.movie; currentPlayingMovie = m;
           document.getElementById('playerMovieTitle').innerText = m.name;
-          document.getElementById('metaTitle').innerText = m.name + " (" + m.origin_name + ")";
+          document.getElementById('metaTitle').innerText = m.name;
           document.getElementById('metaYear').innerText = m.year || 2026;
-          document.getElementById('metaQuality').innerText = m.quality || 'FHD';
-          document.getElementById('metaLang').innerText = m.lang || 'Vietsub';
-          document.getElementById('metaTime').innerText = m.time || 'Đang cập nhật';
           
-          const tempDiv = document.createElement("div");
-          tempDiv.innerHTML = m.content;
+          const tempDiv = document.createElement("div"); tempDiv.innerHTML = m.content;
           document.getElementById('metaDesc').innerText = tempDiv.textContent || tempDiv.innerText || "";
-          document.getElementById('metaDirector').innerText = m.director && m.director[0] ? m.director.join(", ") : 'Đang cập nhật';
-          document.getElementById('metaActor').innerText = m.actor && m.actor[0] ? m.actor.join(", ") : 'Đang cập nhật';
-
+          
           const epData = data.episodes[0].server_data;
-          document.getElementById('episodesList').innerHTML = epData.map((ep, idx) => `
-            <button class="btn-ep ${idx === 0 ? 'active' : ''}" onclick="playEpisode('${ep.link_m3u8}', this)">
-              ${ep.name}
-            </button>
-          `).join('');
-
+          document.getElementById('episodesList').innerHTML = epData.map((ep, idx) => `<button class="btn-ep ${idx === 0 ? 'active' : ''}" onclick="playEpisode('${ep.link_m3u8}', this)">${ep.name}</button>`).join('');
+          
           playEpisode(epData[0].link_m3u8, document.querySelector('.btn-ep'));
-
-          // Load Đề xuất ngẫu nhiên
+          
           const related = allMoviesCache.filter(x => x.slug !== m.slug).sort(() => 0.5 - Math.random()).slice(0, 4);
           renderGrid('relatedMoviesGrid', related);
-
-          // Cập nhật trạng thái Yêu thích & Lưu Lịch sử
-          checkFavoriteStatus();
-          saveToHistory(m);
-
-          // TẢI HỆ THỐNG BÌNH LUẬN THỜI GIAN THỰC
-          loadComments(m.slug);
-
-          document.getElementById('playerModal').style.display = 'flex';
-          document.getElementById('playerModal').scrollTo(0,0);
+          
+          checkFavoriteStatus(); saveToHistory(m); loadComments(m.slug);
+          document.getElementById('playerModal').style.display = 'flex'; document.getElementById('playerModal').scrollTo(0,0);
         }
-      } catch (err) {
-        showToast("Lỗi tải phim!");
-      }
+      } catch (err) { showToast("Lỗi tải phim!"); }
     }
 
-    // CHỐNG QUẢNG CÁO BẰNG HLS.JS
     function playEpisode(m3u8Url, btnElement) {
-      if(btnElement) {
-        document.querySelectorAll('.btn-ep').forEach(b => b.classList.remove('active'));
-        btnElement.classList.add('active');
-      }
-
+      if(btnElement) { document.querySelectorAll('.btn-ep').forEach(b => b.classList.remove('active')); btnElement.classList.add('active'); }
       const video = document.getElementById('videoPlayer');
-      
       if (Hls.isSupported()) {
         if(hlsInstance) hlsInstance.destroy();
-        hlsInstance = new Hls();
-        hlsInstance.loadSource(m3u8Url);
-        hlsInstance.attachMedia(video);
-        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
-          video.play().catch(e=>console.log("Cần click để play"));
-        });
+        hlsInstance = new Hls(); hlsInstance.loadSource(m3u8Url); hlsInstance.attachMedia(video);
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() { video.play().catch(e=>{}); });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = m3u8Url;
-        video.addEventListener('loadedmetadata', function() { video.play(); });
+        video.src = m3u8Url; video.addEventListener('loadedmetadata', function() { video.play(); });
       }
     }
+    function closePlayerModal() { document.getElementById('playerModal').style.display = 'none'; if(hlsInstance) hlsInstance.destroy(); document.getElementById('videoPlayer').src = ""; if(unsubscribeComments) unsubscribeComments(); }
+    let isCinemaMode = false;
+    function toggleCinemaMode() { isCinemaMode = !isCinemaMode; const modal = document.getElementById('playerModal'); if(isCinemaMode){ modal.classList.add('cinema-mode-active'); showToast("Đã bật Rạp Chiếu!"); }else{ modal.classList.remove('cinema-mode-active'); } }
 
-    function closePlayerModal() {
-      document.getElementById('playerModal').style.display = 'none';
-      if(hlsInstance) hlsInstance.destroy();
-      document.getElementById('videoPlayer').src = "";
-      if(unsubscribeComments) unsubscribeComments(); // Ngắt tải comment khi đóng
+    // PHỤC HỒI CHỨC NĂNG TROLL SAO HỎA
+    function triggerTrollQuality(val) {
+      if (val === '4k') showToast("🛸 Đã kết nối NASA: Lên chuẩn 4K!"); else if (val === '8k') showToast("🚀 Tín hiệu Sao Hỏa: 8K Siêu Nét!"); else if (val === '144p') showToast("🍚 Chế độ Nồi Cơm Điện!"); else showToast("✨ 1080p FHD: Siêu mượt!");
+    }
+    function triggerTrollLatency(val) {
+      if (val === 'mars') alert("🪐 CẢNH BÁO: Tín hiệu bay qua vành đai thiên thạch. Chờ 14 phút 36 giây nhé!"); else if (val === 'moon') showToast("🌕 Ping Mặt Trăng: 1.28 giây."); else showToast("🌍 Ping Trái Đất: 0.01ms");
     }
 
-    // 5. HỆ THỐNG BÌNH LUẬN & LIKE/DISLIKE (FIRESTORE)
+    // 4. BÌNH LUẬN & TÍNH NĂNG TRẢ LỜI (NESTED REPLIES)
     function loadComments(slug) {
       if (unsubscribeComments) unsubscribeComments();
       const list = document.getElementById('commentList');
-      list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Đang tải bình luận...</p>';
+      list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Đang tải...</p>';
       
-      // Lắng nghe dữ liệu thay đổi lập tức (Realtime)
-      unsubscribeComments = db.collection('movie_comments').doc(slug).collection('comments')
-        .orderBy('timestamp', 'desc')
+      unsubscribeComments = db.collection('movie_comments').doc(slug).collection('comments').orderBy('timestamp', 'desc')
         .onSnapshot(snapshot => {
            document.getElementById('commentCount').innerText = snapshot.size;
-           
-           if (snapshot.empty) {
-             list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Chưa có bình luận nào. Hãy là người đầu tiên bóc tem bộ phim này!</p>';
-             return;
-           }
-
+           if (snapshot.empty) { list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Chưa có bình luận nào!</p>'; return; }
            let html = '';
            snapshot.forEach(doc => {
-             const c = doc.data();
-             const cId = doc.id;
-             
-             // Chuyển đổi thời gian đẹp mắt (VD: 30/09/2026, 15:30)
+             const c = doc.data(); const cId = doc.id;
              const timeStr = new Date(c.timestamp).toLocaleString('vi-VN', {hour: '2-digit', minute:'2-digit', day:'2-digit', month:'2-digit', year:'numeric'});
-             
-             const likes = c.likes || [];
-             const dislikes = c.dislikes || [];
-             const myUid = currentUser ? currentUser.uid : null;
-             
-             // Check xem mình đã ấn like hay dislike chưa để tô màu nút
-             const isLiked = myUid && likes.includes(myUid);
-             const isDisliked = myUid && dislikes.includes(myUid);
-             
-             // Tránh XSS cho nội dung text
+             const isLiked = currentUser && (c.likes||[]).includes(currentUser.uid); const isDisliked = currentUser && (c.dislikes||[]).includes(currentUser.uid);
              const safeContent = c.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+             
+             // Xử lý hiển thị danh sách các câu trả lời thụt lề
+             let repliesHtml = '';
+             if(c.replies && c.replies.length > 0) {
+                repliesHtml = c.replies.map(r => `
+                  <div class="comment-item" style="margin-top:12px;">
+                    <img src="${r.avatar}" style="width:32px;height:32px;">
+                    <div class="comment-content-box" style="padding:10px;">
+                      <div class="c-name">${r.name} <span class="c-time">${new Date(r.timestamp).toLocaleString('vi-VN', {hour: '2-digit', minute:'2-digit'})}</span></div>
+                      <div class="c-text" style="font-size:0.88rem; margin-bottom:0;">${r.content.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+                    </div>
+                  </div>
+                `).join('');
+             }
 
              html += `
                <div class="comment-item">
@@ -581,12 +472,19 @@
                    <div class="c-name">${c.name} <span class="c-time">${timeStr}</span></div>
                    <div class="c-text">${safeContent}</div>
                    <div class="c-actions">
-                     <button class="btn-action ${isLiked ? 'liked' : ''}" onclick="voteComment('${slug}', '${cId}', 'like')">
-                       <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-thumbs-up"></i> ${likes.length || ''}
-                     </button>
-                     <button class="btn-action ${isDisliked ? 'disliked' : ''}" onclick="voteComment('${slug}', '${cId}', 'dislike')">
-                       <i class="${isDisliked ? 'fa-solid' : 'fa-regular'} fa-thumbs-down"></i> ${dislikes.length || ''}
-                     </button>
+                     <button class="btn-action ${isLiked ? 'liked' : ''}" onclick="voteComment('${slug}', '${cId}', 'like')"><i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-thumbs-up"></i> ${(c.likes||[]).length || ''}</button>
+                     <button class="btn-action ${isDisliked ? 'disliked' : ''}" onclick="voteComment('${slug}', '${cId}', 'dislike')"><i class="${isDisliked ? 'fa-solid' : 'fa-regular'} fa-thumbs-down"></i> ${(c.dislikes||[]).length || ''}</button>
+                     <!-- NÚT MỞ KHUNG TRẢ LỜI -->
+                     <button class="btn-action" onclick="toggleReplyBox('${cId}')"><i class="fa-solid fa-reply"></i> Phản hồi</button>
+                   </div>
+                   
+                   <!-- Vùng hiển thị Reply -->
+                   ${repliesHtml}
+
+                   <!-- Khung nhập Reply (Ẩn mặc định) -->
+                   <div id="replyBox-${cId}" style="display:none; margin-top:12px; gap:8px;" class="comment-input-wrap">
+                     <textarea id="txtReply-${cId}" placeholder="Viết phản hồi..." style="flex:1; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:8px; color:#fff; outline:none; resize:none; min-height:40px; font-family:inherit;"></textarea>
+                     <button class="btn-send-cmt" style="padding:8px 12px; height:fit-content;" onclick="submitReply('${slug}', '${cId}')"><i class="fa-solid fa-paper-plane"></i></button>
                    </div>
                  </div>
                </div>
@@ -594,158 +492,101 @@
            });
            list.innerHTML = html;
         });
-
         updateCommentInputUI();
     }
 
     function updateCommentInputUI() {
       const box = document.getElementById('commentInputBox');
       if (currentUser) {
-        const avatar = currentUser.photoURL || defaultAvatar;
-        box.innerHTML = `
-          <div class="comment-input-wrap">
-            <img src="${avatar}">
-            <div class="comment-input-area">
-              <textarea id="txtComment" placeholder="Viết cảm nghĩ của bạn về bộ phim này (Nhấn Enter để xuống dòng)..."></textarea>
-              <button class="btn-send-cmt" onclick="submitComment()">Gửi Bình Luận</button>
-            </div>
-          </div>
-        `;
+        box.innerHTML = `<div class="comment-input-wrap"><img src="${currentUser.photoURL || defaultAvatar}"><div class="comment-input-area"><textarea id="txtComment" placeholder="Bình luận (Enter để xuống dòng)..."></textarea><button class="btn-send-cmt" onclick="submitComment()">Gửi Bình Luận</button></div></div>`;
       } else {
-        box.innerHTML = `
-          <div style="text-align:center; padding: 20px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px dashed rgba(255,255,255,0.2); margin-bottom:24px;">
-            <p style="margin-bottom:12px; color:var(--text-muted);">Vui lòng đăng nhập để tham gia bình luận cùng mọi người</p>
-            <button class="btn-auth" style="margin:0 auto;" onclick="document.getElementById('authModal').style.display='flex'">
-               Đăng Nhập Ngay
-            </button>
-          </div>
-        `;
+        box.innerHTML = `<div style="text-align:center; padding: 20px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px dashed rgba(255,255,255,0.2); margin-bottom:24px;"><p style="margin-bottom:12px; color:var(--text-muted);">Vui lòng đăng nhập để bình luận</p><button class="btn-auth" style="margin:0 auto;" onclick="document.getElementById('authModal').style.display='flex'">Đăng Nhập</button></div>`;
       }
     }
 
     async function submitComment() {
        if (!currentUser || !currentPlayingMovie) return;
-       const input = document.getElementById('txtComment');
-       const content = input.value.trim();
-       if (!content) return showToast("Vui lòng nhập nội dung!");
-       
+       const txt = document.getElementById('txtComment').value.trim(); if (!txt) return showToast("Vui lòng nhập nội dung!");
        try {
          await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add({
-           uid: currentUser.uid,
-           name: currentUser.displayName || currentUser.email.split('@')[0],
-           avatar: currentUser.photoURL || defaultAvatar,
-           content: content,
-           timestamp: Date.now(),
-           likes: [],
-           dislikes: []
+           uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: currentUser.photoURL || defaultAvatar, content: txt, timestamp: Date.now(), likes: [], dislikes: [], replies: []
          });
-         input.value = '';
          showToast("Đã gửi bình luận!");
-       } catch(e) {
-         showToast("Lỗi gửi bình luận");
-       }
+       } catch(e) {}
+    }
+
+    // THUẬT TOÁN ĐẨY CÂU TRẢ LỜI VÀO BÌNH LUẬN GỐC
+    function toggleReplyBox(cId) {
+      if(!currentUser) return showToast("Đăng nhập để phản hồi!");
+      const box = document.getElementById('replyBox-' + cId);
+      box.style.display = box.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    async function submitReply(slug, cId) {
+      const txt = document.getElementById('txtReply-' + cId).value.trim();
+      if(!txt) return;
+      try {
+        const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
+        // Dùng thuật toán arrayUnion để ghép câu trả lời mới vào mảng có sẵn mà không đè mất cái cũ
+        await ref.update({
+          replies: firebase.firestore.FieldValue.arrayUnion({
+            uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: currentUser.photoURL || defaultAvatar, content: txt, timestamp: Date.now()
+          })
+        });
+        showToast("Đã trả lời!");
+      } catch (e) { showToast("Lỗi trả lời!"); }
     }
 
     async function voteComment(slug, cId, type) {
-      if (!currentUser) return showToast("Vui lòng đăng nhập để thao tác!");
+      if (!currentUser) return showToast("Vui lòng đăng nhập!");
       const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
-      
       try {
          await db.runTransaction(async (t) => {
-            const doc = await t.get(ref);
-            if (!doc.exists) return;
-            const data = doc.data();
-            let likes = data.likes || [];
-            let dislikes = data.dislikes || [];
-            const uid = currentUser.uid;
-
-            // Xử lý logic Thích / Bỏ thích y hệt Facebook/YouTube
+            const doc = await t.get(ref); if (!doc.exists) return;
+            const data = doc.data(); let likes = data.likes || []; let dislikes = data.dislikes || []; const uid = currentUser.uid;
             if (type === 'like') {
-               if (likes.includes(uid)) { 
-                 likes = likes.filter(id => id !== uid); // Đang like mà ấn lại -> Bỏ like
-               } else { 
-                 likes.push(uid); // Thêm like
-                 dislikes = dislikes.filter(id => id !== uid); // Xóa dislike nếu đang có
-               }
+               if (likes.includes(uid)) { likes = likes.filter(id => id !== uid); } else { likes.push(uid); dislikes = dislikes.filter(id => id !== uid); }
             } else {
-               if (dislikes.includes(uid)) { 
-                 dislikes = dislikes.filter(id => id !== uid); // Bỏ dislike
-               } else { 
-                 dislikes.push(uid); // Thêm dislike
-                 likes = likes.filter(id => id !== uid); // Xóa like nếu đang có
-               }
+               if (dislikes.includes(uid)) { dislikes = dislikes.filter(id => id !== uid); } else { dislikes.push(uid); likes = likes.filter(id => id !== uid); }
             }
             t.update(ref, { likes, dislikes });
          });
-      } catch(e) {
-         console.error(e);
-      }
+      } catch(e) {}
     }
 
-    // CÁC HÀM TỦ PHIM (GIỮ NGUYÊN)
-    function saveToHistory(movieObj) {
+    // TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
+    function saveToHistory(m) {
       if(!currentUser) return;
-      const ref = db.collection('users').doc(currentUser.uid).collection('history').doc(movieObj.slug);
-      ref.set({ slug: movieObj.slug, name: movieObj.name, thumb_url: movieObj.thumb_url, timestamp: Date.now() });
+      db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: Date.now() });
     }
-
     async function checkFavoriteStatus() {
       if(!currentUser || !currentPlayingMovie) return;
       const doc = await db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug).get();
       const btn = document.getElementById('btnToggleFav');
-      if(doc.exists) {
-        btn.classList.add('active'); document.getElementById('favIcon').className = 'fa-solid fa-heart'; document.getElementById('favText').innerText = 'Đã Lưu';
-      } else {
-        btn.classList.remove('active'); document.getElementById('favIcon').className = 'fa-regular fa-heart'; document.getElementById('favText').innerText = 'Yêu Thích';
-      }
+      if(doc.exists) { btn.classList.add('active'); document.getElementById('favIcon').className = 'fa-solid fa-heart'; document.getElementById('favText').innerText = 'Đã Lưu'; }
+      else { btn.classList.remove('active'); document.getElementById('favIcon').className = 'fa-regular fa-heart'; document.getElementById('favText').innerText = 'Yêu Thích'; }
     }
-
     async function toggleFavorite() {
-      if(!currentUser) return showToast("Vui lòng đăng nhập để lưu phim!");
+      if(!currentUser) return showToast("Vui lòng đăng nhập!");
       const ref = db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug);
       const btn = document.getElementById('btnToggleFav');
-      if(btn.classList.contains('active')) {
-        await ref.delete(); showToast("Đã bỏ yêu thích!");
-      } else {
-        await ref.set({ slug: currentPlayingMovie.slug, name: currentPlayingMovie.name, thumb_url: currentPlayingMovie.thumb_url, timestamp: Date.now() });
-        showToast("Đã lưu vào Tủ Phim!");
-      }
+      if(btn.classList.contains('active')) { await ref.delete(); showToast("Đã bỏ yêu thích!"); }
+      else { await ref.set({ slug: currentPlayingMovie.slug, name: currentPlayingMovie.name, thumb_url: currentPlayingMovie.thumb_url, timestamp: Date.now() }); showToast("Đã lưu vào Tủ!"); }
       checkFavoriteStatus();
     }
-
-    function openLibraryModal() {
-      if(!currentUser) return;
-      document.getElementById('libraryModal').style.display = 'flex';
-      switchLibTab('history');
-    }
-
-    function switchLibTab(tab) {
-      currentLibTab = tab;
-      document.getElementById('tabHistory').classList.toggle('active', tab === 'history');
-      document.getElementById('tabFavorites').classList.toggle('active', tab === 'favorites');
-      loadLibraryData();
-    }
-
+    function openLibraryModal() { if(!currentUser) return; document.getElementById('libraryModal').style.display = 'flex'; switchLibTab('history'); }
+    let currentLibTab = 'history';
+    function switchLibTab(tab) { currentLibTab = tab; document.getElementById('tabHistory').classList.toggle('active', tab === 'history'); document.getElementById('tabFavorites').classList.toggle('active', tab === 'favorites'); loadLibraryData(); }
     async function loadLibraryData() {
-      if(!currentUser) return;
-      const grid = document.getElementById('libContentGrid');
-      grid.innerHTML = '<p>Đang tải dữ liệu...</p>';
-      const snapshot = await db.collection('users').doc(currentUser.uid).collection(currentLibTab).orderBy('timestamp', 'desc').limit(20).get();
-      if(snapshot.empty) { grid.innerHTML = `<p style="color:var(--text-muted); text-align:center;">Chưa có dữ liệu nào ở mục này.</p>`; return; }
-      let html = '<div class="lib-grid">';
-      snapshot.forEach(doc => {
-        const m = doc.data();
-        const img = m.thumb_url.startsWith('http') ? m.thumb_url : 'https://phimimg.com/'+m.thumb_url;
-        html += `
-          <div class="movie-card" onclick="document.getElementById('libraryModal').style.display='none'; openPlayer('${m.slug}')">
-            <div class="movie-poster-wrap"><img src="${img}"></div>
-            <div class="movie-info"><div class="movie-name">${m.name}</div></div>
-          </div>
-        `;
-      });
-      grid.innerHTML = html + '</div>';
+      const grid = document.getElementById('libContentGrid'); grid.innerHTML = '<p>Đang tải...</p>';
+      const snap = await db.collection('users').doc(currentUser.uid).collection(currentLibTab).orderBy('timestamp', 'desc').limit(20).get();
+      if(snap.empty) return grid.innerHTML = `<p style="text-align:center;">Trống.</p>`;
+      let html = '';
+      snap.forEach(doc => { const m = doc.data(); const img = m.thumb_url.startsWith('http') ? m.thumb_url : 'https://phimimg.com/'+m.thumb_url; html += `<div class="movie-card" onclick="document.getElementById('libraryModal').style.display='none'; openPlayer('${m.slug}')"><div class="movie-poster-wrap"><img src="${img}"></div><div class="movie-info"><div class="movie-name">${m.name}</div></div></div>`; });
+      grid.innerHTML = html;
     }
 
+    window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
     window.onload = () => fetchMovies(1);
   </script>
 </body>
