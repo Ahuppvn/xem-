@@ -31,15 +31,21 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.5; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
     ::-webkit-scrollbar { width: 6px; height: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: #262b3a; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-    /* HEADER */
+    /* HEADER & SEARCH */
     header { position: sticky; top: 0; z-index: 1000; background: rgba(9, 10, 15, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
     .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-size: 1.3rem; font-weight: 800; white-space: nowrap; }
     .brand i { color: var(--primary); font-size: 1.4rem; }
+    
     .search-box { flex: 1; max-width: 440px; position: relative; }
     .search-box input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 50px; padding: 9px 16px 9px 38px; color: #fff; outline: none; transition: var(--transition); }
     .search-box input:focus { border-color: var(--primary); }
     .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-    
+    .search-results-dropdown { position: absolute; top: 115%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 380px; overflow-y: auto; display: none; z-index: 1100; box-shadow: 0 12px 30px rgba(0,0,0,0.8); }
+    .search-item { display: flex; gap: 12px; padding: 10px 14px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); transition: var(--transition); }
+    .search-item:hover { background: rgba(255,255,255,0.06); }
+    .search-item img { width: 44px; height: 58px; object-fit: cover; border-radius: 6px; }
+
+    /* HEADER ACTIONS */
     .header-actions { display: flex; align-items: center; gap: 10px; }
     .online-badge { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     .online-badge .dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; animation: pulse 1.8s infinite; }
@@ -52,15 +58,16 @@
 
     /* HERO POSTER */
     .hero-container { position: relative; width: 100%; height: 60vh; min-height: 420px; overflow: hidden; margin-bottom: 20px; }
-    .hero-backdrop { position: absolute; inset: 0; background-size: cover; background-position: center top; transition: background-image 0.8s; transform: scale(1.02); }
+    .hero-backdrop { position: absolute; inset: 0; background-size: cover; background-position: center top; transition: background-image 0.8s ease-in-out; transform: scale(1.02); }
     .hero-vignette { position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg) 0%, rgba(9,10,15,0.7) 40%, rgba(9,10,15,0.2) 100%), linear-gradient(90deg, var(--bg) 0%, rgba(9,10,15,0.85) 35%, transparent 100%); }
     .hero-content { position: absolute; bottom: 30px; left: 36px; max-width: 620px; z-index: 10; }
     .hero-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
     .badge-tag { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px); padding: 3px 8px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; }
     .badge-tag.red { background: var(--primary); color: #fff; }
-    .hero-title { font-size: 2.4rem; font-weight: 800; line-height: 1.15; margin-bottom: 10px; }
-    .hero-desc { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 10px 22px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .hero-title { font-size: 2.4rem; font-weight: 800; line-height: 1.15; margin-bottom: 10px; text-shadow: 0 4px 16px rgba(0,0,0,0.8);}
+    .hero-desc { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 2px 8px rgba(0,0,0,0.8);}
+    .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 10px 22px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4); transition: var(--transition); }
+    .btn-hero-play:hover { background: var(--primary-hover); transform: scale(1.03); }
 
     /* MOVIE GRID & PAGINATION */
     .section-wrap { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
@@ -70,16 +77,17 @@
     .movie-card { background: var(--surface-card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); cursor: pointer; position: relative; transition: var(--transition); }
     .movie-card:hover { transform: translateY(-5px); border-color: rgba(229, 9, 20, 0.4); }
     .movie-poster-wrap { position: relative; padding-top: 145%; overflow: hidden; }
-    .movie-poster-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .movie-poster-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .movie-card:hover .movie-poster-wrap img { transform: scale(1.05); }
     .badge-episode { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.72); border: 1px solid rgba(255,255,255,0.1); padding: 2px 7px; font-size: 0.7rem; font-weight: 700; border-radius: 4px; color: #38bdf8; }
     .movie-info { padding: 9px 11px; }
     .movie-name { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
 
     .pagination-wrapper { margin: 32px auto 40px; display: flex; justify-content: center; align-items: center; width: 100%; }
-    .pagination-bar { display: flex; align-items: center; gap: 6px; background: var(--surface); padding: 6px 10px; border-radius: 50px; border: 1px solid var(--border);}
+    .pagination-bar { display: flex; align-items: center; gap: 6px; background: var(--surface); padding: 6px 10px; border-radius: 50px; border: 1px solid var(--border); box-shadow: 0 8px 25px rgba(0,0,0,0.5);}
     .page-btn { min-width: 40px; height: 40px; padding: 0 10px; border-radius: 50px; background: transparent; border: 1px solid transparent; color: var(--text); font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: var(--transition); }
     .page-btn:hover:not(:disabled) { background: rgba(255,255,255,0.08); }
-    .page-btn.active { background: var(--primary) !important; color: #fff !important; }
+    .page-btn.active { background: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);}
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
     /* PLAYER MODAL (CHỐNG QUẢNG CÁO) */
@@ -90,7 +98,7 @@
     .player-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .player-tools { display: flex; gap: 8px; }
     .btn-tool { background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+    .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8);}
     .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; }
 
     .player-details-container { margin-top: 20px; display: grid; grid-template-columns: 2.2fr 1fr; gap: 24px; align-items: start; }
@@ -103,9 +111,11 @@
     .btn-fav.active { background: var(--primary); color: #fff; }
     .meta-tag { background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; margin-right:6px;}
     .movie-desc-text { font-size: 0.92rem; color: #cbd5e1; margin-top: 12px; line-height: 1.6; }
+    .movie-cast-info { font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; line-height: 1.6;}
+    .movie-cast-info span { color: #fff; }
     
     .episodes-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; max-height: 180px; overflow-y: auto; }
-    .btn-ep { background: var(--surface-card); border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .btn-ep { background: var(--surface-card); border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s;}
     .btn-ep.active { background: var(--primary); border-color: var(--primary); }
 
     /* BÌNH LUẬN & TRẢ LỜI */
@@ -115,6 +125,7 @@
     .comment-input-wrap img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
     .comment-input-area { flex: 1; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
     .comment-input-area textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: #fff; resize: vertical; min-height: 60px; outline: none; font-family: inherit;}
+    .comment-input-area textarea:focus { border-color: var(--primary); }
     .btn-send-cmt { background: var(--primary); color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; }
     
     .comment-list { display: flex; flex-direction: column; gap: 16px; }
@@ -123,7 +134,7 @@
     .comment-content-box { background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; flex: 1; border: 1px solid var(--border); }
     .c-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; display: flex; justify-content: space-between; }
     .c-time { font-size: 0.75rem; color: var(--text-muted); font-weight: normal; }
-    .c-text { font-size: 0.92rem; margin-bottom: 12px; line-height: 1.5; color: #e2e8f0; white-space: pre-wrap;}
+    .c-text { font-size: 0.92rem; margin-bottom: 12px; line-height: 1.5; color: #e2e8f0; white-space: pre-wrap; word-break: break-word;}
     .c-actions { display: flex; gap: 16px; }
     .btn-action { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; font-weight: 600;}
     .btn-action:hover { color: #fff; }
@@ -144,6 +155,7 @@
     
     .auth-card, .troll-card { background: var(--surface); width: 100%; max-width: 420px; border-radius: 16px; padding: 24px; border: 1px solid var(--border);}
     .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
     .form-group input, .form-group select { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; outline:none;}
     .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; gap: 8px; align-items: center;}
 
@@ -151,7 +163,7 @@
     @media (max-width: 992px) { .player-details-container { grid-template-columns: 1fr; } }
     @media (max-width: 680px) {
       header { padding: 10px 14px; } .brand span { display: none; }
-      .movie-grid, .lib-content { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .movie-grid, .lib-content, .related-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .header-actions .online-badge span { display: none; }
       .comment-input-wrap img { display: none; }
       .pagination-bar { padding: 4px; } .page-btn { min-width: 34px; height: 34px; font-size: 0.82rem; }
@@ -160,9 +172,17 @@
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <a href="#" class="brand" onclick="location.reload()"><i class="fa-solid fa-play"></i> <span>PHIM NHÀ</span></a>
-    <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Tìm kiếm phim..."></div>
+    
+    <!-- SEARCH TỨC THÌ (ĐÃ PHỤC HỒI) -->
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="liveSearchInput" placeholder="Tìm kiếm phim...">
+      <div class="search-results-dropdown" id="searchResultsDropdown"></div>
+    </div>
+    
     <div class="header-actions">
       <button class="btn-library" id="btnLibrary" onclick="openLibraryModal()"><i class="fa-solid fa-bookmark"></i> <span class="hide-mobile">Tủ Phim</span></button>
       <div class="online-badge"><div class="dot"></div><span>Online: </span><strong id="onlineCountText">1</strong></div>
@@ -170,7 +190,7 @@
     </div>
   </header>
 
-  <!-- HERO BANNER (ĐÃ PHỤC HỒI ẢNH) -->
+  <!-- HERO BANNER (TỰ ĐỘNG CHUYỂN PHIM SAU 5 GIÂY) -->
   <div class="hero-container">
     <div class="hero-backdrop" id="heroBackdrop"></div>
     <div class="hero-vignette"></div>
@@ -182,14 +202,14 @@
     </div>
   </div>
 
-  <!-- LƯỚI PHIM & PHÂN TRANG (ĐÃ PHỤC HỒI CHUẨN) -->
+  <!-- LƯỚI PHIM & PHÂN TRANG -->
   <div class="section-wrap" id="moviesSection">
     <div class="section-header"><h2 class="section-title">Danh Sách Phim Mới</h2></div>
     <div class="movie-grid" id="mainMovieGrid"></div>
     <div class="pagination-wrapper"><div class="pagination-bar" id="paginationBar"></div></div>
   </div>
 
-  <!-- PLAYER MODAL -->
+  <!-- PLAYER MODAL (HLS CHỐNG QUẢNG CÁO) -->
   <div class="player-modal" id="playerModal">
     <div class="player-box">
       <div class="player-top-bar">
@@ -216,11 +236,15 @@
               <span class="meta-tag" id="metaQuality">FHD</span>
             </div>
             <p class="movie-desc-text" id="metaDesc"></p>
+            <div class="movie-cast-info">
+              <p><strong>Đạo diễn:</strong> <span id="metaDirector"></span></p>
+              <p><strong>Diễn viên:</strong> <span id="metaActor"></span></p>
+            </div>
             <h3 style="font-size:1rem; margin-top:16px; margin-bottom:8px;">Chọn Tập:</h3>
             <div class="episodes-grid" id="episodesList"></div>
           </div>
 
-          <!-- BÌNH LUẬN VÀ TRẢ LỜI -->
+          <!-- BÌNH LUẬN & TRẢ LỜI -->
           <div class="comment-section">
             <h3 class="comment-title">Bình Luận (<span id="commentCount">0</span>)</h3>
             <div id="commentInputBox"></div>
@@ -237,12 +261,12 @@
     </div>
   </div>
 
-  <!-- TROLL MODAL (ĐÃ PHỤC HỒI ĐẦY ĐỦ) -->
+  <!-- TROLL MODAL -->
   <div class="troll-modal" id="trollModal">
     <div class="troll-card">
       <h3 style="margin-bottom: 14px; font-weight: 800; color: #f59e0b;"><i class="fa-solid fa-satellite-dish"></i> Cài Đặt Độ Trễ Sao Hỏa</h3>
       <div class="form-group">
-        <label style="font-size:0.85rem; color:var(--text-muted);">Độ phân giải (Khóa 1080p):</label>
+        <label>Độ phân giải (Khóa 1080p):</label>
         <select onchange="triggerTrollQuality(this.value)">
           <option value="1080p">1080p FHD Chuẩn Rạp</option>
           <option value="4k">4K Trạm Không Gian NASA</option>
@@ -251,7 +275,7 @@
         </select>
       </div>
       <div class="form-group">
-        <label style="font-size:0.85rem; color:var(--text-muted);">Độ trễ truyền tín hiệu:</label>
+        <label>Độ trễ truyền tín hiệu:</label>
         <select onchange="triggerTrollLatency(this.value)">
           <option value="earth">Trái Đất (0.01ms)</option>
           <option value="moon">Mặt Trăng (1.28 giây)</option>
@@ -262,7 +286,7 @@
     </div>
   </div>
 
-  <!-- AUTH, LIBRARY & TOAST -->
+  <!-- MODAL TỦ PHIM & ĐĂNG NHẬP -->
   <div class="library-modal" id="libraryModal">
     <div class="library-card">
       <div class="lib-header">
@@ -288,6 +312,7 @@
 
   <div class="toast-msg" id="toastMsg"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span id="toastContent"></span></div>
 
+  <!-- ==================== HỆ THỐNG JAVASCRIPT ==================== -->
   <script>
     const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     firebase.initializeApp(firebaseConfig);
@@ -297,7 +322,7 @@
     let allMoviesCache = []; let currentPage = 1; let totalPages = 50;
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
 
-    // 1. PHỤC HỒI LẠI ẢNH ĐẠI DIỆN GÓC PHẢI
+    // 1. TÀI KHOẢN VÀ AVATAR GÓC PHẢI
     auth.onAuthStateChanged(user => {
       currentUser = user;
       const authContainer = document.getElementById('authContainer');
@@ -305,7 +330,6 @@
       if (user) {
         const name = user.email.split('@')[0];
         const photo = user.photoURL || defaultAvatar;
-        // Đã gắn lại thẻ <img src> để hiện Avatar
         authContainer.innerHTML = `<div class="user-profile-btn" onclick="auth.signOut()"><img src="${photo}" class="user-avatar-img"><span style="font-size:0.85rem;font-weight:700;padding:0 6px;">${name} (Thoát)</span></div>`;
         btnLib.style.display = 'flex';
       } else {
@@ -328,7 +352,34 @@
     function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
     function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
-    // 2. PHỤC HỒI NÚT PHÂN TRANG & ẢNH HERO BANNER
+    // 2. LIVE SEARCH (TÌM KIẾM TRỰC TIẾP TỪ GÕ PHÍM)
+    const searchInput = document.getElementById('liveSearchInput');
+    const dropdown = document.getElementById('searchResultsDropdown');
+    let searchTimeout = null;
+    searchInput.addEventListener('input', (e) => {
+      const kw = e.target.value.trim();
+      clearTimeout(searchTimeout);
+      if (!kw) { dropdown.style.display = 'none'; return; }
+      searchTimeout = setTimeout(async () => {
+        try {
+          const res = await fetch(`https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(kw)}&limit=6`);
+          const data = await res.json();
+          if (data && data.data && data.data.items) {
+            dropdown.innerHTML = data.data.items.map(m => `
+              <div class="search-item" onclick="openPlayer('${m.slug}'); document.getElementById('searchResultsDropdown').style.display='none'; document.getElementById('liveSearchInput').value='';">
+                <img src="https://phimimg.com/${m.poster_url}">
+                <div><div style="font-weight:700;font-size:0.9rem;">${m.name}</div><div style="font-size:0.75rem;color:var(--text-muted);">${m.year} • ${m.episode_current || 'FHD'}</div></div>
+              </div>
+            `).join('');
+            dropdown.style.display = 'block';
+          }
+        } catch (err) {}
+      }, 300);
+    });
+    // Ẩn thanh tìm kiếm khi bấm ra ngoài
+    document.addEventListener('click', (e) => { if(!e.target.closest('.search-box')) dropdown.style.display='none'; });
+
+    // 3. TẢI PHIM, PHÂN TRANG VÀ HERO BANNER TỰ CHUYỂN
     async function fetchMovies(page = 1) {
       currentPage = page;
       document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;">Đang tải...</p>`;
@@ -338,8 +389,8 @@
         if (data.pagination) totalPages = data.pagination.totalPages;
         allMoviesCache = data.items;
         renderGrid('mainMovieGrid', data.items);
-        renderPagination(currentPage, totalPages); // GỌI LẠI HÀM VẼ SỐ TRANG
-        if(page === 1) updateHeroView(data.items[0]);
+        renderPagination(currentPage, totalPages);
+        if(page === 1) initCinematicHero(data.items);
       } catch (e) {}
     }
 
@@ -351,28 +402,38 @@
         </div>`).join('');
     }
 
+    // THUẬT TOÁN XOAY TUA BANNER TỰ ĐỘNG SAO MỖI 5 GIÂY
+    let heroInterval = null;
+    function initCinematicHero(movies) {
+      if (!movies || movies.length === 0) return;
+      if (heroInterval) clearInterval(heroInterval);
+      let index = 0;
+      updateHeroView(movies[index]);
+      heroInterval = setInterval(() => {
+        index = (index + 1) % Math.min(movies.length, 5); // Xoay 5 phim đầu tiên
+        updateHeroView(movies[index]);
+      }, 5000);
+    }
+
     function updateHeroView(m) {
-      // Đã bọc lại link ảnh nền để không bị lỗi màn hình đen
       const imgUrl = m.thumb_url.startsWith('http') ? m.thumb_url : 'https://phimimg.com/' + m.thumb_url;
       document.getElementById('heroBackdrop').style.backgroundImage = `url('${imgUrl}')`;
       document.getElementById('heroTitle').innerText = m.name;
+      document.getElementById('heroDesc').innerText = `Tuyệt phẩm "${m.name}" (${m.origin_name}) đang làm mưa làm gió. Xem ngay với hình ảnh siêu sắc nét, đường truyền ổn định không quảng cáo rác.`;
       document.getElementById('btnHeroPlay').onclick = () => openPlayer(m.slug);
     }
 
-    // THUẬT TOÁN PHÂN TRANG (PAGINATION)
     function renderPagination(current, total) {
       const bar = document.getElementById('paginationBar');
       if (total <= 1) { bar.innerHTML = ''; return; }
       const delta = window.innerWidth <= 680 ? 1 : 2;
       let html = `<button class="page-btn" ${current === 1 ? 'disabled' : ''} onclick="goToPage(${current - 1})"><i class="fa-solid fa-chevron-left"></i></button>`;
       html += `<button class="page-btn ${current === 1 ? 'active' : ''}" onclick="goToPage(1)">1</button>`;
-      
       let range = [];
       for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) range.push(i);
       if (range.length > 0 && range[0] > 2) html += `<span style="color:var(--text-muted);padding:0 4px;">...</span>`;
       range.forEach(p => { html += `<button class="page-btn ${p === current ? 'active' : ''}" onclick="goToPage(${p})">${p}</button>`; });
       if (range.length > 0 && range[range.length - 1] < total - 1) html += `<span style="color:var(--text-muted);padding:0 4px;">...</span>`;
-      
       if (total > 1) html += `<button class="page-btn ${current === total ? 'active' : ''}" onclick="goToPage(${total})">${total}</button>`;
       html += `<button class="page-btn" ${current === total ? 'disabled' : ''} onclick="goToPage(${current + 1})"><i class="fa-solid fa-chevron-right"></i></button>`;
       bar.innerHTML = html;
@@ -380,11 +441,10 @@
 
     function goToPage(page) {
       if (page < 1 || page > totalPages || page === currentPage) return;
-      fetchMovies(page);
-      document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
+      fetchMovies(page); document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 3. MỞ TRÌNH PHÁT BẰNG HLS.JS (100% CHỐNG QUẢNG CÁO)
+    // 4. MỞ TRÌNH PHÁT BẰNG HLS.JS (100% CHỐNG QUẢNG CÁO)
     async function openPlayer(slug) {
       try {
         const res = await fetch(`https://phimapi.com/phim/${slug}`); const data = await res.json();
@@ -396,6 +456,8 @@
           
           const tempDiv = document.createElement("div"); tempDiv.innerHTML = m.content;
           document.getElementById('metaDesc').innerText = tempDiv.textContent || tempDiv.innerText || "";
+          document.getElementById('metaDirector').innerText = m.director && m.director[0] ? m.director.join(", ") : 'Đang cập nhật';
+          document.getElementById('metaActor').innerText = m.actor && m.actor[0] ? m.actor.join(", ") : 'Đang cập nhật';
           
           const epData = data.episodes[0].server_data;
           document.getElementById('episodesList').innerHTML = epData.map((ep, idx) => `<button class="btn-ep ${idx === 0 ? 'active' : ''}" onclick="playEpisode('${ep.link_m3u8}', this)">${ep.name}</button>`).join('');
@@ -426,7 +488,6 @@
     let isCinemaMode = false;
     function toggleCinemaMode() { isCinemaMode = !isCinemaMode; const modal = document.getElementById('playerModal'); if(isCinemaMode){ modal.classList.add('cinema-mode-active'); showToast("Đã bật Rạp Chiếu!"); }else{ modal.classList.remove('cinema-mode-active'); } }
 
-    // PHỤC HỒI CHỨC NĂNG TROLL SAO HỎA
     function triggerTrollQuality(val) {
       if (val === '4k') showToast("🛸 Đã kết nối NASA: Lên chuẩn 4K!"); else if (val === '8k') showToast("🚀 Tín hiệu Sao Hỏa: 8K Siêu Nét!"); else if (val === '144p') showToast("🍚 Chế độ Nồi Cơm Điện!"); else showToast("✨ 1080p FHD: Siêu mượt!");
     }
@@ -434,7 +495,7 @@
       if (val === 'mars') alert("🪐 CẢNH BÁO: Tín hiệu bay qua vành đai thiên thạch. Chờ 14 phút 36 giây nhé!"); else if (val === 'moon') showToast("🌕 Ping Mặt Trăng: 1.28 giây."); else showToast("🌍 Ping Trái Đất: 0.01ms");
     }
 
-    // 4. BÌNH LUẬN & TÍNH NĂNG TRẢ LỜI (NESTED REPLIES)
+    // 5. BÌNH LUẬN VÀ TRẢ LỜI (NESTED COMMENTS)
     function loadComments(slug) {
       if (unsubscribeComments) unsubscribeComments();
       const list = document.getElementById('commentList');
@@ -451,7 +512,6 @@
              const isLiked = currentUser && (c.likes||[]).includes(currentUser.uid); const isDisliked = currentUser && (c.dislikes||[]).includes(currentUser.uid);
              const safeContent = c.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
              
-             // Xử lý hiển thị danh sách các câu trả lời thụt lề
              let repliesHtml = '';
              if(c.replies && c.replies.length > 0) {
                 repliesHtml = c.replies.map(r => `
@@ -474,14 +534,9 @@
                    <div class="c-actions">
                      <button class="btn-action ${isLiked ? 'liked' : ''}" onclick="voteComment('${slug}', '${cId}', 'like')"><i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-thumbs-up"></i> ${(c.likes||[]).length || ''}</button>
                      <button class="btn-action ${isDisliked ? 'disliked' : ''}" onclick="voteComment('${slug}', '${cId}', 'dislike')"><i class="${isDisliked ? 'fa-solid' : 'fa-regular'} fa-thumbs-down"></i> ${(c.dislikes||[]).length || ''}</button>
-                     <!-- NÚT MỞ KHUNG TRẢ LỜI -->
                      <button class="btn-action" onclick="toggleReplyBox('${cId}')"><i class="fa-solid fa-reply"></i> Phản hồi</button>
                    </div>
-                   
-                   <!-- Vùng hiển thị Reply -->
                    ${repliesHtml}
-
-                   <!-- Khung nhập Reply (Ẩn mặc định) -->
                    <div id="replyBox-${cId}" style="display:none; margin-top:12px; gap:8px;" class="comment-input-wrap">
                      <textarea id="txtReply-${cId}" placeholder="Viết phản hồi..." style="flex:1; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:8px; color:#fff; outline:none; resize:none; min-height:40px; font-family:inherit;"></textarea>
                      <button class="btn-send-cmt" style="padding:8px 12px; height:fit-content;" onclick="submitReply('${slug}', '${cId}')"><i class="fa-solid fa-paper-plane"></i></button>
@@ -515,7 +570,6 @@
        } catch(e) {}
     }
 
-    // THUẬT TOÁN ĐẨY CÂU TRẢ LỜI VÀO BÌNH LUẬN GỐC
     function toggleReplyBox(cId) {
       if(!currentUser) return showToast("Đăng nhập để phản hồi!");
       const box = document.getElementById('replyBox-' + cId);
@@ -523,18 +577,12 @@
     }
 
     async function submitReply(slug, cId) {
-      const txt = document.getElementById('txtReply-' + cId).value.trim();
-      if(!txt) return;
+      const txt = document.getElementById('txtReply-' + cId).value.trim(); if(!txt) return;
       try {
         const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
-        // Dùng thuật toán arrayUnion để ghép câu trả lời mới vào mảng có sẵn mà không đè mất cái cũ
-        await ref.update({
-          replies: firebase.firestore.FieldValue.arrayUnion({
-            uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: currentUser.photoURL || defaultAvatar, content: txt, timestamp: Date.now()
-          })
-        });
+        await ref.update({ replies: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: currentUser.photoURL || defaultAvatar, content: txt, timestamp: Date.now() }) });
         showToast("Đã trả lời!");
-      } catch (e) { showToast("Lỗi trả lời!"); }
+      } catch (e) {}
     }
 
     async function voteComment(slug, cId, type) {
@@ -544,17 +592,14 @@
          await db.runTransaction(async (t) => {
             const doc = await t.get(ref); if (!doc.exists) return;
             const data = doc.data(); let likes = data.likes || []; let dislikes = data.dislikes || []; const uid = currentUser.uid;
-            if (type === 'like') {
-               if (likes.includes(uid)) { likes = likes.filter(id => id !== uid); } else { likes.push(uid); dislikes = dislikes.filter(id => id !== uid); }
-            } else {
-               if (dislikes.includes(uid)) { dislikes = dislikes.filter(id => id !== uid); } else { dislikes.push(uid); likes = likes.filter(id => id !== uid); }
-            }
+            if (type === 'like') { if (likes.includes(uid)) { likes = likes.filter(id => id !== uid); } else { likes.push(uid); dislikes = dislikes.filter(id => id !== uid); } } 
+            else { if (dislikes.includes(uid)) { dislikes = dislikes.filter(id => id !== uid); } else { dislikes.push(uid); likes = likes.filter(id => id !== uid); } }
             t.update(ref, { likes, dislikes });
          });
       } catch(e) {}
     }
 
-    // TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
+    // 6. TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
     function saveToHistory(m) {
       if(!currentUser) return;
       db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: Date.now() });
