@@ -97,7 +97,7 @@
     .page-btn.active { background: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);}
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* PLAYER MODAL VÀ VÙNG CHẠM TUA NHANH */
+    /* PLAYER MODAL VÀ VÙNG CHẠM TUA NHANH (SỬA LỖI FULLSCREEN MOBILE) */
     .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
     .cinema-mode-active .player-details-container { opacity: 0.08; filter: blur(3px); pointer-events: none; }
@@ -106,11 +106,11 @@
     .player-tools { display: flex; gap: 8px; }
     .btn-tool { background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     
-    .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); user-select: none; }
-    .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; }
+    .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+    .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; object-fit: contain; }
 
     /* CỬ CHỈ GÕ ĐÚP TUA NHANH TRÊN MOBILE */
-    .seek-touch-area { position: absolute; top: 0; bottom: 50px; width: 40%; z-index: 5; }
+    .seek-touch-area { position: absolute; top: 0; bottom: 50px; width: 35%; z-index: 5; }
     .seek-touch-left { left: 0; }
     .seek-touch-right { right: 0; }
     .seek-indicator {
@@ -336,7 +336,7 @@
     </div>
   </div>
 
-  <!-- POP-UP MINI KHI BỊ BẠN BÈ CHỌC (HIỆU ỨNG RUNG LẮC BÁ ĐẠO) -->
+  <!-- POP-UP MINI KHI BỊ BẠN BÈ CHỌC -->
   <div class="poke-notification" id="pokeNotification">
     <img src="" class="poke-notify-avatar" id="pokeSenderAvatar">
     <div style="flex:1; overflow:hidden;">
@@ -556,8 +556,9 @@
         </div>
       </div>
 
+      <!-- SỬA LỖI FULLSCREEN: THÊM ĐỦ THUỘC TÍNH CHO THẺ VIDEO -->
       <div class="video-wrapper" id="videoWrapper">
-        <video id="videoPlayer" controls crossorigin playsinline></video>
+        <video id="videoPlayer" controls playsinline webkit-playsinline x5-playsinline></video>
         <div class="seek-touch-area seek-touch-left" id="seekTouchLeft"></div>
         <div class="seek-touch-area seek-touch-right" id="seekTouchRight"></div>
         <div class="seek-indicator left" id="seekIndicatorLeft"><i class="fa-solid fa-backward"></i> -10s</div>
@@ -703,9 +704,6 @@
       "🌧️ Ngoài trời mưa rơi tầm tã, trong lòng bạn đã có ai lau nước mắt chưa?"
     ];
 
-    // ========================================================
-    // TỰ ĐỘNG ĐỒNG BỘ ĐỒNG HỒ MÁY CHỦ (CHỐNG LỆCH PHÚT GIỮA PC & MOBILE)
-    // ========================================================
     let serverTimeOffset = 0;
     async function syncGlobalClock() {
       try {
@@ -723,7 +721,6 @@
       return Date.now() + serverTimeOffset;
     }
 
-    // 0. BẢNG THÔNG BÁO MIỄN TRỪ TRÁCH NHIỆM
     function checkDisclaimerNotice() {
       const accepted = sessionStorage.getItem('phimnha_disclaimer_accepted');
       if (!accepted) document.getElementById('disclaimerModal').style.display = 'flex';
@@ -740,9 +737,6 @@
       return "https://phimimg.com/" + path.replace(/^\//, '');
     }
 
-    // ========================================================
-    // QUẢN LÝ ĐỊNH DANH & AVATAR BỀN VỮNG
-    // ========================================================
     let guestId = localStorage.getItem('phimnha_guest_id');
     if (!guestId) {
       guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
@@ -761,9 +755,6 @@
       return `https://api.dicebear.com/7.x/bottts/svg?seed=${guestId}`; 
     }
 
-    // ========================================================
-    // MỞ KHÓA ÂM THANH TRÊN MOBILE (CHỐNG CHẶN AUDIO)
-    // ========================================================
     let globalAudioCtx = null;
     function getAudioContext() {
       if (!globalAudioCtx) {
@@ -798,9 +789,6 @@
       } catch (e) {}
     }
 
-    // ========================================================
-    // TÍNH NĂNG 1: PROFILE CÁ NHÂN & TẢI ẢNH TỪ MÁY / MOBILE
-    // ========================================================
     function openProfileModal() {
       if (!currentUser) return;
       const currentAvt = getMyAvatar();
@@ -930,7 +918,7 @@
         showToast("✅ Đổi mật khẩu thành công!");
       } catch (err) {
         if (err.code === 'auth/requires-recent-login') {
-          showToast("⚠️️ Vui lòng đăng xuất và đăng nhập lại để đổi mật khẩu!");
+          showToast("⚠ Vui lòng đăng xuất và đăng nhập lại để đổi mật khẩu!");
         } else {
           showToast("Lỗi: " + err.message);
         }
@@ -970,9 +958,6 @@
       }
     }
 
-    // ========================================================
-    // TÍNH NĂNG 2: SOI TRANG CÁ NHÂN CỦA BẠN BÈ
-    // ========================================================
     async function viewUserProfile(targetUid, targetName, targetAvatar) {
       if (!targetUid) return;
       if (currentUser && targetUid === currentUser.uid) {
@@ -1000,18 +985,15 @@
           const hours = Math.floor(totalMin / 60);
           const mins = totalMin % 60;
           document.getElementById('publicModalWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
-          document.getElementById('publicModalBio').innerText = data.bio ? `"${data.bio}"` : `"Mọt phim chân chính 🍿"`;
+          document.getElementById('publicModalBio').innerText = data.bio ? `"${data.bio}"` : `"Mọt phim chính hiệu 🍿"`;
           if (data.avatar) document.getElementById('publicModalAvatar').src = data.avatar;
         } else {
           document.getElementById('publicModalWatchTime').innerText = "0 phút";
-          document.getElementById('publicModalBio').innerText = `"Mọt phim chân chính 🍿"`;
+          document.getElementById('publicModalBio').innerText = `"Mọt phim chính hiệu 🍿"`;
         }
       } catch(e) {}
     }
 
-    // ========================================================
-    // TÍNH NĂNG 3: RESUME PLAYBACK (LƯU VỊ TRÍ ĐANG XEM)
-    // ========================================================
     function getResumeKey(slug, epIndex) {
       return `resume_${slug}_ep${epIndex}`;
     }
@@ -1049,9 +1031,6 @@
       }
     }
 
-    // ========================================================
-    // TÍNH NĂNG 4: GÕ ĐÚP TUA NHANH 10S & PHÍM TẮT
-    // ========================================================
     let lastTapLeft = 0;
     let lastTapRight = 0;
 
@@ -1107,9 +1086,6 @@
       setTimeout(() => { ind.style.display = 'none'; }, 500);
     }
 
-    // ========================================================
-    // TÍNH NĂNG 5: CHỌC BÁ KHÍ + RANDOM CÂU CÀ KHỊA + CHẶN 24H
-    // ========================================================
     const pokeCooldowns = {};
     async function pokeUser(targetUid, targetName) {
       const now = getSyncedNow();
@@ -1119,7 +1095,6 @@
         return showToast(`⏳ Chờ ${remain}s để chọc lại ${targetName}!`);
       }
 
-      // Random 1 câu thoại bá đạo
       const randomQuote = pokeQuotes[Math.floor(Math.random() * pokeQuotes.length)];
       pokeCooldowns[targetUid] = now;
 
@@ -1138,7 +1113,6 @@
       }
     }
 
-    // LẮNG NGHE CHỌC REALTIME THEO TO_UID
     let isInitialPokeLoad = true;
     let pokeNotificationTimeout = null;
     let unsubscribePokes = null;
@@ -1166,7 +1140,6 @@
     }
 
     function triggerPokeNotice(data) {
-      // Kiểm tra chế độ Chặn 24 giờ
       const dndUntil = localStorage.getItem('phimnha_dnd_until');
       if (dndUntil && getSyncedNow() < parseInt(dndUntil)) return;
 
@@ -1189,11 +1162,10 @@
 
       toast.style.display = 'flex';
       toast.classList.remove('active-shake');
-      void toast.offsetWidth; // Trigger reflow để kích hoạt lại animation rung
+      void toast.offsetWidth;
       toast.classList.add('active-shake');
 
       clearTimeout(pokeNotificationTimeout);
-      // Giữ thông báo hiển thị 10 giây để người xem đọc hết câu cà khịa
       pokeNotificationTimeout = setTimeout(() => { 
         toast.style.display = 'none'; 
         toast.classList.remove('active-shake');
@@ -1209,9 +1181,6 @@
       showToast("🔕 Đã kích hoạt khiên chống trêu trong 24 giờ!");
     }
 
-    // ========================================================
-    // TÍNH NĂNG 6: BẢNG XẾP HẠNG CÀY PHIM (LEADERBOARD)
-    // ========================================================
     let watchTimeTrackerInterval = null;
     function initWatchTimeTracker() {
       if (watchTimeTrackerInterval) clearInterval(watchTimeTrackerInterval);
@@ -1273,9 +1242,6 @@
       }
     }
 
-    // ========================================================
-    // TÍNH NĂNG 7: ONLINE PRESENCE CHUẨN ĐỒNG HỒ ĐỒNG BỘ
-    // ========================================================
     function updateOnlinePresence() {
       const uid = getMyUid();
       const isWatching = currentPlayingMovie ? currentPlayingMovie.name : null;
@@ -1300,7 +1266,6 @@
       let activeUsers = [];
       snapshot.forEach(doc => {
         const data = doc.data();
-        // Nhờ đồng hồ đồng bộ chuẩn máy chủ, thời gian chờ 60s lọc cực chuẩn, không bị lệch phiên
         if (data.lastSeen && (now - data.lastSeen > -10000 && now - data.lastSeen < 65000)) {
           activeUsers.push(data);
         }
@@ -1346,7 +1311,6 @@
       document.getElementById('onlineUsersModal').style.display = 'flex';
     }
 
-    // AUTH
     auth.onAuthStateChanged(async user => {
       currentUser = user;
       if (user) {
@@ -1398,7 +1362,6 @@
     function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
     function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
-    // LIVE SEARCH
     const searchInput = document.getElementById('liveSearchInput');
     const dropdown = document.getElementById('searchResultsDropdown');
     const clearBtn = document.getElementById('searchClearBtn');
@@ -1448,7 +1411,6 @@
     }
     document.addEventListener('click', (e) => { if(!e.target.closest('.search-box')) dropdown.style.display='none'; });
 
-    // BANNER & MOVIES
     let heroInterval = null;
     let heroIndex = 0;
 
@@ -1524,9 +1486,6 @@
       fetchMovies(page); document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // ========================================================
-    // TÍNH NĂNG 8: TRÌNH PHÁT VÀ CHỌN THUYẾT MINH / VIETSUB
-    // ========================================================
     function parseServerBadge(serverName) {
       const nameLower = serverName.toLowerCase();
       if (nameLower.includes('thuyết minh') || nameLower.includes('thuyet minh')) {
@@ -1849,7 +1808,7 @@
 
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
     window.onload = async () => {
-      await syncGlobalClock(); // Cân bằng đồng hồ máy chủ ngay khi mở web
+      await syncGlobalClock();
       checkDisclaimerNotice();
       updateOnlinePresence();
       initPokeListener();
