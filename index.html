@@ -109,7 +109,7 @@
     .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); user-select: none; }
     .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; }
 
-    /* CỬ CHỈ CHẠM 2 LẦN ĐỂ TUA NHANH TRÊN MOBILE */
+    /* CỬ CHỈ GÕ ĐÚP TUA NHANH TRÊN MOBILE */
     .seek-touch-area { position: absolute; top: 0; bottom: 50px; width: 40%; z-index: 5; }
     .seek-touch-left { left: 0; }
     .seek-touch-right { right: 0; }
@@ -137,6 +137,28 @@
     .movie-cast-info { font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; line-height: 1.6;}
     .movie-cast-info span { color: #fff; }
     
+    /* GIAO DIỆN CHỌN BẢN DỊCH / THUYẾT MINH MỚI */
+    .server-choice-wrap { margin-top: 18px; margin-bottom: 14px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.12); }
+    .server-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .btn-server {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-server:hover { background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(255, 255, 255, 0.2); }
+    .btn-server.active.sub { background: var(--primary) !important; border-color: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45); }
+    .btn-server.active.tm { background: #f59e0b !important; border-color: #f59e0b !important; color: #fff !important; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45); }
+    .btn-server.active.lt { background: #10b981 !important; border-color: #10b981 !important; color: #fff !important; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.45); }
+
     .episodes-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; max-height: 180px; overflow-y: auto; }
     .btn-ep { background: var(--surface-card); border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s;}
     .btn-ep.active { background: var(--primary); border-color: var(--primary); }
@@ -206,7 +228,7 @@
     .rank-name { font-weight: 700; font-size: 0.95rem; }
     .rank-hours { font-size: 0.85rem; color: #38bdf8; font-weight: 700; margin-left: auto; }
 
-    /* MODAL PROFILE (HỒ SƠ CÁ NHÂN MỚI) */
+    /* MODAL PROFILE */
     .profile-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 480px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.9); }
     .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
     .profile-big-avatar { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
@@ -406,17 +428,14 @@
     </div>
     
     <div class="header-actions">
-      <!-- NÚT BẢNG XẾP HẠNG -->
       <button class="btn-action-top" onclick="openLeaderboard()" title="Bảng xếp hạng cày phim">
         <i class="fa-solid fa-trophy" style="color:#eab308;"></i> <span>BXH</span>
       </button>
 
-      <!-- NÚT TỦ PHIM -->
       <button class="btn-action-top" id="btnLibrary" onclick="openLibraryModal()" style="display:none;">
         <i class="fa-solid fa-bookmark"></i> <span>Tủ Phim</span>
       </button>
       
-      <!-- NÚT ONLINE -->
       <div class="online-badge" onclick="showOnlineUsersModal()" title="Bấm để xem ai đang online">
         <div class="dot"></div>
         <span>Online: </span><strong id="onlineCountText">1</strong>
@@ -459,7 +478,6 @@
 
       <div class="video-wrapper" id="videoWrapper">
         <video id="videoPlayer" controls crossorigin playsinline></video>
-        <!-- VÙNG CẢM ỨNG GÕ ĐÚP TUA TRÊN MOBILE -->
         <div class="seek-touch-area seek-touch-left" id="seekTouchLeft"></div>
         <div class="seek-touch-area seek-touch-right" id="seekTouchRight"></div>
         <div class="seek-indicator left" id="seekIndicatorLeft"><i class="fa-solid fa-backward"></i> -10s</div>
@@ -482,6 +500,15 @@
               <p><strong>Đạo diễn:</strong> <span id="metaDirector"></span></p>
               <p><strong>Diễn viên:</strong> <span id="metaActor"></span></p>
             </div>
+            
+            <!-- BỘ CHỌN THUYẾT MINH / LỒNG TIẾNG / VIETSUB -->
+            <div class="server-choice-wrap" id="serverChoiceWrap">
+              <div style="font-size:0.88rem; font-weight:700; color:#38bdf8; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-headphones"></i> Chọn Bản Dịch & Âm Thanh:
+              </div>
+              <div class="server-tabs" id="serverList"></div>
+            </div>
+
             <h3 style="font-size:1rem; margin-top:16px; margin-bottom:8px;">Chọn Tập:</h3>
             <div class="episodes-grid" id="episodesList"></div>
           </div>
@@ -558,8 +585,16 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth(); const db = firebase.firestore();
 
-    let currentUser = null; let currentPlayingMovie = null; let currentEpIndex = 0; let hlsInstance = null; let unsubscribeComments = null;
-    let allMoviesCache = []; let currentPage = 1; let totalPages = 50;
+    let currentUser = null; 
+    let currentPlayingMovie = null; 
+    let allMovieEpisodes = []; 
+    let currentServerIndex = 0; 
+    let currentEpIndex = 0; 
+    let hlsInstance = null; 
+    let unsubscribeComments = null;
+    let allMoviesCache = []; 
+    let currentPage = 1; 
+    let totalPages = 50;
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
 
     const presetAvatarsList = [
@@ -589,7 +624,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 1: PROFILE CÁ NHÂN (ĐỔI TÊN, ĐỔI AVATAR, THỐNG KÊ)
+    // TÍNH NĂNG 1: PROFILE CÁ NHÂN
     // ========================================================
     function openProfileModal() {
       if (!currentUser) return;
@@ -598,13 +633,11 @@
       document.getElementById('profileModalEmail').innerText = currentUser.email;
       document.getElementById('inputNewDisplayName').value = currentUser.displayName || '';
 
-      // Render preset avatars
       const wrap = document.getElementById('avatarPresetsWrap');
       wrap.innerHTML = presetAvatarsList.map(url => `
         <img src="${url}" class="preset-img ${currentUser.photoURL === url ? 'active' : ''}" onclick="selectPresetAvatar('${url}', this)">
       `).join('');
 
-      // Tải thống kê cá nhân
       loadProfileStats();
       document.getElementById('profileModal').style.display = 'flex';
     }
@@ -621,7 +654,6 @@
       if (!newName) return showToast("Tên không được để trống!");
       try {
         await currentUser.updateProfile({ displayName: newName });
-        // Đồng bộ lên stats và online
         db.collection('user_stats').doc(currentUser.uid).set({ name: newName }, { merge: true });
         updateOnlinePresence();
         document.getElementById('profileModalName').innerText = newName;
@@ -650,7 +682,6 @@
 
     async function loadProfileStats() {
       if (!currentUser) return;
-      // Lấy thời gian cày phim
       try {
         const doc = await db.collection('user_stats').doc(currentUser.uid).get();
         if (doc.exists) {
@@ -659,7 +690,6 @@
           const mins = totalMin % 60;
           document.getElementById('statWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
         }
-        // Lấy số phim trong tủ
         const favSnap = await db.collection('users').doc(currentUser.uid).collection('favorites').get();
         document.getElementById('statFavoritesCount').innerText = favSnap.size;
       } catch (e) {}
@@ -674,7 +704,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 2: RESUME PLAYBACK (TỰ LƯU ĐOẠN ĐANG XEM DỞ)
+    // TÍNH NĂNG 2: RESUME PLAYBACK (LƯU VỊ TRÍ ĐANG XEM)
     // ========================================================
     function getResumeKey(slug, epIndex) {
       return `resume_${slug}_ep${epIndex}`;
@@ -684,7 +714,6 @@
       const video = document.getElementById('videoPlayer');
       video.addEventListener('timeupdate', () => {
         if (!currentPlayingMovie || video.duration <= 30) return;
-        // Lưu mỗi 3 giây nếu đã xem qua 10s và chưa sát cuối video
         if (video.currentTime > 10 && (video.duration - video.currentTime > 15)) {
           localStorage.setItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex), Math.floor(video.currentTime).toString());
         }
@@ -715,7 +744,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 3: GÕ ĐÚP TUA NHANH 10S & PHÍM TẮT (ANTI-ADS)
+    // TÍNH NĂNG 3: GÕ ĐÚP TUA NHANH 10S & PHÍM TẮT
     // ========================================================
     let lastTapLeft = 0;
     let lastTapRight = 0;
@@ -725,7 +754,6 @@
       const rightArea = document.getElementById('seekTouchRight');
       const video = document.getElementById('videoPlayer');
 
-      // Gõ đúp lùi 10s bên trái
       leftArea.addEventListener('click', (e) => {
         const now = Date.now();
         if (now - lastTapLeft < 320) {
@@ -738,7 +766,6 @@
         }
       });
 
-      // Gõ đúp tiến 10s bên phải (Lướt qua quảng cáo cờ bạc nhanh gọn)
       rightArea.addEventListener('click', (e) => {
         const now = Date.now();
         if (now - lastTapRight < 320) {
@@ -751,7 +778,6 @@
         }
       });
 
-      // Phím tắt bàn phím trên máy tính
       window.addEventListener('keydown', (e) => {
         if (document.getElementById('playerModal').style.display !== 'flex') return;
         if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
@@ -996,7 +1022,7 @@
       document.getElementById('onlineUsersModal').style.display = 'flex';
     }
 
-    // AUTH VÀ RENDER PROFILE GÓC TRÊN
+    // AUTH
     auth.onAuthStateChanged(user => {
       currentUser = user;
       renderAuthUI(user);
@@ -1162,59 +1188,157 @@
       fetchMovies(page); document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // PLAYER HLS.JS
+    // ========================================================
+    // TÍNH NĂNG 6: TRÌNH PHÁT VÀ CHỌN THUYẾT MINH / VIETSUB
+    // ========================================================
+    function parseServerBadge(serverName) {
+      const nameLower = serverName.toLowerCase();
+      if (nameLower.includes('thuyết minh') || nameLower.includes('thuyet minh')) {
+        return { text: '🎙️ Thuyết Minh', type: 'tm' };
+      }
+      if (nameLower.includes('lồng tiếng') || nameLower.includes('long tieng')) {
+        return { text: '🗣️ Lồng Tiếng', type: 'lt' };
+      }
+      if (nameLower.includes('vietsub') || nameLower.includes('phụ đề') || nameLower.includes('phu de')) {
+        return { text: '📝 Phụ Đề / Vietsub', type: 'sub' };
+      }
+      return { text: `📡 ${serverName}`, type: 'sub' };
+    }
+
     async function openPlayer(slug) {
       try {
-        const res = await fetch(`https://phimapi.com/phim/${slug}`); const data = await res.json();
+        const res = await fetch(`https://phimapi.com/phim/${slug}`);
+        const data = await res.json();
         if (data.status) {
-          const m = data.movie; currentPlayingMovie = m;
+          const m = data.movie;
+          currentPlayingMovie = m;
+          allMovieEpisodes = data.episodes || [];
+
           document.getElementById('playerMovieTitle').innerText = m.name;
           document.getElementById('metaTitle').innerText = m.name;
           document.getElementById('metaYear').innerText = m.year || 2026;
           
-          const tempDiv = document.createElement("div"); tempDiv.innerHTML = m.content;
+          const tempDiv = document.createElement("div"); 
+          tempDiv.innerHTML = m.content;
           document.getElementById('metaDesc').innerText = tempDiv.textContent || tempDiv.innerText || "";
           document.getElementById('metaDirector').innerText = m.director && m.director[0] ? m.director.join(", ") : 'Đang cập nhật';
           document.getElementById('metaActor').innerText = m.actor && m.actor[0] ? m.actor.join(", ") : 'Đang cập nhật';
           
-          const epData = data.episodes[0].server_data;
-          document.getElementById('episodesList').innerHTML = epData.map((ep, idx) => `
-            <button class="btn-ep ${idx === 0 ? 'active' : ''}" onclick="playEpisode('${ep.link_m3u8}', this, ${idx})">
-              ${ep.name}
-            </button>
-          `).join('');
-          
+          // Tự động chọn server theo sở thích của người dùng (ưu tiên Thuyết Minh nếu có)
+          const userPref = localStorage.getItem('phimnha_audio_pref') || 'tm';
+          currentServerIndex = 0;
+          if (userPref === 'tm') {
+            const foundTmIdx = allMovieEpisodes.findIndex(s => {
+              const n = s.server_name.toLowerCase();
+              return n.includes('thuyết minh') || n.includes('thuyet minh') || n.includes('lồng tiếng');
+            });
+            if (foundTmIdx !== -1) currentServerIndex = foundTmIdx;
+          }
+
+          renderServerButtons();
+          renderEpisodesList();
+
+          const epData = allMovieEpisodes[currentServerIndex].server_data;
           currentEpIndex = 0;
           playEpisode(epData[0].link_m3u8, document.querySelector('.btn-ep'), 0);
           
           const related = allMoviesCache.filter(x => x.slug !== m.slug).sort(() => 0.5 - Math.random()).slice(0, 4);
           renderGrid('relatedMoviesGrid', related);
           
-          checkFavoriteStatus(); saveToHistory(m); loadComments(m.slug);
+          checkFavoriteStatus(); 
+          saveToHistory(m); 
+          loadComments(m.slug);
           updateOnlinePresence();
 
-          document.getElementById('playerModal').style.display = 'flex'; document.getElementById('playerModal').scrollTo(0,0);
+          document.getElementById('playerModal').style.display = 'flex'; 
+          document.getElementById('playerModal').scrollTo(0,0);
         }
       } catch (err) { showToast("Lỗi tải phim!"); }
     }
 
-    function playEpisode(m3u8Url, btnElement, epIndex = 0) {
+    function renderServerButtons() {
+      const serverWrap = document.getElementById('serverList');
+      if (!allMovieEpisodes || allMovieEpisodes.length <= 1) {
+        const badge = allMovieEpisodes[0] ? parseServerBadge(allMovieEpisodes[0].server_name) : { text: 'Bản Chuẩn', type: 'sub' };
+        serverWrap.innerHTML = `<button class="btn-server active ${badge.type}">${badge.text}</button>`;
+        return;
+      }
+
+      serverWrap.innerHTML = allMovieEpisodes.map((s, idx) => {
+        const badge = parseServerBadge(s.server_name);
+        return `
+          <button class="btn-server ${idx === currentServerIndex ? `active ${badge.type}` : ''}" onclick="switchServer(${idx})">
+            ${badge.text}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderEpisodesList() {
+      const epData = allMovieEpisodes[currentServerIndex].server_data;
+      document.getElementById('episodesList').innerHTML = epData.map((ep, idx) => `
+        <button class="btn-ep ${idx === currentEpIndex ? 'active' : ''}" onclick="onEpisodeClick('${ep.link_m3u8}', this, ${idx})">
+          ${ep.name}
+        </button>
+      `).join('');
+    }
+
+    function onEpisodeClick(m3u8Url, btnElement, epIndex) {
+      playEpisode(m3u8Url, btnElement, epIndex, null);
+    }
+
+    function switchServer(serverIdx) {
+      if (serverIdx === currentServerIndex) return;
+      currentServerIndex = serverIdx;
+      
+      const badge = parseServerBadge(allMovieEpisodes[serverIdx].server_name);
+      if (badge.type === 'tm' || badge.type === 'lt') localStorage.setItem('phimnha_audio_pref', 'tm');
+      else localStorage.setItem('phimnha_audio_pref', 'sub');
+
+      renderServerButtons();
+      renderEpisodesList();
+
+      const epData = allMovieEpisodes[currentServerIndex].server_data;
+      const video = document.getElementById('videoPlayer');
+      const curTime = (!isNaN(video.currentTime) && video.currentTime > 0) ? video.currentTime : 0;
+      
+      const targetEp = epData[currentEpIndex] || epData[0];
+      const actualEpIndex = epData[currentEpIndex] ? currentEpIndex : 0;
+      
+      playEpisode(targetEp.link_m3u8, document.querySelectorAll('.btn-ep')[actualEpIndex], actualEpIndex, curTime);
+      showToast(`Đã chuyển sang: ${badge.text}`);
+    }
+
+    function playEpisode(m3u8Url, btnElement, epIndex = 0, seekTo = null) {
       currentEpIndex = epIndex;
-      if (btnElement) { document.querySelectorAll('.btn-ep').forEach(b => b.classList.remove('active')); btnElement.classList.add('active'); }
+      if (btnElement) { 
+        document.querySelectorAll('.btn-ep').forEach(b => b.classList.remove('active')); 
+        btnElement.classList.add('active'); 
+      }
       const video = document.getElementById('videoPlayer');
       
       if (Hls.isSupported()) {
         if (hlsInstance) hlsInstance.destroy();
-        hlsInstance = new Hls(); hlsInstance.loadSource(m3u8Url); hlsInstance.attachMedia(video);
+        hlsInstance = new Hls(); 
+        hlsInstance.loadSource(m3u8Url); 
+        hlsInstance.attachMedia(video);
         hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
           video.play().catch(e=>{});
-          if (currentPlayingMovie) applyResumePlayback(currentPlayingMovie.slug, currentEpIndex);
+          if (seekTo !== null && seekTo > 0) {
+            video.currentTime = seekTo;
+          } else if (currentPlayingMovie) {
+            applyResumePlayback(currentPlayingMovie.slug, currentEpIndex);
+          }
         });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = m3u8Url;
         video.addEventListener('loadedmetadata', function() {
           video.play();
-          if (currentPlayingMovie) applyResumePlayback(currentPlayingMovie.slug, currentEpIndex);
+          if (seekTo !== null && seekTo > 0) {
+            video.currentTime = seekTo;
+          } else if (currentPlayingMovie) {
+            applyResumePlayback(currentPlayingMovie.slug, currentEpIndex);
+          }
         });
       }
     }
@@ -1229,13 +1353,27 @@
     }
 
     let isCinemaMode = false;
-    function toggleCinemaMode() { isCinemaMode = !isCinemaMode; const modal = document.getElementById('playerModal'); if(isCinemaMode){ modal.classList.add('cinema-mode-active'); showToast("Đã bật Rạp Chiếu!"); }else{ modal.classList.remove('cinema-mode-active'); } }
+    function toggleCinemaMode() { 
+      isCinemaMode = !isCinemaMode; 
+      const modal = document.getElementById('playerModal'); 
+      if (isCinemaMode) { 
+        modal.classList.add('cinema-mode-active'); 
+        showToast("Đã bật Rạp Chiếu!"); 
+      } else { 
+        modal.classList.remove('cinema-mode-active'); 
+      } 
+    }
 
     function triggerTrollQuality(val) {
-      if (val === '4k') showToast("🛸 Đã kết nối NASA: Lên chuẩn 4K!"); else if (val === '8k') showToast("🚀 Tín hiệu Sao Hỏa: 8K Siêu Nét!"); else if (val === '144p') showToast("🍚 Chế độ Nồi Cơm Điện!"); else showToast("✨ 1080p FHD: Siêu mượt!");
+      if (val === '4k') showToast("🛸 Đã kết nối NASA: Lên chuẩn 4K!"); 
+      else if (val === '8k') showToast("🚀 Tín hiệu Sao Hỏa: 8K Siêu Nét!"); 
+      else if (val === '144p') showToast("🍚 Chế độ Nồi Cơm Điện!"); 
+      else showToast("✨ 1080p FHD: Siêu mượt!");
     }
     function triggerTrollLatency(val) {
-      if (val === 'mars') alert("🪐 CẢNH BÁO: Tín hiệu bay qua vành đai thiên thạch. Chờ 14 phút 36 giây nhé!"); else if (val === 'moon') showToast("🌕 Ping Mặt Trăng: 1.28 giây."); else showToast("🌍 Ping Trái Đất: 0.01ms");
+      if (val === 'mars') alert("🪐 CẢNH BÁO: Tín hiệu bay qua vành đai thiên thạch. Chờ 14 phút 36 giây nhé!"); 
+      else if (val === 'moon') showToast("🌕 Ping Mặt Trăng: 1.28 giây."); 
+      else showToast("🌍 Ping Trái Đất: 0.01ms");
     }
 
     // BÌNH LUẬN & TRẢ LỜI
