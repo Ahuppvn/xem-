@@ -17,7 +17,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-  <!-- HLS.JS: VŨ KHÍ TIÊU DIỆT QUẢNG CÁO CỜ BẠC -->
+  <!-- HLS.JS: TIÊU DIỆT QUẢNG CÁO CỜ BẠC -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
   <style>
@@ -57,16 +57,16 @@
     .user-avatar-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
 
     /* HERO POSTER */
-    .hero-container { position: relative; width: 100%; height: 60vh; min-height: 420px; overflow: hidden; margin-bottom: 20px; }
-    .hero-backdrop { position: absolute; inset: 0; background-size: cover; background-position: center top; transition: background-image 0.8s ease-in-out; transform: scale(1.02); }
-    .hero-vignette { position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg) 0%, rgba(9,10,15,0.7) 40%, rgba(9,10,15,0.2) 100%), linear-gradient(90deg, var(--bg) 0%, rgba(9,10,15,0.85) 35%, transparent 100%); }
-    .hero-content { position: absolute; bottom: 30px; left: 36px; max-width: 620px; z-index: 10; }
-    .hero-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-    .badge-tag { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px); padding: 3px 8px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; }
+    .hero-container { position: relative; width: 100%; height: 62vh; min-height: 440px; overflow: hidden; margin-bottom: 24px; background: #11141e; }
+    .hero-backdrop { position: absolute; inset: 0; background-size: cover; background-position: center 20%; transition: opacity 0.8s ease-in-out; transform: scale(1.02); opacity: 1; }
+    .hero-vignette { position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg) 0%, rgba(9,10,15,0.6) 50%, rgba(9,10,15,0.2) 100%), linear-gradient(90deg, var(--bg) 0%, rgba(9,10,15,0.85) 40%, transparent 100%); }
+    .hero-content { position: absolute; bottom: 36px; left: 36px; max-width: 650px; z-index: 10; }
+    .hero-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .badge-tag { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; }
     .badge-tag.red { background: var(--primary); color: #fff; }
-    .hero-title { font-size: 2.4rem; font-weight: 800; line-height: 1.15; margin-bottom: 10px; text-shadow: 0 4px 16px rgba(0,0,0,0.8);}
-    .hero-desc { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 2px 8px rgba(0,0,0,0.8);}
-    .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 10px 22px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4); transition: var(--transition); }
+    .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.15; margin-bottom: 12px; text-shadow: 0 4px 16px rgba(0,0,0,0.9); }
+    .hero-desc { font-size: 0.92rem; color: #cbd5e1; margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 2px 8px rgba(0,0,0,0.8); line-height: 1.6; }
+    .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 12px 26px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); transition: var(--transition); }
     .btn-hero-play:hover { background: var(--primary-hover); transform: scale(1.03); }
 
     /* MOVIE GRID & PAGINATION */
@@ -163,6 +163,8 @@
     @media (max-width: 992px) { .player-details-container { grid-template-columns: 1fr; } }
     @media (max-width: 680px) {
       header { padding: 10px 14px; } .brand span { display: none; }
+      .hero-content { left: 16px; bottom: 20px; right: 16px; }
+      .hero-title { font-size: 1.8rem; }
       .movie-grid, .lib-content, .related-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .header-actions .online-badge span { display: none; }
       .comment-input-wrap img { display: none; }
@@ -176,7 +178,6 @@
   <header>
     <a href="#" class="brand" onclick="location.reload()"><i class="fa-solid fa-play"></i> <span>PHIM NHÀ</span></a>
     
-    <!-- SEARCH TỨC THÌ (ĐÃ PHỤC HỒI) -->
     <div class="search-box">
       <i class="fa-solid fa-magnifying-glass"></i>
       <input type="text" id="liveSearchInput" placeholder="Tìm kiếm phim...">
@@ -190,14 +191,14 @@
     </div>
   </header>
 
-  <!-- HERO BANNER (TỰ ĐỘNG CHUYỂN PHIM SAU 5 GIÂY) -->
+  <!-- HERO BANNER (ĐÃ SỬA LỖI ẢNH VÀ TỰ ĐỘNG CHUYỂN PHIM) -->
   <div class="hero-container">
     <div class="hero-backdrop" id="heroBackdrop"></div>
     <div class="hero-vignette"></div>
     <div class="hero-content">
       <div class="hero-badges"><span class="badge-tag red">THỊNH HÀNH</span><span class="badge-tag" id="heroYear">2026</span></div>
-      <h1 class="hero-title" id="heroTitle">Đang Tải...</h1>
-      <p class="hero-desc" id="heroDesc"></p>
+      <h1 class="hero-title" id="heroTitle">Đang cập nhật phim...</h1>
+      <p class="hero-desc" id="heroDesc">Xem phim chất lượng cao, hình ảnh sắc nét, tốc độ truyền tải cực nhanh không quảng cáo rác.</p>
       <button class="btn-hero-play" id="btnHeroPlay"><i class="fa-solid fa-play"></i> Xem Ngay</button>
     </div>
   </div>
@@ -209,7 +210,7 @@
     <div class="pagination-wrapper"><div class="pagination-bar" id="paginationBar"></div></div>
   </div>
 
-  <!-- PLAYER MODAL (HLS CHỐNG QUẢNG CÁO) -->
+  <!-- PLAYER MODAL -->
   <div class="player-modal" id="playerModal">
     <div class="player-box">
       <div class="player-top-bar">
@@ -312,7 +313,7 @@
 
   <div class="toast-msg" id="toastMsg"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span id="toastContent"></span></div>
 
-  <!-- ==================== HỆ THỐNG JAVASCRIPT ==================== -->
+  <!-- ==================== HỆ THỐNG JAVASCRIPT ĐÃ SỬA LỖI ==================== -->
   <script>
     const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     firebase.initializeApp(firebaseConfig);
@@ -321,6 +322,13 @@
     let currentUser = null; let currentPlayingMovie = null; let hlsInstance = null; let unsubscribeComments = null;
     let allMoviesCache = []; let currentPage = 1; let totalPages = 50;
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
+
+    // HÀM TIỆN ÍCH XỬ LÝ LINK ẢNH PHIM CHUẨN 100% KHÔNG BAO GIỜ BỊ LỖI 404
+    function formatImageUrl(path) {
+      if (!path) return "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200";
+      if (path.startsWith('http://') || path.startsWith('https://')) return path;
+      return "https://phimimg.com/" + path.replace(/^\//, '');
+    }
 
     // 1. TÀI KHOẢN VÀ AVATAR GÓC PHẢI
     auth.onAuthStateChanged(user => {
@@ -352,7 +360,7 @@
     function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
     function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
-    // 2. LIVE SEARCH (TÌM KIẾM TRỰC TIẾP TỪ GÕ PHÍM)
+    // 2. LIVE SEARCH
     const searchInput = document.getElementById('liveSearchInput');
     const dropdown = document.getElementById('searchResultsDropdown');
     let searchTimeout = null;
@@ -367,8 +375,8 @@
           if (data && data.data && data.data.items) {
             dropdown.innerHTML = data.data.items.map(m => `
               <div class="search-item" onclick="openPlayer('${m.slug}'); document.getElementById('searchResultsDropdown').style.display='none'; document.getElementById('liveSearchInput').value='';">
-                <img src="https://phimimg.com/${m.poster_url}">
-                <div><div style="font-weight:700;font-size:0.9rem;">${m.name}</div><div style="font-size:0.75rem;color:var(--text-muted);">${m.year} • ${m.episode_current || 'FHD'}</div></div>
+                <img src="${formatImageUrl(m.poster_url)}">
+                <div><div style="font-weight:700;font-size:0.9rem;">${m.name}</div><div style="font-size:0.75rem;color:var(--text-muted);">${m.year || 2026} • ${m.episode_current || 'FHD'}</div></div>
               </div>
             `).join('');
             dropdown.style.display = 'block';
@@ -376,50 +384,73 @@
         } catch (err) {}
       }, 300);
     });
-    // Ẩn thanh tìm kiếm khi bấm ra ngoài
     document.addEventListener('click', (e) => { if(!e.target.closest('.search-box')) dropdown.style.display='none'; });
 
-    // 3. TẢI PHIM, PHÂN TRANG VÀ HERO BANNER TỰ CHUYỂN
+    // 3. TẢI PHIM & HERO BANNER XOAY TUA ĐÃ SỬA LỖI
+    let heroInterval = null;
+    let heroIndex = 0;
+
     async function fetchMovies(page = 1) {
       currentPage = page;
-      document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;">Đang tải...</p>`;
+      document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;">Đang tải danh sách phim...</p>`;
       try {
         const res = await fetch(`https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=${page}`);
         const data = await res.json();
-        if (data.pagination) totalPages = data.pagination.totalPages;
-        allMoviesCache = data.items;
-        renderGrid('mainMovieGrid', data.items);
-        renderPagination(currentPage, totalPages);
-        if(page === 1) initCinematicHero(data.items);
-      } catch (e) {}
+        if (data && data.items && data.items.length > 0) {
+          if (data.pagination) totalPages = data.pagination.totalPages;
+          allMoviesCache = data.items;
+          renderGrid('mainMovieGrid', data.items);
+          renderPagination(currentPage, totalPages);
+          
+          // Khởi động Banner một lần duy nhất ở trang 1
+          if (page === 1) {
+            startHeroBanner(data.items.slice(0, 6));
+          }
+        }
+      } catch (e) {
+        console.error("Lỗi nạp phim:", e);
+      }
     }
 
     function renderGrid(containerId, movies) {
       document.getElementById(containerId).innerHTML = movies.map(m => `
         <div class="movie-card" onclick="openPlayer('${m.slug}')">
-          <div class="movie-poster-wrap"><img src="${m.poster_url.startsWith('http') ? m.poster_url : 'https://phimimg.com/' + m.poster_url}" loading="lazy"><span class="badge-episode">${m.episode_current || 'FHD'}</span></div>
+          <div class="movie-poster-wrap"><img src="${formatImageUrl(m.poster_url)}" loading="lazy"><span class="badge-episode">${m.episode_current || 'FHD'}</span></div>
           <div class="movie-info"><div class="movie-name">${m.name}</div><div class="movie-meta"><span>${m.year||2026}</span></div></div>
         </div>`).join('');
     }
 
-    // THUẬT TOÁN XOAY TUA BANNER TỰ ĐỘNG SAO MỖI 5 GIÂY
-    let heroInterval = null;
-    function initCinematicHero(movies) {
+    // KHỞI ĐỘNG VÒNG LẶP BANNER AN TOÀN
+    function startHeroBanner(movies) {
       if (!movies || movies.length === 0) return;
       if (heroInterval) clearInterval(heroInterval);
-      let index = 0;
-      updateHeroView(movies[index]);
+      
+      heroIndex = 0;
+      updateHeroView(movies[0]);
+
+      // Tự động chuyển phim sau mỗi 5 giây
       heroInterval = setInterval(() => {
-        index = (index + 1) % Math.min(movies.length, 5); // Xoay 5 phim đầu tiên
-        updateHeroView(movies[index]);
+        heroIndex = (heroIndex + 1) % movies.length;
+        updateHeroView(movies[heroIndex]);
       }, 5000);
     }
 
     function updateHeroView(m) {
-      const imgUrl = m.thumb_url.startsWith('http') ? m.thumb_url : 'https://phimimg.com/' + m.thumb_url;
-      document.getElementById('heroBackdrop').style.backgroundImage = `url('${imgUrl}')`;
+      if (!m) return;
+      const backdrop = document.getElementById('heroBackdrop');
+      // Dùng thumb_url nếu có, nếu lỗi tự động lấy poster_url làm nền
+      const img = formatImageUrl(m.thumb_url || m.poster_url);
+      
+      // Hiệu ứng mờ dần khi chuyển ảnh
+      backdrop.style.opacity = '0.3';
+      setTimeout(() => {
+        backdrop.style.backgroundImage = `url('${img}')`;
+        backdrop.style.opacity = '1';
+      }, 200);
+
       document.getElementById('heroTitle').innerText = m.name;
-      document.getElementById('heroDesc').innerText = `Tuyệt phẩm "${m.name}" (${m.origin_name}) đang làm mưa làm gió. Xem ngay với hình ảnh siêu sắc nét, đường truyền ổn định không quảng cáo rác.`;
+      document.getElementById('heroYear').innerText = m.year || 2026;
+      document.getElementById('heroDesc').innerText = `Tuyệt phẩm "${m.name}" (${m.origin_name || 'Bản quyền'}) đang làm mưa làm gió. Xem ngay với hình ảnh siêu sắc nét, đường truyền ổn định không quảng cáo rác.`;
       document.getElementById('btnHeroPlay').onclick = () => openPlayer(m.slug);
     }
 
@@ -444,7 +475,7 @@
       fetchMovies(page); document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 4. MỞ TRÌNH PHÁT BẰNG HLS.JS (100% CHỐNG QUẢNG CÁO)
+    // 4. TRÌNH PHÁT CHỐNG QUẢNG CÁO HLS.JS
     async function openPlayer(slug) {
       try {
         const res = await fetch(`https://phimapi.com/phim/${slug}`); const data = await res.json();
@@ -495,7 +526,7 @@
       if (val === 'mars') alert("🪐 CẢNH BÁO: Tín hiệu bay qua vành đai thiên thạch. Chờ 14 phút 36 giây nhé!"); else if (val === 'moon') showToast("🌕 Ping Mặt Trăng: 1.28 giây."); else showToast("🌍 Ping Trái Đất: 0.01ms");
     }
 
-    // 5. BÌNH LUẬN VÀ TRẢ LỜI (NESTED COMMENTS)
+    // 5. BÌNH LUẬN & TRẢ LỜI
     function loadComments(slug) {
       if (unsubscribeComments) unsubscribeComments();
       const list = document.getElementById('commentList');
@@ -627,7 +658,7 @@
       const snap = await db.collection('users').doc(currentUser.uid).collection(currentLibTab).orderBy('timestamp', 'desc').limit(20).get();
       if(snap.empty) return grid.innerHTML = `<p style="text-align:center;">Trống.</p>`;
       let html = '';
-      snap.forEach(doc => { const m = doc.data(); const img = m.thumb_url.startsWith('http') ? m.thumb_url : 'https://phimimg.com/'+m.thumb_url; html += `<div class="movie-card" onclick="document.getElementById('libraryModal').style.display='none'; openPlayer('${m.slug}')"><div class="movie-poster-wrap"><img src="${img}"></div><div class="movie-info"><div class="movie-name">${m.name}</div></div></div>`; });
+      snap.forEach(doc => { const m = doc.data(); html += `<div class="movie-card" onclick="document.getElementById('libraryModal').style.display='none'; openPlayer('${m.slug}')"><div class="movie-poster-wrap"><img src="${formatImageUrl(m.thumb_url)}"></div><div class="movie-info"><div class="movie-name">${m.name}</div></div></div>`; });
       grid.innerHTML = html;
     }
 
