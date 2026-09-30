@@ -97,20 +97,20 @@
     .page-btn.active { background: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);}
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* PLAYER MODAL VÀ VÙNG CHẠM TUA NHANH (SỬA LỖI FULLSCREEN MOBILE) */
+    /* PLAYER MODAL VÀ VÙNG CHẠM TUA NHANH */
     .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
     .cinema-mode-active .player-details-container { opacity: 0.08; filter: blur(3px); pointer-events: none; }
     .player-box { max-width: 1200px; width: 100%; margin: 0 auto; }
-    .player-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .player-tools { display: flex; gap: 8px; }
+    .player-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+    .player-tools { display: flex; gap: 8px; flex-wrap: wrap; }
     .btn-tool { background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     
     .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
     .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; object-fit: contain; }
 
-    /* CỬ CHỈ GÕ ĐÚP TUA NHANH TRÊN MOBILE */
-    .seek-touch-area { position: absolute; top: 0; bottom: 50px; width: 35%; z-index: 5; }
+    /* CỬ CHỈ GÕ ĐÚP TUA NHANH TRÊN MOBILE (ĐÃ CHỪA TRỐNG THANH ĐIỀU KHIỂN BÊN DƯỚI) */
+    .seek-touch-area { position: absolute; top: 0; bottom: 70px; width: 35%; z-index: 5; }
     .seek-touch-left { left: 0; }
     .seek-touch-right { right: 0; }
     .seek-indicator {
@@ -211,9 +211,7 @@
     .btn-poke { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.4); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: var(--transition); white-space: nowrap; }
     .btn-poke:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
-    /* ========================================================
-       HIỆU ỨNG RUNG LẮC SIÊU BÁ ĐẠO CHO THÔNG BÁO BỊ CHỌC
-    ======================================================== */
+    /* HIỆU ỨNG RUNG LẮC BÁ ĐẠO CHO THÔNG BÁO BỊ CHỌC */
     @keyframes pokeShakeAnim {
       0%, 100% { transform: translateX(0); }
       15%, 45%, 75% { transform: translateX(-8px) rotate(-1.5deg); }
@@ -551,12 +549,12 @@
         <h3 id="playerMovieTitle" style="font-size:1.1rem; font-weight:700;">Tên Phim</h3>
         <div class="player-tools">
           <button class="btn-tool" onclick="toggleCinemaMode()"><i class="fa-solid fa-moon"></i> Rạp Chiếu</button>
+          <button class="btn-tool" onclick="requestVideoFullscreen()"><i class="fa-solid fa-expand"></i> Phóng to</button>
           <button class="btn-tool" onclick="document.getElementById('trollModal').style.display='flex'"><i class="fa-solid fa-sliders"></i> Sao Hỏa</button>
           <button class="btn-tool" onclick="closePlayerModal()"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
       </div>
 
-      <!-- SỬA LỖI FULLSCREEN: THÊM ĐỦ THUỘC TÍNH CHO THẺ VIDEO -->
       <div class="video-wrapper" id="videoWrapper">
         <video id="videoPlayer" controls playsinline webkit-playsinline x5-playsinline></video>
         <div class="seek-touch-area seek-touch-left" id="seekTouchLeft"></div>
@@ -686,7 +684,6 @@
       "meme-meo-like.jpg"
     ];
 
-    // DANH SÁCH CÂU CHỌC BÁ KHÍ, MẬP MỜ, CÀ KHỊA, CHÚC PHIM
     const pokeQuotes = [
       "🍿 Ê mọt phim! Chúc bạn xem phim vui vẻ, bớt cô đơn lại nhé!",
       "🥀 Người ta có đôi có cặp đi chơi, còn bạn ở đây cày phim một mình à?",
@@ -985,11 +982,11 @@
           const hours = Math.floor(totalMin / 60);
           const mins = totalMin % 60;
           document.getElementById('publicModalWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
-          document.getElementById('publicModalBio').innerText = data.bio ? `"${data.bio}"` : `"Mọt phim chính hiệu 🍿"`;
+          document.getElementById('publicModalBio').innerText = data.bio ? `"${data.bio}"` : `"Mọt phim chân chính 🍿"`;
           if (data.avatar) document.getElementById('publicModalAvatar').src = data.avatar;
         } else {
           document.getElementById('publicModalWatchTime').innerText = "0 phút";
-          document.getElementById('publicModalBio').innerText = `"Mọt phim chính hiệu 🍿"`;
+          document.getElementById('publicModalBio').innerText = `"Mọt phim chân chính 🍿"`;
         }
       } catch(e) {}
     }
@@ -1084,6 +1081,26 @@
       const ind = document.getElementById(direction === 'left' ? 'seekIndicatorLeft' : 'seekIndicatorRight');
       ind.style.display = 'flex';
       setTimeout(() => { ind.style.display = 'none'; }, 500);
+    }
+
+    // HÀM ÉP PHÓNG TO MÀN HÌNH CHỦ ĐỘNG TRÊN DI ĐỘNG & PC
+    function requestVideoFullscreen() {
+      const video = document.getElementById('videoPlayer');
+      const wrapper = document.getElementById('videoWrapper');
+      
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) { /* Safari / iOS */
+        video.webkitRequestFullscreen();
+      } else if (video.webkitEnterFullscreen) { /* iOS Safari old API */
+        video.webkitEnterFullscreen();
+      } else if (wrapper.requestFullscreen) {
+        wrapper.requestFullscreen();
+      } else if (wrapper.webkitRequestFullscreen) {
+        wrapper.webkitRequestFullscreen();
+      } else {
+        showToast("Trình duyệt không hỗ trợ phóng to tự động.");
+      }
     }
 
     const pokeCooldowns = {};
