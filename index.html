@@ -32,12 +32,11 @@
     ::-webkit-scrollbar { width: 6px; height: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: #262b3a; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
     /* HEADER & SEARCH */
-    header { position: sticky; top: 0; z-index: 1000; background: rgba(9, 10, 15, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    header { position: sticky; top: 0; z-index: 1000; background: rgba(9, 10, 15, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-size: 1.3rem; font-weight: 800; white-space: nowrap; flex-shrink: 0; }
     .brand i { color: var(--primary); font-size: 1.4rem; }
     
-    /* KHUNG TÌM KIẾM THÔNG MINH */
-    .search-box { flex: 1; max-width: 440px; position: relative; display: flex; align-items: center; }
+    .search-box { flex: 1; max-width: 400px; position: relative; display: flex; align-items: center; }
     .search-box input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 50px; padding: 9px 36px 9px 38px; color: #fff; outline: none; transition: var(--transition); font-size: 0.9rem; }
     .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 14px rgba(229, 9, 20, 0.35); }
     .search-box i.fa-magnifying-glass { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; pointer-events: none; }
@@ -51,14 +50,15 @@
 
     /* HEADER ACTIONS */
     .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .btn-action-top { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid var(--border); padding: 7px 12px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.85rem; white-space: nowrap; transition: var(--transition); }
+    .btn-action-top:hover { background: rgba(255,255,255,0.2); }
+    
     .online-badge { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: var(--transition); }
     .online-badge:hover { background: rgba(16, 185, 129, 0.22); transform: scale(1.03); }
     .online-badge .dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; animation: pulse 1.8s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
     
     .btn-auth { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 50px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .btn-library { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid var(--border); padding: 8px 14px; border-radius: 50px; cursor: pointer; display: none; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; white-space: nowrap; }
-    .btn-library:hover { background: rgba(255,255,255,0.2); }
     .user-profile-btn { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); padding: 4px 8px; border-radius: 50px; cursor: pointer; }
     .user-avatar-img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
 
@@ -151,7 +151,7 @@
     .related-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--primary); padding-left: 8px; }
     .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
 
-    /* MODAL KHUYẾN CÁO VĂN MINH (CHỐNG CỜ BẠC / RƯỢU BIA) */
+    /* MODAL KHUYẾN CÁO VĂN MINH */
     .disclaimer-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(12px); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; }
     .disclaimer-card { background: var(--surface); border: 1.5px solid rgba(229, 9, 20, 0.5); width: 100%; max-width: 500px; border-radius: 18px; padding: 28px 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); animation: popUp 0.3s ease; }
     @keyframes popUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -160,30 +160,45 @@
     .disclaimer-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
     .disclaimer-tag { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
     .disclaimer-body { font-size: 0.88rem; color: #cbd5e1; text-align: left; line-height: 1.6; margin-bottom: 22px; background: rgba(0,0,0,0.3); padding: 14px; border-radius: 10px; border: 1px solid var(--border); }
-    .disclaimer-body p { margin-bottom: 8px; }
-    .btn-agree-disclaimer { width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); }
-    .btn-agree-disclaimer:hover { background: var(--primary-hover); }
+    .btn-agree-disclaimer { width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-    /* MODAL AI ĐANG ONLINE (REALTIME) */
-    .online-user-item {
-      display: flex;
+    /* MODAL ONLINE */
+    .online-user-item { display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); padding: 10px 14px; border-radius: 10px; }
+    .online-user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #10b981; flex-shrink: 0; }
+    .btn-poke { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.4); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: var(--transition); white-space: nowrap; }
+    .btn-poke:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
+
+    /* MINI TOAST KHI BỊ CHỌC (GÓC TRÊN, KHÔNG GIÁN ĐOẠN XEM PHIM) */
+    .poke-notification {
+      position: fixed;
+      top: 75px;
+      right: 20px;
+      z-index: 9999;
+      background: rgba(18, 21, 30, 0.95);
+      border: 1.5px solid var(--primary);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: none;
       align-items: center;
       gap: 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      padding: 10px 14px;
-      border-radius: 10px;
-      transition: var(--transition);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      animation: slideInRight 0.35s ease;
+      max-width: 360px;
     }
-    .online-user-item:hover { background: rgba(255, 255, 255, 0.08); }
-    .online-user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #10b981;
-      flex-shrink: 0;
-    }
+    @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .poke-notify-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
+    .poke-notify-actions { display: flex; gap: 8px; margin-top: 6px; }
+    .btn-poke-back { background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+    .btn-poke-mute { background: rgba(255,255,255,0.1); color: var(--text-muted); border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; }
+    .btn-poke-mute:hover { color: #fff; }
+
+    /* MODAL BẢNG XẾP HẠNG CÀY PHIM */
+    .rank-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); margin-bottom: 8px; }
+    .rank-medal { font-size: 1.25rem; width: 30px; text-align: center; font-weight: 800; }
+    .rank-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+    .rank-name { font-weight: 700; font-size: 0.95rem; }
+    .rank-hours { font-size: 0.85rem; color: #38bdf8; font-weight: 700; margin-left: auto; }
 
     /* CÁC MODAL PHỤ */
     .library-modal, .auth-modal, .troll-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 16px; }
@@ -201,9 +216,9 @@
 
     /* TỐI ƯU CỰC MẠNH CHO ĐIỆN THOẠI */
     @media (max-width: 680px) {
-      header { padding: 10px 12px; gap: 8px; }
+      header { padding: 10px 12px; gap: 6px; }
       .brand span { display: none; }
-      .btn-library span { display: none; }
+      .btn-action-top span { display: none; }
       .online-badge span { display: none; }
       .user-profile-btn span { display: none; }
       .user-profile-btn { padding: 3px; }
@@ -223,7 +238,6 @@
         top: 60px !important; left: 12px !important; right: 12px !important;
         width: auto !important; max-height: 65vh !important;
         border-radius: 14px !important;
-        box-shadow: 0 16px 40px rgba(0,0,0,0.95) !important;
       }
 
       .hero-content { left: 16px; bottom: 20px; right: 16px; }
@@ -232,6 +246,7 @@
       .movie-grid, .lib-content, .related-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .comment-input-wrap img { display: none; }
       .pagination-bar { padding: 4px; } .page-btn { min-width: 34px; height: 34px; font-size: 0.82rem; }
+      .poke-notification { left: 14px; right: 14px; max-width: none; top: 68px; }
     }
   </style>
 </head>
@@ -258,6 +273,34 @@
     </div>
   </div>
 
+  <!-- POP-UP MINI KHI BỊ BẠN BÈ CHỌC (ÊM ÁI, KHÔNG PHIỀN) -->
+  <div class="poke-notification" id="pokeNotification">
+    <img src="" class="poke-notify-avatar" id="pokeSenderAvatar">
+    <div style="flex:1; overflow:hidden;">
+      <div style="font-weight:700; font-size:0.85rem;" id="pokeSenderName">Bạn bè vừa chọc bạn!</div>
+      <div style="font-size:0.75rem; color:#cbd5e1;">👉 Ê cày tiếp phim đi kìa!</div>
+      <div class="poke-notify-actions">
+        <button class="btn-poke-back" id="btnPokeBack">Chọc lại 👉</button>
+        <button class="btn-poke-mute" onclick="mutePoke24h()">🔕 Tắt 24h</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL BẢNG XẾP HẠNG CÀY PHIM -->
+  <div class="auth-modal" id="leaderboardModal">
+    <div class="auth-card" style="max-width: 480px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-weight:800; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-trophy" style="color:#eab308;"></i> Bảng Xếp Hạng Cày Phim
+        </h3>
+        <button class="btn-tool" onclick="document.getElementById('leaderboardModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="leaderboardList" style="max-height:360px; overflow-y:auto;">
+        <p style="text-align:center; padding:20px; color:var(--text-muted);">Đang tải bảng xếp hạng...</p>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL DANH SÁCH AI ĐANG ONLINE -->
   <div class="auth-modal" id="onlineUsersModal">
     <div class="auth-card" style="max-width: 440px;">
@@ -268,9 +311,7 @@
         </h3>
         <button class="btn-tool" onclick="document.getElementById('onlineUsersModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div id="onlineUsersListContent" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
-        <!-- Danh sách tải từ Firebase -->
-      </div>
+      <div id="onlineUsersListContent" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;"></div>
     </div>
   </div>
 
@@ -286,10 +327,18 @@
     </div>
     
     <div class="header-actions">
-      <button class="btn-library" id="btnLibrary" onclick="openLibraryModal()"><i class="fa-solid fa-bookmark"></i> <span class="hide-mobile">Tủ Phim</span></button>
+      <!-- NÚT BẢNG XẾP HẠNG -->
+      <button class="btn-action-top" onclick="openLeaderboard()" title="Bảng xếp hạng cày phim">
+        <i class="fa-solid fa-trophy" style="color:#eab308;"></i> <span>BXH</span>
+      </button>
+
+      <!-- NÚT TỦ PHIM -->
+      <button class="btn-action-top" id="btnLibrary" onclick="openLibraryModal()" style="display:none;">
+        <i class="fa-solid fa-bookmark"></i> <span>Tủ Phim</span>
+      </button>
       
-      <!-- NÚT BẤM XEM AI ĐANG ONLINE -->
-      <div class="online-badge" onclick="showOnlineUsersModal()" title="Bấm để xem danh sách đang online">
+      <!-- NÚT ONLINE -->
+      <div class="online-badge" onclick="showOnlineUsersModal()" title="Bấm để xem ai đang online">
         <div class="dot"></div>
         <span>Online: </span><strong id="onlineCountText">1</strong>
       </div>
@@ -430,9 +479,7 @@
     // 0. BẢNG THÔNG BÁO MIỄN TRỪ TRÁCH NHIỆM
     function checkDisclaimerNotice() {
       const accepted = sessionStorage.getItem('phimnha_disclaimer_accepted');
-      if (!accepted) {
-        document.getElementById('disclaimerModal').style.display = 'flex';
-      }
+      if (!accepted) document.getElementById('disclaimerModal').style.display = 'flex';
     }
     function closeDisclaimer() {
       sessionStorage.setItem('phimnha_disclaimer_accepted', 'true');
@@ -440,7 +487,6 @@
       showToast("Chúc bạn xem phim vui vẻ!");
     }
 
-    // XỬ LÝ ẢNH CHỐNG LỖI 404
     function formatImageUrl(path) {
       if (!path) return "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200";
       if (path.startsWith('http://') || path.startsWith('https://')) return path;
@@ -448,7 +494,7 @@
     }
 
     // ========================================================
-    // HỆ THỐNG ONLINE PRESENCE THỜI GIAN THỰC (ĐÃ SỬA CHUẨN)
+    // TÍNH NĂNG 1: CHỌC VĂN MINH & ÂM THANH ÊM ÁI
     // ========================================================
     let guestId = sessionStorage.getItem('phimnha_guest_id');
     if (!guestId) {
@@ -456,34 +502,196 @@
       sessionStorage.setItem('phimnha_guest_id', guestId);
     }
 
+    function getMyUid() { return currentUser ? currentUser.uid : guestId; }
+    function getMyName() { return currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : `Khách #${guestId.slice(-4)}`; }
+    function getMyAvatar() { return currentUser ? (currentUser.photoURL || defaultAvatar) : `https://api.dicebear.com/7.x/bottts/svg?seed=${guestId}`; }
+
+    // Tạo âm thanh chuông nhẹ nhàng bằng Web Audio API (không phụ thuộc file ngoài)
+    function playSoftChime() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); // A5
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.36);
+      } catch (e) {}
+    }
+
+    // Gửi chọc bạn bè với Cooldown 15 giây
+    const pokeCooldowns = {};
+    async function pokeUser(targetUid, targetName) {
+      const now = Date.now();
+      if (targetUid === getMyUid()) return showToast("Bạn không thể tự chọc chính mình!");
+      if (pokeCooldowns[targetUid] && (now - pokeCooldowns[targetUid] < 15000)) {
+        const remain = Math.ceil((15000 - (now - pokeCooldowns[targetUid])) / 1000);
+        return showToast(`⏳ Chờ ${remain}s để chọc lại ${targetName}!`);
+      }
+
+      pokeCooldowns[targetUid] = now;
+      try {
+        await db.collection('pokes').add({
+          fromUid: getMyUid(),
+          fromName: getMyName(),
+          fromAvatar: getMyAvatar(),
+          toUid: targetUid,
+          timestamp: now
+        });
+        showToast(`👉 Đã chọc ${targetName}!`);
+      } catch (e) {
+        showToast("Lỗi gửi chọc!");
+      }
+    }
+
+    // Lắng nghe tín hiệu khi bị người khác chọc
+    let pokeNotificationTimeout = null;
+    const sessionStartTime = Date.now() - 5000;
+
+    db.collection('pokes')
+      .where('timestamp', '>', sessionStartTime)
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            const data = change.doc.data();
+            if (data.toUid === getMyUid() && data.fromUid !== getMyUid()) {
+              triggerPokeNotice(data);
+            }
+          }
+        });
+      });
+
+    function triggerPokeNotice(data) {
+      // Kiểm tra xem người dùng có đang bật chế độ tắt chuông 24h không
+      const dndUntil = localStorage.getItem('phimnha_dnd_until');
+      if (dndUntil && Date.now() < parseInt(dndUntil)) return; // Đang tắt tiếng
+
+      // Phát âm thanh và rung nhẹ trên điện thoại
+      playSoftChime();
+      if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+
+      const toast = document.getElementById('pokeNotification');
+      document.getElementById('pokeSenderAvatar').src = data.fromAvatar;
+      document.getElementById('pokeSenderName').innerText = `${data.fromName} vừa chọc bạn!`;
+      
+      const btnBack = document.getElementById('btnPokeBack');
+      btnBack.onclick = () => {
+        pokeUser(data.fromUid, data.fromName);
+        toast.style.display = 'none';
+      };
+
+      toast.style.display = 'flex';
+      clearTimeout(pokeNotificationTimeout);
+      pokeNotificationTimeout = setTimeout(() => { toast.style.display = 'none'; }, 6000);
+    }
+
+    // Chức năng tắt chuông 24 giờ tự mở lại
+    function mutePoke24h() {
+      const until = Date.now() + (24 * 60 * 60 * 1000); // 24 giờ
+      localStorage.setItem('phimnha_dnd_until', until.toString());
+      document.getElementById('pokeNotification').style.display = 'none';
+      showToast("🔕 Đã tắt chuông chọc trong 24 giờ tới!");
+    }
+
+    // ========================================================
+    // TÍNH NĂNG 2: BẢNG XẾP HẠNG CÀY PHIM (LEADERBOARD)
+    // ========================================================
+    let watchTimeTrackerInterval = null;
+    function initWatchTimeTracker() {
+      if (watchTimeTrackerInterval) clearInterval(watchTimeTrackerInterval);
+      
+      // Cứ 30 giây kiểm tra nếu video đang chạy thì cộng điểm
+      watchTimeTrackerInterval = setInterval(() => {
+        const video = document.getElementById('videoPlayer');
+        if (video && !video.paused && !video.ended && document.visibilityState === 'visible') {
+          const uid = getMyUid();
+          const name = getMyName();
+          const avatar = getMyAvatar();
+
+          // Tăng 0.5 phút (30 giây) vào Firestore
+          db.collection('user_stats').doc(uid).set({
+            name: name,
+            avatar: avatar,
+            watchMinutes: firebase.firestore.FieldValue.increment(0.5),
+            lastUpdated: Date.now()
+          }, { merge: true }).catch(() => {});
+        }
+      }, 30000);
+    }
+
+    async function openLeaderboard() {
+      const modal = document.getElementById('leaderboardModal');
+      const listWrap = document.getElementById('leaderboardList');
+      modal.style.display = 'flex';
+      listWrap.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải bảng vàng...</p>`;
+
+      try {
+        const snap = await db.collection('user_stats').orderBy('watchMinutes', 'desc').limit(10).get();
+        if (snap.empty) {
+          listWrap.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted);">Chưa có dữ liệu cày phim.</p>`;
+          return;
+        }
+
+        const medals = ['👑🥇', '🥈', '🥉'];
+        let html = '';
+        let rank = 1;
+        snap.forEach(doc => {
+          const u = doc.data();
+          const totalMin = Math.round(u.watchMinutes || 0);
+          const hours = Math.floor(totalMin / 60);
+          const mins = totalMin % 60;
+          const timeText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
+          const medal = rank <= 3 ? medals[rank - 1] : `#${rank}`;
+
+          html += `
+            <div class="rank-item">
+              <div class="rank-medal">${medal}</div>
+              <img src="${u.avatar || defaultAvatar}" class="rank-avatar">
+              <div style="flex:1; overflow:hidden;">
+                <div class="rank-name" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${u.name}</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">Mọt phim chân chính</div>
+              </div>
+              <div class="rank-hours"><i class="fa-regular fa-clock"></i> ${timeText}</div>
+            </div>
+          `;
+          rank++;
+        });
+        listWrap.innerHTML = html;
+      } catch (e) {
+        listWrap.innerHTML = `<p style="text-align:center; color:#ef4444; padding:20px;">Lỗi tải bảng xếp hạng!</p>`;
+      }
+    }
+
+    // ========================================================
+    // ONLINE PRESENCE THỜI GIAN THỰC
+    // ========================================================
     function updateOnlinePresence() {
-      const uid = currentUser ? currentUser.uid : guestId;
-      const name = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : `Khách #${guestId.slice(-4)}`;
-      const avatar = currentUser ? (currentUser.photoURL || defaultAvatar) : `https://api.dicebear.com/7.x/bottts/svg?seed=${guestId}`;
+      const uid = getMyUid();
       const isWatching = currentPlayingMovie ? currentPlayingMovie.name : null;
 
       db.collection('online_presence').doc(uid).set({
         uid: uid,
-        name: name,
-        avatar: avatar,
+        name: getMyName(),
+        avatar: getMyAvatar(),
         isMember: !!currentUser,
         status: isWatching ? `🎬 Đang xem: ${isWatching}` : '🟢 Đang lướt web',
         lastSeen: Date.now()
       }, { merge: true }).catch(() => {});
     }
 
-    // Nhịp tim cập nhật mỗi 20 giây
     setInterval(updateOnlinePresence, 20000);
 
-    // Lắng nghe danh sách ai đang online thời gian thực
     db.collection('online_presence').onSnapshot(snapshot => {
       const now = Date.now();
       let activeUsers = [];
       snapshot.forEach(doc => {
         const data = doc.data();
-        if (data.lastSeen && (now - data.lastSeen < 60000)) {
-          activeUsers.push(data);
-        }
+        if (data.lastSeen && (now - data.lastSeen < 60000)) activeUsers.push(data);
       });
       
       window.currentOnlineList = activeUsers;
@@ -493,7 +701,6 @@
       if (modalCount) modalCount.innerText = count;
     });
 
-    // Mở modal hiển thị danh sách người dùng kèm Avatar
     function showOnlineUsersModal() {
       const list = window.currentOnlineList || [];
       const wrap = document.getElementById('onlineUsersListContent');
@@ -512,13 +719,14 @@
                 ${u.status || '🟢 Đang trực tuyến'}
               </div>
             </div>
+            ${u.uid !== getMyUid() ? `<button class="btn-poke" onclick="pokeUser('${u.uid}', '${u.name}')">👉 Chọc</button>` : ''}
           </div>
         `).join('');
       }
       document.getElementById('onlineUsersModal').style.display = 'flex';
     }
 
-    // 1. TÀI KHOẢN VÀ AVATAR
+    // AUTH
     auth.onAuthStateChanged(user => {
       currentUser = user;
       const authContainer = document.getElementById('authContainer');
@@ -549,7 +757,7 @@
     function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
     function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
-    // 2. LIVE SEARCH
+    // LIVE SEARCH
     const searchInput = document.getElementById('liveSearchInput');
     const dropdown = document.getElementById('searchResultsDropdown');
     const clearBtn = document.getElementById('searchClearBtn');
@@ -577,7 +785,7 @@
             `).join('');
             dropdown.style.display = 'block';
           } else {
-            dropdown.innerHTML = `<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:0.88rem;">Không tìm thấy bộ phim nào!</div>`;
+            dropdown.innerHTML = `<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:0.88rem;">Không tìm thấy phim!</div>`;
             dropdown.style.display = 'block';
           }
         } catch (err) {}
@@ -599,7 +807,7 @@
     }
     document.addEventListener('click', (e) => { if(!e.target.closest('.search-box')) dropdown.style.display='none'; });
 
-    // 3. TẢI PHIM & BANNER XOAY TUA
+    // BANNER & MOVIES
     let heroInterval = null;
     let heroIndex = 0;
 
@@ -650,7 +858,7 @@
 
       document.getElementById('heroTitle').innerText = m.name;
       document.getElementById('heroYear').innerText = m.year || 2026;
-      document.getElementById('heroDesc').innerText = `Tuyệt phẩm "${m.name}" (${m.origin_name || 'Bản quyền'}) đang làm mưa làm gió. Xem ngay với hình ảnh siêu sắc nét, đường truyền ổn định không quảng cáo rác.`;
+      document.getElementById('heroDesc').innerText = `Tuyệt phẩm "${m.name}" (${m.origin_name || 'Bản quyền'}) đang làm mưa làm gió. Xem ngay với hình ảnh siêu sắc nét, không quảng cáo rác.`;
       document.getElementById('btnHeroPlay').onclick = () => openPlayer(m.slug);
     }
 
@@ -675,7 +883,7 @@
       fetchMovies(page); document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 4. TRÌNH PHÁT HLS.JS CHỐNG QUẢNG CÁO
+    // PLAYER HLS.JS
     async function openPlayer(slug) {
       try {
         const res = await fetch(`https://phimapi.com/phim/${slug}`); const data = await res.json();
@@ -699,7 +907,7 @@
           renderGrid('relatedMoviesGrid', related);
           
           checkFavoriteStatus(); saveToHistory(m); loadComments(m.slug);
-          updateOnlinePresence(); // Cập nhật trạng thái đang xem phim
+          updateOnlinePresence();
 
           document.getElementById('playerModal').style.display = 'flex'; document.getElementById('playerModal').scrollTo(0,0);
         }
@@ -735,7 +943,7 @@
       if (val === 'mars') alert("🪐 CẢNH BÁO: Tín hiệu bay qua vành đai thiên thạch. Chờ 14 phút 36 giây nhé!"); else if (val === 'moon') showToast("🌕 Ping Mặt Trăng: 1.28 giây."); else showToast("🌍 Ping Trái Đất: 0.01ms");
     }
 
-    // 5. BÌNH LUẬN & TRẢ LỜI
+    // BÌNH LUẬN & TRẢ LỜI
     function loadComments(slug) {
       if (unsubscribeComments) unsubscribeComments();
       const list = document.getElementById('commentList');
@@ -839,7 +1047,7 @@
       } catch(e) {}
     }
 
-    // 6. TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
+    // TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
     function saveToHistory(m) {
       if(!currentUser) return;
       db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: Date.now() });
@@ -875,6 +1083,7 @@
     window.onload = () => {
       checkDisclaimerNotice();
       updateOnlinePresence();
+      initWatchTimeTracker();
       fetchMovies(1);
     };
   </script>
