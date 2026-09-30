@@ -6,20 +6,26 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <title>Phim Nhà - Rạp Phim Riêng Tư</title>
   
+  <!-- HLS Player -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  
+  <!-- Firebase SDK Compat (Chạy trực tiếp trên HTML thuần không cần cài đặt) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   
   <style>
     :root {
-      --netflix-black: #141414;
-      --netflix-card: #181818;
-      --netflix-card-hover: #232323;
+      --netflix-black: #0f0f10;
+      --netflix-card: #18181b;
+      --netflix-card-hover: #27272a;
       --netflix-red: #E50914;
       --netflix-red-hover: #b80710;
       --text-white: #FFFFFF;
-      --text-grey: #A3A3A3;
-      --border-dark: #2A2A2A;
-      --radius-sm: 4px;
-      --radius-md: 8px;
+      --text-grey: #a1a1aa;
+      --border-dark: #27272a;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     * {
@@ -34,144 +40,62 @@
       background-color: var(--netflix-black);
       color: var(--text-white);
       line-height: 1.4;
-      padding-bottom: 75px;
+      padding-bottom: calc(70px + var(--safe-bottom));
       overflow-x: hidden;
     }
 
-    /* --- MÀN HÌNH KHÓA PIN 2301 --- */
-    #lock-screen {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+    body.modal-open {
+      overflow: hidden;
     }
 
-    .box-dialog {
-      background: var(--netflix-card);
-      border: 1px solid var(--border-dark);
+    /* --- LỜI CHÚC XEM PHIM THEO GIỜ --- */
+    .greeting-container {
+      max-width: 1350px;
+      margin: 12px auto 0;
+      padding: 0 16px;
+    }
+
+    .greeting-card {
+      background: linear-gradient(90deg, rgba(229, 9, 20, 0.12) 0%, rgba(24, 24, 27, 0.8) 100%);
+      border: 1px solid rgba(229, 9, 20, 0.25);
       border-radius: var(--radius-md);
-      padding: 35px 25px;
-      width: 100%;
-      max-width: 340px;
-      text-align: center;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-    }
-
-    .dialog-icon {
-      width: 65px;
-      height: 65px;
-      background: var(--netflix-red);
-      border-radius: var(--radius-sm);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin-bottom: 16px;
-    }
-
-    .dialog-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
-    .dialog-desc { font-size: 0.8rem; color: var(--text-grey); margin-bottom: 20px; }
-
-    .pin-input {
-      width: 100%;
-      text-align: center;
-      letter-spacing: 12px;
-      font-size: 1.6rem;
-      font-weight: 900;
-      padding: 10px;
-      background: #0b0b0b;
-      border: 1.5px solid var(--border-dark);
-      border-radius: var(--radius-sm);
-      color: var(--netflix-red);
-      outline: none;
-      margin-bottom: 16px;
-    }
-
-    .pin-input:focus { border-color: var(--netflix-red); }
-
-    .btn-action {
-      width: 100%;
-      background: var(--netflix-red);
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      font-weight: 800;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .btn-action:hover { background: var(--netflix-red-hover); }
-
-    .pin-error {
-      color: var(--netflix-red);
-      font-size: 0.8rem;
-      font-weight: bold;
-      margin-top: 10px;
-      display: none;
-    }
-
-    /* --- MÀN HÌNH ĐẶT TÊN CÁ NHÂN --- */
-    #welcome-screen {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 99990;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .name-input {
-      width: 100%;
-      padding: 12px 14px;
-      background: #0b0b0b;
-      border: 1.5px solid var(--border-dark);
-      border-radius: var(--radius-sm);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      outline: none;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    .name-input:focus { border-color: #fff; }
-
-    .avatar-selector {
+      padding: 10px 16px;
       display: flex;
-      justify-content: center;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .greeting-left {
+      display: flex;
+      align-items: center;
       gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
     }
 
-    .avatar-opt {
-      width: 44px;
-      height: 44px;
-      background: #252525;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: 0.15s;
+    .greeting-avatar {
+      font-size: 1.6rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
     }
 
-    .avatar-opt.active {
-      border-color: var(--netflix-red);
-      background: #333;
-      transform: scale(1.1);
+    .greeting-text {
+      font-size: 0.85rem;
+      color: #f4f4f5;
+    }
+
+    .greeting-text b {
+      color: #fff;
+    }
+
+    .greeting-time-tag {
+      font-size: 0.72rem;
+      background: rgba(229, 9, 20, 0.2);
+      color: #ff6b6b;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
     /* --- HEADER --- */
@@ -179,10 +103,10 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: linear-gradient(180deg, rgba(0,0,0,0.96) 0%, rgba(20,20,20,0.9) 100%);
-      backdrop-filter: blur(12px);
+      background: rgba(15, 15, 16, 0.94);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 12px 18px;
+      padding: 10px 16px;
     }
 
     .nav-container {
@@ -191,18 +115,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
     }
 
     .brand-logo {
-      font-size: 1.45rem;
+      font-size: 1.35rem;
       font-weight: 900;
       color: var(--netflix-red);
-      letter-spacing: 1px;
-      text-decoration: none;
-      white-space: nowrap;
+      letter-spacing: 0.8px;
       cursor: pointer;
-      text-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
+      text-shadow: 0 2px 10px rgba(229, 9, 20, 0.4);
+      white-space: nowrap;
     }
 
     .brand-logo span { color: #fff; }
@@ -210,31 +133,32 @@
     .search-wrapper {
       position: relative;
       flex: 1;
-      max-width: 450px;
+      max-width: 420px;
     }
 
     .search-input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.75);
+      background: #18181b;
       border: 1px solid var(--border-dark);
       color: #fff;
-      padding: 9px 16px;
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
+      padding: 9px 14px;
+      border-radius: 20px;
+      font-size: 16px; /* Cỡ 16px chống phóng to màn hình trên iOS khi gõ */
       outline: none;
+      transition: 0.2s;
     }
 
-    .search-input:focus { border-color: #fff; background: #000; }
+    .search-input:focus { border-color: var(--netflix-red); background: #000; }
 
     .suggest-box {
       position: absolute;
-      top: calc(100% + 6px);
+      top: calc(100% + 8px);
       left: 0;
       right: 0;
       background: var(--netflix-card);
       border: 1px solid var(--border-dark);
       border-radius: var(--radius-sm);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.95);
       max-height: 380px;
       overflow-y: auto;
       display: none;
@@ -243,20 +167,20 @@
 
     .suggest-item {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       padding: 8px 12px;
       align-items: center;
       cursor: pointer;
-      border-bottom: 1px solid rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
 
     .suggest-item:hover { background: var(--netflix-card-hover); }
 
     .suggest-thumb {
-      width: 38px;
-      height: 52px;
+      width: 36px;
+      height: 50px;
       object-fit: cover;
-      border-radius: 2px;
+      border-radius: 4px;
       background: #252525;
       flex-shrink: 0;
     }
@@ -271,24 +195,24 @@
       text-overflow: ellipsis;
     }
 
-    .suggest-meta { font-size: 0.72rem; color: var(--text-grey); }
+    .suggest-meta { font-size: 0.7rem; color: var(--text-grey); }
 
     .nav-links {
       display: none;
-      gap: 18px;
+      gap: 16px;
       align-items: center;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 820px) {
       .nav-links { display: flex; }
     }
 
     .nav-link {
       color: var(--text-grey);
-      text-decoration: none;
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
+      transition: 0.15s;
     }
 
     .nav-link:hover, .nav-link.active { color: #fff; font-weight: 700; }
@@ -296,22 +220,25 @@
     .header-user-btn {
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: #222;
+      gap: 7px;
+      background: #27272a;
       border: 1px solid var(--border-dark);
       color: #fff;
-      padding: 5px 12px;
-      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      border-radius: 20px;
       cursor: pointer;
       font-size: 0.82rem;
       font-weight: 700;
+      white-space: nowrap;
     }
 
-    /* --- HERO BANNER (12 PHIM TỰ ĐỘNG CẬP NHẬT) --- */
+    .header-user-btn:hover { background: #3f3f46; }
+
+    /* --- HERO BANNER (12 PHIM TỰ ĐỘNG) --- */
     .hero-container {
       position: relative;
       max-width: 1350px;
-      margin: 10px auto;
+      margin: 12px auto;
       padding: 0 16px;
     }
 
@@ -320,9 +247,10 @@
       border-radius: var(--radius-md);
       overflow: hidden;
       aspect-ratio: 16 / 8.5;
-      min-height: 310px;
-      max-height: 500px;
+      min-height: 290px;
+      max-height: 480px;
       background: #000;
+      border: 1px solid var(--border-dark);
     }
 
     .hero-backdrop {
@@ -330,40 +258,40 @@
       height: 100%;
       object-fit: cover;
       object-position: center 20%;
-      transition: opacity 0.4s ease-in-out;
+      transition: opacity 0.35s ease;
     }
 
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(77deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.1) 85%),
-                  linear-gradient(180deg, transparent 40%, rgba(20,20,20,0.98) 100%);
+      background: linear-gradient(77deg, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.15) 85%),
+                  linear-gradient(180deg, transparent 40%, rgba(15,15,16,0.98) 100%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 20px;
+      padding: 16px;
     }
 
     @media (min-width: 768px) {
-      .hero-overlay { padding: 35px; }
+      .hero-overlay { padding: 30px; }
     }
 
     .hero-title-main {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 900;
-      letter-spacing: 0.5px;
       margin-bottom: 4px;
-      max-width: 600px;
+      max-width: 620px;
       line-height: 1.2;
       text-transform: uppercase;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     }
 
     @media (min-width: 768px) {
-      .hero-title-main { font-size: 2.2rem; }
+      .hero-title-main { font-size: 2.1rem; }
     }
 
     .hero-subtitle {
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       color: var(--text-grey);
       font-weight: 600;
       margin-bottom: 8px;
@@ -384,24 +312,24 @@
       padding: 2px 7px;
       border-radius: var(--radius-sm);
       font-weight: 700;
+      backdrop-filter: blur(4px);
     }
 
     .badge-tag.red {
       background: var(--netflix-red);
       border-color: var(--netflix-red);
-      color: #fff;
     }
 
     .hero-desc {
-      font-size: 0.82rem;
-      color: #D1D5DB;
+      font-size: 0.8rem;
+      color: #d4d4d8;
       line-height: 1.45;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      margin-bottom: 16px;
-      max-width: 580px;
+      margin-bottom: 14px;
+      max-width: 560px;
     }
 
     .hero-bottom-row {
@@ -415,35 +343,38 @@
       background: #FFFFFF;
       color: #000;
       border: none;
-      padding: 10px 24px;
+      padding: 9px 20px;
       border-radius: var(--radius-sm);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      transition: transform 0.15s;
     }
+
+    .btn-hero-play:active { transform: scale(0.96); }
 
     .hero-thumbs {
       display: flex;
       gap: 6px;
       overflow-x: auto;
-      max-width: 420px;
-      padding-bottom: 4px;
+      max-width: 400px;
+      padding-bottom: 2px;
       scrollbar-width: none;
     }
 
     .hero-thumbs::-webkit-scrollbar { display: none; }
 
     .hero-thumb-item {
-      width: 44px;
-      height: 62px;
-      border-radius: var(--radius-sm);
+      width: 40px;
+      height: 56px;
+      border-radius: 4px;
       overflow: hidden;
       border: 2px solid transparent;
       cursor: pointer;
-      opacity: 0.5;
+      opacity: 0.45;
       transition: 0.2s;
       flex-shrink: 0;
       background: #222;
@@ -461,7 +392,7 @@
       object-fit: cover;
     }
 
-    /* --- LƯỚI VÀ HÀNG CUỘN --- */
+    /* --- LƯỚI VÀ HÀNG CUỘN PHIM --- */
     .content-container {
       max-width: 1350px;
       margin: 0 auto;
@@ -472,11 +403,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 24px 0 14px;
+      margin: 20px 0 12px;
     }
 
     .section-title {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -486,7 +417,7 @@
     .section-title::before {
       content: "";
       width: 4px;
-      height: 18px;
+      height: 16px;
       background: var(--netflix-red);
       border-radius: 2px;
     }
@@ -495,34 +426,35 @@
       display: flex;
       gap: 12px;
       overflow-x: auto;
-      padding-bottom: 12px;
+      padding-bottom: 10px;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
 
     .scroll-row::-webkit-scrollbar { display: none; }
 
     .scroll-card {
-      flex: 0 0 140px;
+      flex: 0 0 130px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
     }
 
     @media (min-width: 768px) {
-      .scroll-card { flex: 0 0 170px; }
+      .scroll-card { flex: 0 0 165px; }
     }
 
     .movie-grid-paged {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
 
     @media (min-width: 640px) {
       .movie-grid-paged { grid-template-columns: repeat(4, 1fr); gap: 14px; }
     }
 
-    @media (min-width: 960px) {
+    @media (min-width: 980px) {
       .movie-grid-paged { grid-template-columns: repeat(6, 1fr); gap: 16px; }
     }
 
@@ -532,19 +464,20 @@
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s ease;
+      transition: transform 0.18s ease;
     }
 
-    .movie-card:hover { transform: translateY(-4px); }
+    .movie-card:active { transform: scale(0.97); }
 
     .poster-box {
       position: relative;
       width: 100%;
-      padding-top: 145%;
+      padding-top: 142%;
       border-radius: var(--radius-sm);
       overflow: hidden;
-      background: #1f1f1f;
-      margin-bottom: 8px;
+      background: #27272a;
+      margin-bottom: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
 
     .poster-box img {
@@ -554,6 +487,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .movie-card:hover .poster-box img {
+      transform: scale(1.04);
     }
 
     .progress-bar-bg {
@@ -574,30 +512,31 @@
 
     .badge-top {
       position: absolute;
-      top: 6px;
-      left: 6px;
-      background: rgba(0, 0, 0, 0.8);
-      font-size: 0.68rem;
+      top: 5px;
+      left: 5px;
+      background: rgba(0, 0, 0, 0.75);
+      font-size: 0.65rem;
       font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 2px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      backdrop-filter: blur(4px);
     }
 
     .badge-quality {
       position: absolute;
-      bottom: 8px;
-      right: 6px;
+      bottom: 6px;
+      right: 5px;
       background: var(--netflix-red);
       color: #fff;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 900;
-      padding: 1px 5px;
-      border-radius: 2px;
+      padding: 1px 4px;
+      border-radius: 3px;
       z-index: 6;
     }
 
     .movie-name {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
@@ -606,7 +545,7 @@
     }
 
     .movie-origin-name {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-grey);
       white-space: nowrap;
       overflow: hidden;
@@ -619,7 +558,7 @@
       justify-content: center;
       align-items: center;
       gap: 6px;
-      margin: 35px 0 15px;
+      margin: 30px 0 15px;
       flex-wrap: wrap;
     }
 
@@ -627,8 +566,8 @@
       background: var(--netflix-card);
       border: 1px solid var(--border-dark);
       color: var(--text-white);
-      min-width: 38px;
-      height: 38px;
+      min-width: 36px;
+      height: 36px;
       padding: 0 10px;
       border-radius: var(--radius-sm);
       font-size: 0.85rem;
@@ -638,8 +577,6 @@
       align-items: center;
       justify-content: center;
     }
-
-    .page-btn:hover { background: var(--netflix-card-hover); }
 
     .page-btn.active {
       background: var(--netflix-red);
@@ -654,15 +591,169 @@
       color: var(--text-grey);
     }
 
-    /* --- TRÌNH PHÁT VIDEO --- */
+    /* --- MODAL CHUNG (GLASSMORPHISM) --- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 2500;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .modal-box {
+      background: #18181b;
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      width: 100%;
+      max-width: 360px;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      margin: auto;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: none;
+      border: none;
+      color: var(--text-grey);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    .modal-desc {
+      font-size: 0.78rem;
+      color: var(--text-grey);
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    /* Tabs Đăng Nhập / Đăng Ký */
+    .auth-tab-bar {
+      display: flex;
+      background: #09090b;
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      padding: 3px;
+      margin-bottom: 16px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      background: none;
+      color: var(--text-grey);
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .auth-tab.active {
+      background: var(--netflix-red);
+      color: #fff;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-grey);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .form-input {
+      width: 100%;
+      background: #09090b;
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      color: #fff;
+      padding: 11px 12px;
+      font-size: 16px; /* Cỡ 16px chống tự phóng to màn hình khi bấm vào ô nhập */
+      outline: none;
+    }
+
+    .form-input:focus { border-color: var(--netflix-red); }
+
+    /* Bộ Chọn Avatar Đa Dạng */
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .avatar-btn {
+      aspect-ratio: 1;
+      background: #27272a;
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .avatar-btn.active {
+      border-color: var(--netflix-red);
+      background: #3f3f46;
+      transform: scale(1.08);
+    }
+
+    .btn-submit-action {
+      width: 100%;
+      background: var(--netflix-red);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-submit-action:active { transform: scale(0.98); }
+
+    .auth-alert {
+      font-size: 0.78rem;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+    }
+
+    /* --- TRÌNH PHÁT VIDEO NỘI BỘ --- */
     .player-overlay {
       display: none;
       position: fixed;
       inset: 0;
       background: #000;
-      z-index: 2000;
+      z-index: 3000;
       overflow-y: auto;
-      padding: 12px;
+      padding: 10px;
     }
 
     .player-wrap { max-width: 1050px; margin: 0 auto; }
@@ -671,32 +762,32 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .btn-back {
-      background: #222;
+      background: #27272a;
       border: 1px solid var(--border-dark);
       color: #fff;
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: var(--radius-sm);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: bold;
       cursor: pointer;
     }
 
     .btn-fav-toggle {
-      background: #222;
+      background: #27272a;
       border: 1px solid var(--border-dark);
       color: #fff;
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: var(--radius-sm);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .btn-fav-toggle.saved {
@@ -719,7 +810,7 @@
       height: 100%;
       background: #000;
       outline: none;
-      filter: contrast(1.06) saturate(1.12);
+      filter: contrast(1.05) saturate(1.1);
     }
 
     #video-iframe {
@@ -731,17 +822,17 @@
 
     .resume-toast {
       position: absolute;
-      top: 12px;
-      left: 12px;
+      top: 10px;
+      left: 10px;
       background: rgba(0,0,0,0.85);
       border-left: 4px solid var(--netflix-red);
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: var(--radius-sm);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       z-index: 10;
       display: none;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .resume-toast button {
@@ -750,26 +841,26 @@
       color: #fff;
       padding: 2px 6px;
       border-radius: 2px;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       cursor: pointer;
     }
 
     .player-meta {
-      margin-top: 14px;
+      margin-top: 12px;
       background: var(--netflix-card);
       border: 1px solid var(--border-dark);
       border-radius: var(--radius-md);
-      padding: 18px;
+      padding: 16px;
     }
 
-    .player-title { font-size: 1.25rem; font-weight: 800; }
-    .player-sub { color: var(--netflix-red); font-size: 0.85rem; margin-bottom: 12px; }
+    .player-title { font-size: 1.15rem; font-weight: 800; }
+    .player-sub { color: var(--netflix-red); font-size: 0.8rem; margin-bottom: 10px; }
 
-    .episodes-box { margin-top: 14px; }
+    .episodes-box { margin-top: 12px; }
     .episodes-title {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 800;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
     }
@@ -777,7 +868,7 @@
     .ep-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 7px;
       max-height: 190px;
       overflow-y: auto;
     }
@@ -786,9 +877,9 @@
       background: #111;
       border: 1px solid var(--border-dark);
       color: #fff;
-      padding: 7px 14px;
+      padding: 7px 12px;
       border-radius: var(--radius-sm);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
     }
@@ -806,8 +897,10 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 56px;
-      background: rgba(15, 15, 15, 0.98);
+      height: calc(56px + var(--safe-bottom));
+      padding-bottom: var(--safe-bottom);
+      background: rgba(15, 15, 16, 0.96);
+      backdrop-filter: blur(16px);
       border-top: 1px solid rgba(255,255,255,0.08);
       display: flex;
       justify-content: space-around;
@@ -815,7 +908,7 @@
       z-index: 999;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 820px) {
       .mobile-bottom-nav { display: none; }
     }
 
@@ -825,51 +918,17 @@
       align-items: center;
       gap: 2px;
       color: var(--text-grey);
-      text-decoration: none;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       cursor: pointer;
+      user-select: none;
     }
 
-    .m-nav-item.active { color: var(--netflix-red); }
+    .m-nav-item.active { color: var(--netflix-red); font-weight: 700; }
   </style>
 </head>
 <body>
 
-  <!-- 1. MÀN HÌNH KHÓA PIN 2301 -->
-  <div id="lock-screen">
-    <div class="box-dialog">
-      <div class="dialog-icon">🔒</div>
-      <div class="dialog-title">PHIM NHÀ RIÊNG TƯ</div>
-      <div class="dialog-desc">Nhập mã PIN 4 số để truy cập</div>
-      <input type="password" id="pin-input" class="pin-input" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="••••" autocomplete="off">
-      <button class="btn-action" onclick="verifyPin()">MỞ KHÓA</button>
-      <div class="pin-error" id="pin-error">Mã PIN không đúng!</div>
-    </div>
-  </div>
-
-  <!-- 2. MÀN HÌNH ĐẶT TÊN CÁ NHÂN (CHỈ HỎI LẦN ĐẦU) -->
-  <div id="welcome-screen">
-    <div class="box-dialog">
-      <div class="dialog-icon" id="welcome-avatar-preview">😎</div>
-      <div class="dialog-title">BẠN TÊN LÀ GÌ?</div>
-      <div class="dialog-desc">Hệ thống sẽ lưu lịch sử xem riêng cho bạn</div>
-      
-      <input type="text" id="custom-name-input" class="name-input" placeholder="Nhập tên của bạn..." maxlength="15">
-      
-      <div class="avatar-selector">
-        <div class="avatar-opt active" onclick="selectAvatar('😎', this)">😎</div>
-        <div class="avatar-opt" onclick="selectAvatar('🍿', this)">🍿</div>
-        <div class="avatar-opt" onclick="selectAvatar('🔥', this)">🔥</div>
-        <div class="avatar-opt" onclick="selectAvatar('🐱', this)">🐱</div>
-        <div class="avatar-opt" onclick="selectAvatar('👑', this)">👑</div>
-        <div class="avatar-opt" onclick="selectAvatar('🎮', this)">🎮</div>
-      </div>
-
-      <button class="btn-action" onclick="saveCustomUser()">BẮT ĐẦU XEM PHIM</button>
-    </div>
-  </div>
-
-  <!-- 3. HEADER -->
+  <!-- HEADER -->
   <header>
     <div class="nav-container">
       <div class="brand-logo" onclick="switchCategory('moi-cap-nhat', 1)">
@@ -887,17 +946,26 @@
         <a class="nav-link" onclick="switchCategory('phim-le', 1, this)">Phim Lẻ</a>
         <a class="nav-link" onclick="showFavorites(this)">⭐ Yêu Thích</a>
         
-        <div class="header-user-btn" onclick="openEditProfile()">
-          <span id="header-avatar">😎</span>
-          <span id="header-username">Bạn</span>
+        <div class="header-user-btn" id="header-user-profile-btn" onclick="handleUserButtonClick()">
+          <span id="header-avatar">👤</span>
+          <span id="header-username">Tài Khoản</span>
         </div>
-
-        <button class="btn-back" style="padding:5px 10px;" onclick="lockApp()">🔒 Khóa</button>
       </nav>
     </div>
   </header>
 
-  <!-- BANNER TỰ ĐỘNG CẬP NHẬT (12 PHIM) -->
+  <!-- LỜI CHÚC XEM PHIM THEO GIỜ -->
+  <div class="greeting-container">
+    <div class="greeting-card">
+      <div class="greeting-left">
+        <div class="greeting-avatar" id="greet-avatar">🍿</div>
+        <div class="greeting-text" id="greet-message">Đang nạp lời chúc xem phim...</div>
+      </div>
+      <div class="greeting-time-tag" id="greet-time-tag">Hôm nay</div>
+    </div>
+  </div>
+
+  <!-- HERO BANNER (12 PHIM) -->
   <div class="hero-container" id="hero-section">
     <div class="hero-card">
       <img id="hero-img" class="hero-backdrop" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&auto=format&fit=crop" alt="Hero">
@@ -920,7 +988,7 @@
   </div>
 
   <main class="content-container">
-    <!-- TIẾP TỤC XEM (TỰ ĐỘNG LƯU TRÊN TRÌNH DUYỆT THƯỜNG) -->
+    <!-- TIẾP TỤC XEM (LƯU THEO TÀI KHOẢN) -->
     <div id="continue-watching-section" style="display:none;">
       <div class="section-head">
         <h2 class="section-title">Tiếp Tục Xem</h2>
@@ -962,7 +1030,7 @@
         <div class="episodes-box">
           <div class="episodes-title">
             <span>DANH SÁCH TẬP PHIM</span>
-            <span style="font-size:0.75rem; color:var(--netflix-red);">🛡️ Không có quảng cáo cờ bạc</span>
+            <span style="font-size:0.75rem; color:var(--netflix-red);">🛡️ Luồng sạch - Không giật lag</span>
           </div>
           <div class="ep-list" id="episodes-container"></div>
         </div>
@@ -970,19 +1038,90 @@
     </div>
   </div>
 
+  <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ FIREBASE -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+      
+      <div class="auth-tab-bar">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Đăng Nhập</button>
+        <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Đăng Ký</button>
+      </div>
+
+      <h3 class="modal-title" id="auth-title">Đăng Nhập</h3>
+      <p class="modal-desc" id="auth-desc">Điền tên tài khoản để đồng bộ phim yêu thích</p>
+
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+        <div class="form-group">
+          <label>Tên tài khoản (Tự nghĩ bừa):</label>
+          <input type="text" id="auth-user" class="form-input" placeholder="Ví dụ: hung2006, thanhphim..." required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label>Mật khẩu (Tối thiểu 6 ký tự):</label>
+          <input type="password" id="auth-pass" class="form-input" placeholder="Nhập mật khẩu..." required minlength="6" autocomplete="current-password">
+        </div>
+
+        <!-- Bộ chọn Avatar chỉ hiển thị khi Đăng Ký -->
+        <div id="avatar-picker-group" style="display:none;">
+          <label style="display:block; font-size:0.75rem; color:var(--text-grey); margin-bottom:6px; font-weight:600;">Chọn Avatar đại diện:</label>
+          <div class="avatar-grid" id="reg-avatar-grid"></div>
+        </div>
+
+        <button type="submit" class="btn-submit-action" id="btn-auth-submit">ĐĂNG NHẬP</button>
+        <div class="auth-alert" id="auth-alert-msg"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL HỒ SƠ TÀI KHOẢN (ĐỔI AVATAR / ĐĂNG XUẤT) -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal-box" style="text-align: center;">
+      <button class="modal-close-btn" onclick="closeProfileModal()">✕</button>
+      
+      <div style="font-size: 3rem; margin-bottom: 8px;" id="prof-avatar-big">😎</div>
+      <h3 class="modal-title" id="prof-name-title">Người dùng</h3>
+      <p class="modal-desc">Thành viên Rạp Phim Riêng Tư</p>
+
+      <div style="text-align: left; margin-bottom: 15px;">
+        <label style="display:block; font-size:0.75rem; color:var(--text-grey); margin-bottom:6px; font-weight:600;">Đổi Avatar của bạn:</label>
+        <div class="avatar-grid" id="edit-avatar-grid"></div>
+      </div>
+
+      <button class="btn-submit-action" style="background:#27272a; margin-bottom: 8px;" onclick="closeProfileModal()">Đóng cửa sổ</button>
+      <button class="btn-submit-action" style="background:transparent; border:1px solid var(--netflix-red); color:var(--netflix-red);" onclick="handleFirebaseLogout()">Đăng Xuất</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV DI ĐỘNG -->
   <nav class="mobile-bottom-nav">
     <div class="m-nav-item active" onclick="switchCategory('moi-cap-nhat', 1)">🏠<span>Trang chủ</span></div>
     <div class="m-nav-item" onclick="switchCategory('phim-bo', 1)">📺<span>Phim bộ</span></div>
     <div class="m-nav-item" onclick="showFavorites()">⭐<span>Yêu thích</span></div>
-    <div class="m-nav-item" onclick="openEditProfile()">👤<span id="nav-username">Hồ sơ</span></div>
+    <div class="m-nav-item" onclick="handleUserButtonClick()">👤<span id="m-nav-user">Tài khoản</span></div>
   </nav>
 
   <script>
-    const CORRECT_PIN = "2301";
-    const API_BASE = "https://phimapi.com";
+    // 1. CẤU HÌNH DỰ ÁN FIREBASE CỦA BẠN (ĐÃ TỰ ĐỘNG ĐIỀN CHUẨN XÁC)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCnOlja6uMcv5N93bT2so03fnjZscSlVh8",
+      authDomain: "web-phim-chill.firebaseapp.com",
+      projectId: "web-phim-chill",
+      storageBucket: "web-phim-chill.firebasestorage.app",
+      messagingSenderId: "430053487359",
+      appId: "1:430053487359:web:36562aebcb0a4f634cd2ca",
+      measurementId: "G-29BVBWBM4T"
+    };
 
-    let selectedAvatarEmoji = "😎";
-    let currentUser = null;
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const API_BASE = "https://phimapi.com";
+    const AVATAR_LIST = ["😎", "🍿", "🔥", "🐱", "👑", "🎮", "🚀", "🐼", "🎬", "🦄"];
+    
+    let currentAuthAction = "login";
+    let selectedAvatar = "😎";
+    let currentUserProfile = null;
 
     let currentCategory = "moi-cap-nhat";
     let currentPage = 1;
@@ -998,101 +1137,223 @@
     let activeEpIndex = 0;
     let resumeTargetTime = 0;
 
-    // --- 1. XÁC THỰC MÃ PIN & KIỂM TRA TÊN NGƯỜI DÙNG ---
-    function checkAuth() {
-      const isUnlocked = localStorage.getItem("PHIMNHA_PIN_UNLOCKED");
-      if (isUnlocked === "true") {
-        document.getElementById("lock-screen").style.display = "none";
-        checkUserProfile();
+    // --- 2. BỘ LỜI CHÚC XEM PHIM THEO GIỜ ---
+    function updateDynamicGreeting(name, avatar) {
+      const hour = new Date().getHours();
+      let greeting = "";
+      let tag = "";
+
+      if (hour >= 5 && hour < 11) {
+        greeting = `Chào buổi sáng! Chúc bạn ngày mới tràn đầy hứng khởi và xem phim thật chill.`;
+        tag = "🌅 Buổi Sáng";
+      } else if (hour >= 11 && hour < 14) {
+        greeting = `Chào buổi trưa! Nghỉ ngơi nạp năng lượng và thưởng thức vài tập phim nhé.`;
+        tag = "☀️ Buổi Trưa";
+      } else if (hour >= 14 && hour < 18) {
+        greeting = `Chúc bạn một buổi chiều thư thái, xem phim giải tỏa mọi căng thẳng!`;
+        tag = "🌤️ Buổi Chiều";
+      } else if (hour >= 18 && hour < 23) {
+        greeting = `Chúc bạn một buổi tối xem phim ấm áp, thư giãn và thật vui vẻ!`;
+        tag = "🌙 Buổi Tối";
       } else {
-        document.getElementById("lock-screen").style.display = "flex";
-        setTimeout(() => document.getElementById("pin-input").focus(), 200);
+        greeting = `Đêm đã khuya rồi, xem phim thư giãn xong nhớ đi ngủ sớm để giữ gìn sức khỏe bạn nhé!`;
+        tag = "✨ Đêm Khuya";
       }
+
+      document.getElementById("greet-avatar").innerText = avatar || "🍿";
+      document.getElementById("greet-time-tag").innerText = tag;
+      document.getElementById("greet-message").innerHTML = `${greeting} <b>${name ? '— ' + name : ''}</b>`;
     }
 
-    function verifyPin() {
-      const input = document.getElementById("pin-input").value;
-      const errBox = document.getElementById("pin-error");
-      if (input === CORRECT_PIN) {
-        localStorage.setItem("PHIMNHA_PIN_UNLOCKED", "true");
-        errBox.style.display = "none";
-        document.getElementById("lock-screen").style.display = "none";
-        checkUserProfile();
-      } else {
-        errBox.style.display = "block";
-        document.getElementById("pin-input").value = "";
-        document.getElementById("pin-input").focus();
-      }
-    }
+    // --- 3. ĐỒNG BỘ TRẠNG THÁI TÀI KHOẢN FIREBASE ---
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        let name = user.email.replace('@webphim.local', '');
+        let avatar = "😎";
 
-    document.getElementById("pin-input").addEventListener("input", function() {
-      if (this.value.length === 4) verifyPin();
-    });
-    document.getElementById("pin-input").addEventListener("keypress", function(e) {
-      if (e.key === "Enter") verifyPin();
-    });
+        try {
+          if (user.displayName) {
+            const parsed = JSON.parse(user.displayName);
+            name = parsed.name || name;
+            avatar = parsed.avatar || avatar;
+          }
+        } catch(e) {
+          if (user.displayName) name = user.displayName;
+        }
 
-    function lockApp() {
-      localStorage.removeItem("PHIMNHA_PIN_UNLOCKED");
-      location.reload();
-    }
+        currentUserProfile = { name, avatar, uid: user.uid };
+        
+        // Cập nhật giao diện
+        document.getElementById("header-avatar").innerText = avatar;
+        document.getElementById("header-username").innerText = name;
+        document.getElementById("prof-avatar-big").innerText = avatar;
+        document.getElementById("prof-name-title").innerText = name;
+        const mNav = document.getElementById("m-nav-user");
+        if (mNav) mNav.innerText = name;
 
-    // --- 2. HỆ THỐNG ĐẶT TÊN CÁ NHÂN ---
-    function checkUserProfile() {
-      const savedUser = localStorage.getItem("PHIMNHA_USER_INFO");
-      if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        applyUserToUI();
-        initApp();
+        updateDynamicGreeting(name, avatar);
         renderContinueWatching();
       } else {
-        // Chưa có tên -> hiện màn hình đặt tên
-        document.getElementById("welcome-screen").style.display = "flex";
-        setTimeout(() => document.getElementById("custom-name-input").focus(), 200);
+        currentUserProfile = null;
+        document.getElementById("header-avatar").innerText = "👤";
+        document.getElementById("header-username").innerText = "Đăng Nhập";
+        const mNav = document.getElementById("m-nav-user");
+        if (mNav) mNav.innerText = "Tài khoản";
+
+        updateDynamicGreeting("Bạn", "🍿");
+        renderContinueWatching();
+      }
+    });
+
+    function handleUserButtonClick() {
+      if (currentUserProfile) {
+        openProfileModal();
+      } else {
+        openAuthModal();
       }
     }
 
-    function selectAvatar(emoji, el) {
-      selectedAvatarEmoji = emoji;
-      document.querySelectorAll(".avatar-opt").forEach(e => e.classList.remove("active"));
-      el.classList.add("active");
-      document.getElementById("welcome-avatar-preview").innerText = emoji;
+    // --- 4. MODAL ĐĂNG NHẬP / ĐĂNG KÝ ---
+    function renderAvatarPickers() {
+      const regBox = document.getElementById("reg-avatar-grid");
+      const editBox = document.getElementById("edit-avatar-grid");
+      regBox.innerHTML = "";
+      editBox.innerHTML = "";
+
+      AVATAR_LIST.forEach(emoji => {
+        // Picker khi đăng ký
+        const btnReg = document.createElement("button");
+        btnReg.type = "button";
+        btnReg.className = `avatar-btn ${emoji === selectedAvatar ? 'active' : ''}`;
+        btnReg.innerText = emoji;
+        btnReg.onclick = () => {
+          selectedAvatar = emoji;
+          renderAvatarPickers();
+        };
+        regBox.appendChild(btnReg);
+
+        // Picker khi chỉnh sửa hồ sơ
+        const btnEdit = document.createElement("button");
+        btnEdit.type = "button";
+        btnEdit.className = `avatar-btn ${(currentUserProfile && currentUserProfile.avatar === emoji) ? 'active' : ''}`;
+        btnEdit.innerText = emoji;
+        btnEdit.onclick = () => changeUserAvatar(emoji);
+        editBox.appendChild(btnEdit);
+      });
     }
 
-    function saveCustomUser() {
-      let name = document.getElementById("custom-name-input").value.trim();
-      if (!name) name = "Bạn";
-
-      currentUser = {
-        name: name,
-        avatar: selectedAvatarEmoji
-      };
-
-      // Lưu vĩnh viễn vào trình duyệt thường
-      localStorage.setItem("PHIMNHA_USER_INFO", JSON.stringify(currentUser));
-      document.getElementById("welcome-screen").style.display = "none";
-      
-      applyUserToUI();
-      initApp();
-      renderContinueWatching();
+    async function changeUserAvatar(newAvatar) {
+      if (!auth.currentUser) return;
+      selectedAvatar = newAvatar;
+      const updatedProfile = { name: currentUserProfile.name, avatar: newAvatar };
+      await auth.currentUser.updateProfile({ displayName: JSON.stringify(updatedProfile) });
+      currentUserProfile.avatar = newAvatar;
+      document.getElementById("header-avatar").innerText = newAvatar;
+      document.getElementById("prof-avatar-big").innerText = newAvatar;
+      updateDynamicGreeting(currentUserProfile.name, newAvatar);
+      renderAvatarPickers();
     }
 
-    function applyUserToUI() {
-      if (!currentUser) return;
-      document.getElementById("header-avatar").innerText = currentUser.avatar;
-      document.getElementById("header-username").innerText = currentUser.name;
-      const navUser = document.getElementById("nav-username");
-      if (navUser) navUser.innerText = currentUser.name;
+    function switchAuthTab(type) {
+      currentAuthAction = type;
+      const alertBox = document.getElementById("auth-alert-msg");
+      alertBox.style.display = "none";
+
+      if (type === 'login') {
+        document.getElementById("tab-login").classList.add("active");
+        document.getElementById("tab-register").classList.remove("active");
+        document.getElementById("auth-title").innerText = "Đăng Nhập";
+        document.getElementById("auth-desc").innerText = "Điền tài khoản để tiếp tục xem phim dở dang";
+        document.getElementById("avatar-picker-group").style.display = "none";
+        document.getElementById("btn-auth-submit").innerText = "ĐĂNG NHẬP";
+      } else {
+        document.getElementById("tab-register").classList.add("active");
+        document.getElementById("tab-login").classList.remove("active");
+        document.getElementById("auth-title").innerText = "Tạo Tài Khoản";
+        document.getElementById("auth-desc").innerText = "Tự tạo tài khoản & chọn avatar đại diện của bạn";
+        document.getElementById("avatar-picker-group").style.display = "block";
+        document.getElementById("btn-auth-submit").innerText = "TẠO TÀI KHOẢN";
+      }
     }
 
-    function openEditProfile() {
-      document.getElementById("custom-name-input").value = currentUser ? currentUser.name : "";
-      document.getElementById("welcome-screen").style.display = "flex";
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const username = document.getElementById("auth-user").value.trim().toLowerCase();
+      const password = document.getElementById("auth-pass").value;
+      const alertBox = document.getElementById("auth-alert-msg");
+
+      // Mẹo: Tự chuyển nickname bừa thành định dạng email cục bộ
+      const pseudoEmail = `${username}@webphim.local`;
+
+      alertBox.style.display = "block";
+      alertBox.style.color = "#fbbf24";
+      alertBox.innerText = "Đang xử lý...";
+
+      try {
+        if (currentAuthAction === "register") {
+          const cred = await auth.createUserWithEmailAndPassword(pseudoEmail, password);
+          // Gắn tên và avatar vào hồ sơ người dùng
+          await cred.user.updateProfile({
+            displayName: JSON.stringify({ name: username, avatar: selectedAvatar })
+          });
+          alertBox.style.color = "#34d399";
+          alertBox.innerText = "🎉 Tạo tài khoản thành công!";
+          setTimeout(() => closeAuthModal(), 600);
+        } else {
+          await auth.signInWithEmailAndPassword(pseudoEmail, password);
+          alertBox.style.color = "#34d399";
+          alertBox.innerText = "Đăng nhập thành công!";
+          setTimeout(() => closeAuthModal(), 600);
+        }
+      } catch (err) {
+        alertBox.style.color = "var(--netflix-red)";
+        if (err.code === "auth/email-already-in-use") {
+          alertBox.innerText = "Tên tài khoản này đã có người đăng ký!";
+        } else if (err.code === "auth/wrong-password" || err.code === "auth/user-not-found" || err.code === "auth/invalid-credential") {
+          alertBox.innerText = "Sai tên tài khoản hoặc mật khẩu!";
+        } else if (err.code === "auth/weak-password") {
+          alertBox.innerText = "Mật khẩu phải từ 6 ký tự trở lên.";
+        } else {
+          alertBox.innerText = "Lỗi: " + err.message;
+        }
+      }
     }
 
-    // --- 3. LỊCH SỬ XEM CHUẨN XÁC TỪNG GIÂY ---
+    function handleFirebaseLogout() {
+      auth.signOut();
+      closeProfileModal();
+    }
+
+    function openAuthModal() {
+      renderAvatarPickers();
+      document.getElementById("auth-modal").style.display = "flex";
+      document.body.classList.add("modal-open");
+    }
+
+    function closeAuthModal() {
+      document.getElementById("auth-modal").style.display = "none";
+      document.body.classList.remove("modal-open");
+    }
+
+    function openProfileModal() {
+      renderAvatarPickers();
+      document.getElementById("profile-modal").style.display = "flex";
+      document.body.classList.add("modal-open");
+    }
+
+    function closeProfileModal() {
+      document.getElementById("profile-modal").style.display = "none";
+      document.body.classList.remove("modal-open");
+    }
+
+    // --- 5. LỊCH SỬ XEM & YÊU THÍCH (TÁCH RIÊNG THEO UID NGƯỜI DÙNG) ---
+    function getUserKey(prefix) {
+      const uid = currentUserProfile ? currentUserProfile.uid : "guest";
+      return `${prefix}_${uid}`;
+    }
+
     function getHistory() {
-      const saved = localStorage.getItem("PHIMNHA_USER_HISTORY");
+      const saved = localStorage.getItem(getUserKey("PHIMNHA_HIST"));
       return saved ? JSON.parse(saved) : [];
     }
 
@@ -1115,8 +1376,8 @@
       };
 
       history.unshift(record);
-      if (history.length > 15) history.pop();
-      localStorage.setItem("PHIMNHA_USER_HISTORY", JSON.stringify(history));
+      if (history.length > 18) history.pop();
+      localStorage.setItem(getUserKey("PHIMNHA_HIST"), JSON.stringify(history));
 
       renderContinueWatching();
     }
@@ -1154,22 +1415,8 @@
       await openMovie(slug, epIndex);
     }
 
-    // Tự động lưu tiến độ khi người dùng tắt app hoặc chuyển tab
-    window.addEventListener("pagehide", () => {
-      const video = document.getElementById("native-player");
-      if (activeMovie && video) savePlaybackProgress(video.currentTime, video.duration);
-    });
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") {
-        const video = document.getElementById("native-player");
-        if (activeMovie && video) savePlaybackProgress(video.currentTime, video.duration);
-      }
-    });
-
-    // --- 4. DANH SÁCH YÊU THÍCH ---
     function getFavorites() {
-      const saved = localStorage.getItem("PHIMNHA_USER_FAVORITES");
+      const saved = localStorage.getItem(getUserKey("PHIMNHA_FAV"));
       return saved ? JSON.parse(saved) : [];
     }
 
@@ -1205,7 +1452,7 @@
         });
       }
 
-      localStorage.setItem("PHIMNHA_USER_FAVORITES", JSON.stringify(favs));
+      localStorage.setItem(getUserKey("PHIMNHA_FAV"), JSON.stringify(favs));
       updateFavButton();
     }
 
@@ -1222,7 +1469,7 @@
       document.getElementById("main-section-anchor").scrollIntoView({ behavior: "smooth" });
     }
 
-    // --- 5. FORMAT & HERO BANNER (12 PHIM) ---
+    // --- 6. XỬ LÝ ẢNH & BANNER HERO ---
     function formatPoster(url) {
       if (!url) return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400";
       if (url.startsWith("http://") || url.startsWith("https://")) return url;
@@ -1285,7 +1532,7 @@
       setTimeout(() => {
         heroImg.src = formatPoster(m.poster_url || m.thumb_url);
         heroImg.style.opacity = "1";
-      }, 200);
+      }, 150);
 
       document.getElementById("hero-title").innerText = m.name;
       document.getElementById("hero-origin").innerText = `${m.origin_name || ''} (${m.year || '2026'})`;
@@ -1302,7 +1549,7 @@
       document.getElementById("hero-btn-play").onclick = () => openMovie(m.slug);
     }
 
-    // --- 6. PHÂN TRANG VÀ LƯỚI PHIM ---
+    // --- 7. TẢI DANH SÁCH PHIM & PHÂN TRANG ---
     async function loadCategoryData(cat, page = 1) {
       currentCategory = cat;
       currentPage = page;
@@ -1320,7 +1567,7 @@
 
       document.getElementById("list-title").innerText = title;
       const container = document.getElementById("movies-container");
-      container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px; color:var(--text-grey);">Đang tải phim trang ${page}...</div>`;
+      container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:50px; color:var(--text-grey);">Đang tải phim...</div>`;
 
       try {
         const res = await fetch(`${API_BASE}/${endpoint}`);
@@ -1431,7 +1678,7 @@
       document.getElementById("main-section-anchor").scrollIntoView({ behavior: "smooth" });
     }
 
-    // --- 7. PHÁT PHIM & THEO DÕI TIẾN ĐỘ ---
+    // --- 8. PHÁT PHIM & STREAM HLS ---
     async function openMovie(slug, epIndexToPlay = 0) {
       document.getElementById("suggest-box").style.display = "none";
       try {
@@ -1507,7 +1754,7 @@
             const secs = Math.floor(resumeTargetTime % 60);
             document.getElementById("resume-toast-text").innerText = `Đang tiếp tục từ ${mins}:${secs < 10 ? '0' : ''}${secs}`;
             toast.style.display = "flex";
-            setTimeout(() => toast.style.display = "none", 4500);
+            setTimeout(() => toast.style.display = "none", 4000);
           } else {
             toast.style.display = "none";
           }
@@ -1566,7 +1813,7 @@
       resumeTargetTime = 0;
     }
 
-    // --- 8. TÌM KIẾM TRỰC TIẾP ---
+    // --- 9. TÌM KIẾM TRỰC TIẾP ---
     function handleSearchLive(keyword) {
       clearTimeout(searchTimeout);
       const box = document.getElementById("suggest-box");
@@ -1603,20 +1850,15 @@
       }, 300);
     }
 
-    let isAppInitialized = false;
-    async function initApp() {
-      if (isAppInitialized) return;
-      isAppInitialized = true;
-      loadCategoryData("moi-cap-nhat", 1);
-    }
-
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".search-wrapper")) {
         document.getElementById("suggest-box").style.display = "none";
       }
     });
 
-    checkAuth();
+    // Khởi chạy ban đầu
+    updateDynamicGreeting("Bạn", "🍿");
+    loadCategoryData("moi-cap-nhat", 1);
   </script>
 </body>
 </html>
