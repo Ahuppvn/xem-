@@ -175,9 +175,12 @@
     
     .comment-list { display: flex; flex-direction: column; gap: 16px; }
     .comment-item { display: flex; gap: 12px; }
-    .comment-item img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
+    .comment-item img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); cursor: pointer; transition: transform 0.2s; }
+    .comment-item img:hover { transform: scale(1.08); }
     .comment-content-box { background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; flex: 1; border: 1px solid var(--border); }
     .c-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .c-name span.clickable-name { cursor: pointer; }
+    .c-name span.clickable-name:hover { color: var(--primary); text-decoration: underline; }
     .c-time { font-size: 0.75rem; color: var(--text-muted); font-weight: normal; }
     .c-text { font-size: 0.92rem; margin-bottom: 12px; line-height: 1.5; color: #e2e8f0; white-space: pre-wrap; word-break: break-word;}
     .c-actions { display: flex; gap: 16px; }
@@ -202,7 +205,8 @@
     .btn-agree-disclaimer { width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
     /* MODAL ONLINE */
-    .online-user-item { display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); padding: 10px 14px; border-radius: 10px; }
+    .online-user-item { display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); padding: 10px 14px; border-radius: 10px; cursor: pointer; transition: var(--transition); }
+    .online-user-item:hover { background: rgba(255, 255, 255, 0.08); }
     .online-user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #10b981; flex-shrink: 0; }
     .btn-poke { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.4); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: var(--transition); white-space: nowrap; }
     .btn-poke:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
@@ -222,22 +226,26 @@
     .btn-poke-mute:hover { color: #fff; }
 
     /* MODAL BẢNG XẾP HẠNG CÀY PHIM */
-    .rank-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); margin-bottom: 8px; }
+    .rank-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); margin-bottom: 8px; cursor: pointer; transition: var(--transition); }
+    .rank-item:hover { background: rgba(255,255,255,0.08); }
     .rank-medal { font-size: 1.25rem; width: 30px; text-align: center; font-weight: 800; }
     .rank-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
     .rank-name { font-weight: 700; font-size: 0.95rem; }
     .rank-hours { font-size: 0.85rem; color: #38bdf8; font-weight: 700; margin-left: auto; }
 
-    /* MODAL PROFILE */
-    .profile-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 480px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.9); }
-    .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-    .profile-big-avatar { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-    .profile-stat-box { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+    /* MODAL PROFILE CÁ NHÂN */
+    .profile-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 480px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.9); max-height: 85vh; overflow-y: auto; }
+    .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .profile-avatar-wrap { position: relative; width: 72px; height: 72px; flex-shrink: 0; }
+    .profile-big-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2.5px solid var(--primary); }
+    .btn-change-avatar-icon { position: absolute; bottom: 0; right: 0; background: var(--primary); color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; cursor: pointer; border: 1.5px solid var(--surface); }
+    
+    .profile-stat-box { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
     .stat-pill { background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 10px; border-radius: 10px; text-align: center; }
     .stat-pill .num { font-size: 1.15rem; font-weight: 800; color: #38bdf8; }
     .stat-pill .lbl { font-size: 0.75rem; color: var(--text-muted); }
-    .avatar-presets { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; margin-bottom: 12px; }
-    .preset-img { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: var(--transition); }
+    .avatar-presets { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; margin-bottom: 10px; }
+    .preset-img { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: var(--transition); flex-shrink: 0; }
     .preset-img.active { border-color: var(--primary); transform: scale(1.1); }
 
     /* CÁC MODAL PHỤ */
@@ -251,7 +259,7 @@
     .auth-card, .troll-card { background: var(--surface); width: 100%; max-width: 420px; border-radius: 16px; padding: 24px; border: 1px solid var(--border);}
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
-    .form-group input, .form-group select { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; outline:none;}
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; outline:none; font-family: inherit; }
     .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; gap: 8px; align-items: center;}
 
     /* TỐI ƯU CỰC MẠNH CHO ĐIỆN THOẠI */
@@ -326,7 +334,7 @@
     </div>
   </div>
 
-  <!-- MODAL PROFILE CÁ NHÂN -->
+  <!-- ==================== MODAL 1: HỒ SƠ CỦA BẠN (CẬP NHẬT MỚI) ==================== -->
   <div class="auth-modal" id="profileModal">
     <div class="profile-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
@@ -337,7 +345,13 @@
       </div>
       
       <div class="profile-header">
-        <img src="" class="profile-big-avatar" id="profileModalAvatar">
+        <div class="profile-avatar-wrap">
+          <img src="" class="profile-big-avatar" id="profileModalAvatar">
+          <label class="btn-change-avatar-icon" for="avatarFileInput" title="Tải ảnh mới từ thiết bị">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+          <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarFileUpload(event)">
+        </div>
         <div style="flex:1; overflow:hidden;">
           <div style="font-size:1.1rem; font-weight:800; display:flex; align-items:center; gap:6px;">
             <span id="profileModalName">Chunha</span>
@@ -367,23 +381,79 @@
         </div>
       </div>
 
-      <!-- Đổi Avatar -->
+      <!-- Tiểu Sử Cá Nhân -->
       <div class="form-group">
-        <label>Chọn Avatar Nhanh hoặc Dán Link:</label>
+        <label>Tiểu Sử Cá Nhân:</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="inputUserBio" placeholder="Ví dụ: Mọt phim xuyên màn đêm 🍿..." maxlength="80">
+          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileBio()">Lưu</button>
+        </div>
+      </div>
+
+      <!-- Chọn Avatar từ Thiết Bị hoặc Kho Sẵn -->
+      <div class="form-group">
+        <label style="display:flex; justify-content:space-between; align-items:center;">
+          <span>Ảnh Đại Diện (Từ máy / Kho sẵn):</span>
+          <button type="button" class="btn-tool" style="padding:2px 8px; font-size:0.75rem;" onclick="document.getElementById('avatarFileInput').click()">
+            <i class="fa-solid fa-upload"></i> Chọn file ảnh từ máy
+          </button>
+        </label>
         <div class="avatar-presets" id="avatarPresetsWrap"></div>
         <div style="display:flex; gap:8px;">
-          <input type="text" id="inputCustomAvatarUrl" placeholder="Dán URL ảnh đại diện bất kỳ...">
+          <input type="text" id="inputCustomAvatarUrl" placeholder="Hoặc dán URL ảnh bất kỳ...">
           <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileAvatar()">Lưu</button>
         </div>
       </div>
 
+      <!-- Đổi Mật Khẩu -->
+      <div class="form-group">
+        <label>Đổi Mật Khẩu:</label>
+        <div style="display:flex; gap:8px;">
+          <input type="password" id="inputNewPassword" placeholder="Nhập mật khẩu mới (>= 6 ký tự)...">
+          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfilePassword()">Đổi</button>
+        </div>
+      </div>
+
       <!-- Đăng Xuất An Toàn -->
-      <div style="margin-top:20px; border-top:1px solid var(--border); padding-top:16px; display:flex; justify-content:space-between; align-items:center;">
+      <div style="margin-top:16px; border-top:1px solid var(--border); padding-top:14px; display:flex; justify-content:space-between; align-items:center;">
         <span style="font-size:0.82rem; color:var(--text-muted);">Phiên đăng nhập an toàn</span>
         <button class="btn-poke-back" style="background:#dc2626; padding:8px 16px; border-radius:8px;" onclick="logoutAccount()">
           <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: SOI HỒ SƠ BẠN BÈ (MỚI TOANH) ==================== -->
+  <div class="auth-modal" id="publicUserModal">
+    <div class="profile-card" style="max-width: 420px; text-align: center;">
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn-tool" onclick="document.getElementById('publicUserModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <img src="" id="publicModalAvatar" style="width: 86px; height: 86px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); margin: 0 auto 12px; display: block; box-shadow: 0 4px 20px rgba(0,0,0,0.6);">
+      
+      <h3 style="font-size: 1.25rem; font-weight: 800; display:flex; justify-content:center; align-items:center; gap:6px; margin-bottom:4px;">
+        <span id="publicModalName">Tên Người Dùng</span>
+        <span id="publicModalRoleBadge" style="font-size:0.7rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 8px; border-radius:50px;">Thành viên</span>
+      </h3>
+      
+      <p id="publicModalBio" style="font-size: 0.88rem; color: #38bdf8; font-style: italic; margin-bottom: 16px;">"Mọt phim chính hiệu 🍿"</p>
+
+      <div class="profile-stat-box" style="margin-bottom: 20px;">
+        <div class="stat-pill">
+          <div class="num" id="publicModalWatchTime">0h 0p</div>
+          <div class="lbl">Thời gian cày phim</div>
+        </div>
+        <div class="stat-pill">
+          <div class="num" id="publicModalStatus">🟢 Online</div>
+          <div class="lbl">Trạng thái</div>
+        </div>
+      </div>
+
+      <button class="btn-agree-disclaimer" id="btnPublicPokeAction">
+        👉 Chọc bạn này ngay!
+      </button>
     </div>
   </div>
 
@@ -624,7 +694,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 1: PROFILE CÁ NHÂN
+    // TÍNH NĂNG 1: PROFILE CÁ NHÂN & TẢI ẢNH TỪ MÁY / MOBILE
     // ========================================================
     function openProfileModal() {
       if (!currentUser) return;
@@ -648,6 +718,67 @@
       document.getElementById('inputCustomAvatarUrl').value = url;
     }
 
+    // XỬ LÝ CHỌN FILE ẢNH TRỰC TIẾP TỪ THIẾT BỊ (NÉN TỰ ĐỘNG BẰNG CANVAS)
+    function handleAvatarFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) return showToast("Vui lòng chọn file hình ảnh!");
+
+      showToast("⏳ Đang xử lý ảnh...");
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_SIZE = 160;
+          let width = img.width;
+          let height = img.height;
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Tạo chuỗi ảnh siêu nhẹ (Base64)
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          document.getElementById('profileModalAvatar').src = compressedDataUrl;
+          document.getElementById('inputCustomAvatarUrl').value = compressedDataUrl;
+          applyAvatarUpdate(compressedDataUrl);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function applyAvatarUpdate(url) {
+      if (!currentUser) return;
+      try {
+        await currentUser.updateProfile({ photoURL: url });
+        db.collection('user_stats').doc(currentUser.uid).set({ avatar: url }, { merge: true });
+        updateOnlinePresence();
+        renderAuthUI(currentUser);
+        showToast("✅ Đã cập nhật ảnh đại diện mới!");
+      } catch (e) {
+        showToast("Lỗi thay đổi avatar!");
+      }
+    }
+
+    function updateProfileAvatar() {
+      const url = document.getElementById('inputCustomAvatarUrl').value.trim();
+      if (!url) return showToast("Vui lòng chọn hoặc dán URL ảnh!");
+      applyAvatarUpdate(url);
+    }
+
     async function updateProfileName() {
       if (!currentUser) return;
       const newName = document.getElementById('inputNewDisplayName').value.trim();
@@ -664,19 +795,32 @@
       }
     }
 
-    async function updateProfileAvatar() {
+    async function updateProfileBio() {
       if (!currentUser) return;
-      const newUrl = document.getElementById('inputCustomAvatarUrl').value.trim();
-      if (!newUrl) return showToast("Vui lòng chọn hoặc dán URL ảnh!");
+      const bio = document.getElementById('inputUserBio').value.trim();
       try {
-        await currentUser.updateProfile({ photoURL: newUrl });
-        db.collection('user_stats').doc(currentUser.uid).set({ avatar: newUrl }, { merge: true });
+        await db.collection('user_stats').doc(currentUser.uid).set({ bio: bio }, { merge: true });
         updateOnlinePresence();
-        document.getElementById('profileModalAvatar').src = newUrl;
-        renderAuthUI(currentUser);
-        showToast("✅ Đã thay ảnh đại diện!");
+        showToast("✅ Đã cập nhật tiểu sử!");
       } catch (e) {
-        showToast("Lỗi thay đổi avatar!");
+        showToast("Lỗi lưu tiểu sử!");
+      }
+    }
+
+    async function updateProfilePassword() {
+      if (!currentUser) return;
+      const newPass = document.getElementById('inputNewPassword').value;
+      if (!newPass || newPass.length < 6) return showToast("Mật khẩu mới phải từ 6 ký tự trở lên!");
+      try {
+        await currentUser.updatePassword(newPass);
+        document.getElementById('inputNewPassword').value = '';
+        showToast("✅ Đổi mật khẩu thành công!");
+      } catch (err) {
+        if (err.code === 'auth/requires-recent-login') {
+          showToast("⚠️ Vui lòng đăng xuất và đăng nhập lại để đổi mật khẩu!");
+        } else {
+          showToast("Lỗi: " + err.message);
+        }
       }
     }
 
@@ -685,10 +829,12 @@
       try {
         const doc = await db.collection('user_stats').doc(currentUser.uid).get();
         if (doc.exists) {
-          const totalMin = Math.round(doc.data().watchMinutes || 0);
+          const data = doc.data();
+          const totalMin = Math.round(data.watchMinutes || 0);
           const hours = Math.floor(totalMin / 60);
           const mins = totalMin % 60;
           document.getElementById('statWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
+          document.getElementById('inputUserBio').value = data.bio || '';
         }
         const favSnap = await db.collection('users').doc(currentUser.uid).collection('favorites').get();
         document.getElementById('statFavoritesCount').innerText = favSnap.size;
@@ -704,7 +850,45 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 2: RESUME PLAYBACK (LƯU VỊ TRÍ ĐANG XEM)
+    // TÍNH NĂNG 2: SOI TRANG CÁ NHÂN CỦA BẠN BÈ (MỚI)
+    // ========================================================
+    async function viewUserProfile(targetUid, targetName, targetAvatar) {
+      if (!targetUid) return;
+      if (currentUser && targetUid === currentUser.uid) {
+        return openProfileModal(); // Nếu là chính mình thì mở modal chỉnh sửa của mình
+      }
+
+      document.getElementById('publicModalAvatar').src = targetAvatar || defaultAvatar;
+      document.getElementById('publicModalName').innerText = targetName || 'Người dùng';
+      document.getElementById('publicModalBio').innerText = "Đang tải thông tin...";
+      document.getElementById('publicModalWatchTime').innerText = "...";
+      document.getElementById('publicModalStatus').innerText = "🟢 Trực tuyến";
+
+      const btnPoke = document.getElementById('btnPublicPokeAction');
+      btnPoke.onclick = () => {
+        pokeUser(targetUid, targetName);
+      };
+
+      document.getElementById('publicUserModal').style.display = 'flex';
+
+      try {
+        const doc = await db.collection('user_stats').doc(targetUid).get();
+        if (doc.exists) {
+          const data = doc.data();
+          const totalMin = Math.round(data.watchMinutes || 0);
+          const hours = Math.floor(totalMin / 60);
+          const mins = totalMin % 60;
+          document.getElementById('publicModalWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
+          document.getElementById('publicModalBio').innerText = data.bio ? `"${data.bio}"` : `"Mọt phim chân chính 🍿"`;
+        } else {
+          document.getElementById('publicModalWatchTime').innerText = "0 phút";
+          document.getElementById('publicModalBio').innerText = `"Mọt phim chân chính 🍿"`;
+        }
+      } catch(e) {}
+    }
+
+    // ========================================================
+    // TÍNH NĂNG 3: RESUME PLAYBACK (LƯU VỊ TRÍ ĐANG XEM)
     // ========================================================
     function getResumeKey(slug, epIndex) {
       return `resume_${slug}_ep${epIndex}`;
@@ -744,7 +928,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 3: GÕ ĐÚP TUA NHANH 10S & PHÍM TẮT
+    // TÍNH NĂNG 4: GÕ ĐÚP TUA NHANH 10S & PHÍM TẮT
     // ========================================================
     let lastTapLeft = 0;
     let lastTapRight = 0;
@@ -802,7 +986,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 4: CHỌC VĂN MINH & ÂM THANH ÊM ÁI
+    // TÍNH NĂNG 5: CHỌC VĂN MINH & ÂM THANH ÊM ÁI
     // ========================================================
     let guestId = sessionStorage.getItem('phimnha_guest_id');
     if (!guestId) {
@@ -901,7 +1085,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 5: BẢNG XẾP HẠNG CÀY PHIM (LEADERBOARD)
+    // TÍNH NĂNG 6: BẢNG XẾP HẠNG CÀY PHIM (LEADERBOARD)
     // ========================================================
     let watchTimeTrackerInterval = null;
     function initWatchTimeTracker() {
@@ -938,6 +1122,7 @@
         let rank = 1;
         snap.forEach(doc => {
           const u = doc.data();
+          const targetUid = doc.id;
           const totalMin = Math.round(u.watchMinutes || 0);
           const hours = Math.floor(totalMin / 60);
           const mins = totalMin % 60;
@@ -945,12 +1130,12 @@
           const medal = rank <= 3 ? medals[rank - 1] : `#${rank}`;
 
           html += `
-            <div class="rank-item">
+            <div class="rank-item" onclick="viewUserProfile('${targetUid}', '${u.name}', '${u.avatar || defaultAvatar}')" title="Bấm để xem trang cá nhân">
               <div class="rank-medal">${medal}</div>
               <img src="${u.avatar || defaultAvatar}" class="rank-avatar">
               <div style="flex:1; overflow:hidden;">
                 <div class="rank-name" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${u.name}</div>
-                <div style="font-size:0.75rem; color:var(--text-muted);">Mọt phim chân chính</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">${u.bio ? u.bio : 'Mọt phim chân chính'}</div>
               </div>
               <div class="rank-hours"><i class="fa-regular fa-clock"></i> ${timeText}</div>
             </div>
@@ -1004,7 +1189,7 @@
         wrap.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Đang tải danh sách người dùng...</p>`;
       } else {
         wrap.innerHTML = list.map(u => `
-          <div class="online-user-item">
+          <div class="online-user-item" onclick="viewUserProfile('${u.uid}', '${u.name}', '${u.avatar}')" title="Bấm để xem hồ sơ">
             <img src="${u.avatar}" class="online-user-avatar">
             <div style="flex:1; overflow:hidden;">
               <div style="font-weight:700; font-size:0.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:6px;">
@@ -1015,7 +1200,7 @@
                 ${u.status || '🟢 Đang trực tuyến'}
               </div>
             </div>
-            ${u.uid !== getMyUid() ? `<button class="btn-poke" onclick="pokeUser('${u.uid}', '${u.name}')">👉 Chọc</button>` : ''}
+            ${u.uid !== getMyUid() ? `<button class="btn-poke" onclick="event.stopPropagation(); pokeUser('${u.uid}', '${u.name}')">👉 Chọc</button>` : ''}
           </div>
         `).join('');
       }
@@ -1189,7 +1374,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 6: TRÌNH PHÁT VÀ CHỌN THUYẾT MINH / VIETSUB
+    // TÍNH NĂNG 7: TRÌNH PHÁT VÀ CHỌN THUYẾT MINH / VIETSUB
     // ========================================================
     function parseServerBadge(serverName) {
       const nameLower = serverName.toLowerCase();
@@ -1224,7 +1409,6 @@
           document.getElementById('metaDirector').innerText = m.director && m.director[0] ? m.director.join(", ") : 'Đang cập nhật';
           document.getElementById('metaActor').innerText = m.actor && m.actor[0] ? m.actor.join(", ") : 'Đang cập nhật';
           
-          // Tự động chọn server theo sở thích của người dùng (ưu tiên Thuyết Minh nếu có)
           const userPref = localStorage.getItem('phimnha_audio_pref') || 'tm';
           currentServerIndex = 0;
           if (userPref === 'tm') {
@@ -1397,9 +1581,9 @@
              if(c.replies && c.replies.length > 0) {
                 repliesHtml = c.replies.map(r => `
                   <div class="comment-item" style="margin-top:12px;">
-                    <img src="${r.avatar}" style="width:32px;height:32px;">
+                    <img src="${r.avatar}" style="width:32px;height:32px;" onclick="viewUserProfile('${r.uid}', '${r.name}', '${r.avatar}')" title="Soi hồ sơ">
                     <div class="comment-content-box" style="padding:10px;">
-                      <div class="c-name">${r.name} <span class="c-time">${new Date(r.timestamp).toLocaleString('vi-VN', {hour: '2-digit', minute:'2-digit'})}</span></div>
+                      <div class="c-name"><span class="clickable-name" onclick="viewUserProfile('${r.uid}', '${r.name}', '${r.avatar}')">${r.name}</span> <span class="c-time">${new Date(r.timestamp).toLocaleString('vi-VN', {hour: '2-digit', minute:'2-digit'})}</span></div>
                       <div class="c-text" style="font-size:0.88rem; margin-bottom:0;">${r.content.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
                     </div>
                   </div>
@@ -1408,9 +1592,9 @@
 
              html += `
                <div class="comment-item">
-                 <img src="${c.avatar}">
+                 <img src="${c.avatar}" onclick="viewUserProfile('${c.uid}', '${c.name}', '${c.avatar}')" title="Soi hồ sơ">
                  <div class="comment-content-box">
-                   <div class="c-name">${c.name} <span class="c-time">${timeStr}</span></div>
+                   <div class="c-name"><span class="clickable-name" onclick="viewUserProfile('${c.uid}', '${c.name}', '${c.avatar}')">${c.name}</span> <span class="c-time">${timeStr}</span></div>
                    <div class="c-text">${safeContent}</div>
                    <div class="c-actions">
                      <button class="btn-action ${isLiked ? 'liked' : ''}" onclick="voteComment('${slug}', '${cId}', 'like')"><i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-thumbs-up"></i> ${(c.likes||[]).length || ''}</button>
