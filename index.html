@@ -32,29 +32,34 @@
     ::-webkit-scrollbar { width: 6px; height: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: #262b3a; border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
     /* HEADER & SEARCH */
-    header { position: sticky; top: 0; z-index: 1000; background: rgba(9, 10, 15, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-    .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-size: 1.3rem; font-weight: 800; white-space: nowrap; }
+    header { position: sticky; top: 0; z-index: 1000; background: rgba(9, 10, 15, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-size: 1.3rem; font-weight: 800; white-space: nowrap; flex-shrink: 0; }
     .brand i { color: var(--primary); font-size: 1.4rem; }
     
-    .search-box { flex: 1; max-width: 440px; position: relative; }
-    .search-box input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 50px; padding: 9px 16px 9px 38px; color: #fff; outline: none; transition: var(--transition); }
-    .search-box input:focus { border-color: var(--primary); }
-    .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-    .search-results-dropdown { position: absolute; top: 115%; left: 0; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-height: 380px; overflow-y: auto; display: none; z-index: 1100; box-shadow: 0 12px 30px rgba(0,0,0,0.8); }
-    .search-item { display: flex; gap: 12px; padding: 10px 14px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); transition: var(--transition); }
-    .search-item:hover { background: rgba(255,255,255,0.06); }
-    .search-item img { width: 44px; height: 58px; object-fit: cover; border-radius: 6px; }
+    /* KHUNG TÌM KIẾM THÔNG MINH */
+    .search-box { flex: 1; max-width: 440px; position: relative; display: flex; align-items: center; }
+    .search-box input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 50px; padding: 9px 36px 9px 38px; color: #fff; outline: none; transition: var(--transition); font-size: 0.9rem; }
+    .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 14px rgba(229, 9, 20, 0.35); }
+    .search-box i.fa-magnifying-glass { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; pointer-events: none; }
+    .search-clear-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); cursor: pointer; font-size: 0.95rem; display: none; padding: 4px; }
+    .search-clear-btn:hover { color: #fff; }
+
+    .search-results-dropdown { position: absolute; top: 115%; left: 0; right: 0; background: #161a26; border: 1px solid rgba(229, 9, 20, 0.4); border-radius: var(--radius); max-height: 400px; overflow-y: auto; display: none; z-index: 1200; box-shadow: 0 16px 36px rgba(0,0,0,0.9); }
+    .search-item { display: flex; gap: 12px; padding: 10px 14px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); transition: var(--transition); align-items: center; }
+    .search-item:hover { background: rgba(255,255,255,0.08); }
+    .search-item img { width: 44px; height: 58px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
 
     /* HEADER ACTIONS */
-    .header-actions { display: flex; align-items: center; gap: 10px; }
-    .online-badge { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .online-badge { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
     .online-badge .dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; animation: pulse 1.8s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
     
     .btn-auth { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 50px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .btn-library { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid var(--border); padding: 8px 14px; border-radius: 50px; cursor: pointer; display: none; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; }
-    .user-profile-btn { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); padding: 4px 10px 4px 4px; border-radius: 50px; cursor: pointer; }
-    .user-avatar-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
+    .btn-library { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid var(--border); padding: 8px 14px; border-radius: 50px; cursor: pointer; display: none; align-items: center; gap: 6px; font-weight: 700; font-size: 0.88rem; white-space: nowrap; }
+    .btn-library:hover { background: rgba(255,255,255,0.2); }
+    .user-profile-btn { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); padding: 4px 8px; border-radius: 50px; cursor: pointer; }
+    .user-avatar-img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
 
     /* HERO POSTER */
     .hero-container { position: relative; width: 100%; height: 62vh; min-height: 440px; overflow: hidden; margin-bottom: 24px; background: #11141e; }
@@ -90,7 +95,7 @@
     .page-btn.active { background: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);}
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* PLAYER MODAL (CHỐNG QUẢNG CÁO) */
+    /* PLAYER MODAL */
     .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
     .cinema-mode-active .player-details-container { opacity: 0.08; filter: blur(3px); pointer-events: none; }
@@ -145,6 +150,19 @@
     .related-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--primary); padding-left: 8px; }
     .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
 
+    /* MODAL KHUYẾN CÁO VĂN MINH (CHỐNG CỜ BẠC / RƯỢU BIA) */
+    .disclaimer-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(12px); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .disclaimer-card { background: var(--surface); border: 1.5px solid rgba(229, 9, 20, 0.5); width: 100%; max-width: 500px; border-radius: 18px; padding: 28px 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); animation: popUp 0.3s ease; }
+    @keyframes popUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .disclaimer-icon { width: 60px; height: 60px; background: rgba(229, 9, 20, 0.15); border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--primary); margin: 0 auto 16px; }
+    .disclaimer-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; color: #fff; }
+    .disclaimer-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .disclaimer-tag { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
+    .disclaimer-body { font-size: 0.88rem; color: #cbd5e1; text-align: left; line-height: 1.6; margin-bottom: 22px; background: rgba(0,0,0,0.3); padding: 14px; border-radius: 10px; border: 1px solid var(--border); }
+    .disclaimer-body p { margin-bottom: 8px; }
+    .btn-agree-disclaimer { width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); }
+    .btn-agree-disclaimer:hover { background: var(--primary-hover); }
+
     /* CÁC MODAL PHỤ */
     .library-modal, .auth-modal, .troll-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 16px; }
     .library-card { background: var(--surface); width: 100%; max-width: 800px; height: 80vh; border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
@@ -159,14 +177,49 @@
     .form-group input, .form-group select { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; outline:none;}
     .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; gap: 8px; align-items: center;}
 
-    /* TỐI ƯU GIAO DIỆN ĐIỆN THOẠI */
-    @media (max-width: 992px) { .player-details-container { grid-template-columns: 1fr; } }
+    /* ========================================================= */
+    /* TỐI ƯU CỰC MẠNH CHO ĐIỆN THOẠI (FIX LỖI THANH TÌM KIẾM)  */
+    /* ========================================================= */
     @media (max-width: 680px) {
-      header { padding: 10px 14px; } .brand span { display: none; }
+      header { padding: 10px 12px; gap: 8px; }
+      .brand span { display: none; }
+      .btn-library span { display: none; } /* Chỉ hiện icon dấu trang trên đt */
+      .online-badge span { display: none; } /* Chỉ hiện chấm tròn và số online */
+      .user-profile-btn span { display: none; } /* Ẩn chữ tên người dùng để nhường chỗ */
+      .user-profile-btn { padding: 3px; }
+
+      /* Khi focus vào ô tìm kiếm: Tự động bung rộng chiếm toàn thanh header */
+      .search-box:focus-within {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        top: 8px;
+        bottom: 8px;
+        max-width: none;
+        z-index: 1500;
+      }
+      .search-box:focus-within input {
+        border-color: var(--primary);
+        box-shadow: 0 0 20px rgba(0,0,0,0.9);
+        padding-right: 40px;
+      }
+      
+      /* Bảng kết quả tìm kiếm TRÀN VIỀN trên điện thoại, không còn bị kẹt cột 35px */
+      .search-results-dropdown {
+        position: fixed !important;
+        top: 60px !important;
+        left: 12px !important;
+        right: 12px !important;
+        width: auto !important;
+        max-height: 65vh !important;
+        border-radius: 14px !important;
+        box-shadow: 0 16px 40px rgba(0,0,0,0.95) !important;
+      }
+
       .hero-content { left: 16px; bottom: 20px; right: 16px; }
-      .hero-title { font-size: 1.8rem; }
+      .hero-title { font-size: 1.7rem; }
+      .player-details-container { grid-template-columns: 1fr; }
       .movie-grid, .lib-content, .related-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .header-actions .online-badge span { display: none; }
       .comment-input-wrap img { display: none; }
       .pagination-bar { padding: 4px; } .page-btn { min-width: 34px; height: 34px; font-size: 0.82rem; }
     }
@@ -174,13 +227,36 @@
 </head>
 <body>
 
+  <!-- BẢNG THÔNG BÁO KHUYẾN CÁO VĂN MINH (HIỆN KHI MỚI VÀO WEB) -->
+  <div class="disclaimer-modal" id="disclaimerModal">
+    <div class="disclaimer-card">
+      <div class="disclaimer-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <h2 class="disclaimer-title">THÔNG BÁO & NỘI QUY WEB</h2>
+      <div class="disclaimer-tags">
+        <span class="disclaimer-tag">🚫 KHÔNG CỜ BẠC</span>
+        <span class="disclaimer-tag">🚫 KHÔNG CÁ ĐỘ</span>
+        <span class="disclaimer-tag">🚫 KHÔNG RƯỢU BIA</span>
+      </div>
+      <div class="disclaimer-body">
+        <p><strong>1. Tinh thần giải trí lành mạnh:</strong> Phim Nhà là dự án chia sẻ đam mê điện ảnh phi lợi nhuận. Trang web <strong>kiên quyết bài trừ và không cổ xúy</strong> cho các tệ nạn xã hội, cờ bạc, cá độ, rượu bia hay chất kích thích dưới mọi hình thức.</p>
+        <p><strong>2. Cảnh báo nội dung thứ ba:</strong> Do sử dụng nguồn phát video miễn phí trên Internet, video có thể bị nhà xuất bản gốc chèn chữ quảng cáo. Người xem <strong>tuyệt đối KHÔNG tin và KHÔNG làm theo</strong> các nội dung này để tránh bị lừa đảo!</p>
+        <p><strong>3. Tự giác bảo vệ bản thân:</strong> Hãy cùng nhau xây dựng môi trường mạng văn minh và tuân thủ các quy định của pháp luật.</p>
+      </div>
+      <button class="btn-agree-disclaimer" onclick="closeDisclaimer()">
+        <i class="fa-solid fa-circle-check"></i> TÔI ĐÃ HIỂU & ĐỒNG Ý
+      </button>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <header>
     <a href="#" class="brand" onclick="location.reload()"><i class="fa-solid fa-play"></i> <span>PHIM NHÀ</span></a>
     
-    <div class="search-box">
+    <!-- KHUNG TÌM KIẾM ĐÃ TỐI ƯU CHO MOBILE -->
+    <div class="search-box" id="searchBoxContainer">
       <i class="fa-solid fa-magnifying-glass"></i>
       <input type="text" id="liveSearchInput" placeholder="Tìm kiếm phim...">
+      <i class="fa-solid fa-xmark search-clear-btn" id="searchClearBtn" onclick="clearSearchInput(event)"></i>
       <div class="search-results-dropdown" id="searchResultsDropdown"></div>
     </div>
     
@@ -191,7 +267,7 @@
     </div>
   </header>
 
-  <!-- HERO BANNER (ĐÃ SỬA LỖI ẢNH VÀ TỰ ĐỘNG CHUYỂN PHIM) -->
+  <!-- HERO BANNER TỰ ĐỘNG CHUYỂN PHIM -->
   <div class="hero-container">
     <div class="hero-backdrop" id="heroBackdrop"></div>
     <div class="hero-vignette"></div>
@@ -313,7 +389,7 @@
 
   <div class="toast-msg" id="toastMsg"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span id="toastContent"></span></div>
 
-  <!-- ==================== HỆ THỐNG JAVASCRIPT ĐÃ SỬA LỖI ==================== -->
+  <!-- ==================== HỆ THỐNG JAVASCRIPT ==================== -->
   <script>
     const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     firebase.initializeApp(firebaseConfig);
@@ -323,14 +399,27 @@
     let allMoviesCache = []; let currentPage = 1; let totalPages = 50;
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
 
-    // HÀM TIỆN ÍCH XỬ LÝ LINK ẢNH PHIM CHUẨN 100% KHÔNG BAO GIỜ BỊ LỖI 404
+    // 0. BẢNG THÔNG BÁO MIỄN TRỪ TRÁCH NHIỆM (HIỆN MỖI PHIÊN MỞ TRÌNH DUYỆT)
+    function checkDisclaimerNotice() {
+      const accepted = sessionStorage.getItem('phimnha_disclaimer_accepted');
+      if (!accepted) {
+        document.getElementById('disclaimerModal').style.display = 'flex';
+      }
+    }
+    function closeDisclaimer() {
+      sessionStorage.setItem('phimnha_disclaimer_accepted', 'true');
+      document.getElementById('disclaimerModal').style.display = 'none';
+      showToast("Chúc bạn xem phim vui vẻ!");
+    }
+
+    // XỬ LÝ ẢNH CHỐNG LỖI 404
     function formatImageUrl(path) {
       if (!path) return "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200";
       if (path.startsWith('http://') || path.startsWith('https://')) return path;
       return "https://phimimg.com/" + path.replace(/^\//, '');
     }
 
-    // 1. TÀI KHOẢN VÀ AVATAR GÓC PHẢI
+    // 1. TÀI KHOẢN VÀ AVATAR
     auth.onAuthStateChanged(user => {
       currentUser = user;
       const authContainer = document.getElementById('authContainer');
@@ -338,7 +427,7 @@
       if (user) {
         const name = user.email.split('@')[0];
         const photo = user.photoURL || defaultAvatar;
-        authContainer.innerHTML = `<div class="user-profile-btn" onclick="auth.signOut()"><img src="${photo}" class="user-avatar-img"><span style="font-size:0.85rem;font-weight:700;padding:0 6px;">${name} (Thoát)</span></div>`;
+        authContainer.innerHTML = `<div class="user-profile-btn" onclick="auth.signOut()"><img src="${photo}" class="user-avatar-img"><span style="font-size:0.85rem;font-weight:700;padding:0 4px;">${name} (Thoát)</span></div>`;
         btnLib.style.display = 'flex';
       } else {
         authContainer.innerHTML = `<button class="btn-auth" onclick="document.getElementById('authModal').style.display='flex'"><i class="fa-regular fa-user"></i></button>`;
@@ -360,33 +449,57 @@
     function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
     function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
-    // 2. LIVE SEARCH
+    // 2. LIVE SEARCH (TỐI ƯU CỰC MẠNH CHO MOBILE)
     const searchInput = document.getElementById('liveSearchInput');
     const dropdown = document.getElementById('searchResultsDropdown');
+    const clearBtn = document.getElementById('searchClearBtn');
     let searchTimeout = null;
+
     searchInput.addEventListener('input', (e) => {
       const kw = e.target.value.trim();
       clearTimeout(searchTimeout);
+      clearBtn.style.display = kw ? 'block' : 'none';
       if (!kw) { dropdown.style.display = 'none'; return; }
+      
       searchTimeout = setTimeout(async () => {
         try {
-          const res = await fetch(`https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(kw)}&limit=6`);
+          const res = await fetch(`https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(kw)}&limit=8`);
           const data = await res.json();
-          if (data && data.data && data.data.items) {
+          if (data && data.data && data.data.items && data.data.items.length > 0) {
             dropdown.innerHTML = data.data.items.map(m => `
-              <div class="search-item" onclick="openPlayer('${m.slug}'); document.getElementById('searchResultsDropdown').style.display='none'; document.getElementById('liveSearchInput').value='';">
+              <div class="search-item" onclick="openPlayer('${m.slug}'); closeSearch();">
                 <img src="${formatImageUrl(m.poster_url)}">
-                <div><div style="font-weight:700;font-size:0.9rem;">${m.name}</div><div style="font-size:0.75rem;color:var(--text-muted);">${m.year || 2026} • ${m.episode_current || 'FHD'}</div></div>
+                <div style="flex:1; overflow:hidden;">
+                  <div style="font-weight:700;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name}</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">${m.year || 2026} • <span style="color:#38bdf8;">${m.episode_current || 'FHD'}</span></div>
+                </div>
               </div>
             `).join('');
+            dropdown.style.display = 'block';
+          } else {
+            dropdown.innerHTML = `<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:0.88rem;">Không tìm thấy bộ phim nào!</div>`;
             dropdown.style.display = 'block';
           }
         } catch (err) {}
       }, 300);
     });
+
+    function clearSearchInput(e) {
+      e.stopPropagation();
+      searchInput.value = '';
+      clearBtn.style.display = 'none';
+      dropdown.style.display = 'none';
+      searchInput.focus();
+    }
+    function closeSearch() {
+      dropdown.style.display = 'none';
+      searchInput.value = '';
+      clearBtn.style.display = 'none';
+      searchInput.blur();
+    }
     document.addEventListener('click', (e) => { if(!e.target.closest('.search-box')) dropdown.style.display='none'; });
 
-    // 3. TẢI PHIM & HERO BANNER XOAY TUA ĐÃ SỬA LỖI
+    // 3. TẢI PHIM & BANNER XOAY TUA
     let heroInterval = null;
     let heroIndex = 0;
 
@@ -401,15 +514,9 @@
           allMoviesCache = data.items;
           renderGrid('mainMovieGrid', data.items);
           renderPagination(currentPage, totalPages);
-          
-          // Khởi động Banner một lần duy nhất ở trang 1
-          if (page === 1) {
-            startHeroBanner(data.items.slice(0, 6));
-          }
+          if (page === 1) startHeroBanner(data.items.slice(0, 6));
         }
-      } catch (e) {
-        console.error("Lỗi nạp phim:", e);
-      }
+      } catch (e) {}
     }
 
     function renderGrid(containerId, movies) {
@@ -420,15 +527,11 @@
         </div>`).join('');
     }
 
-    // KHỞI ĐỘNG VÒNG LẶP BANNER AN TOÀN
     function startHeroBanner(movies) {
       if (!movies || movies.length === 0) return;
       if (heroInterval) clearInterval(heroInterval);
-      
       heroIndex = 0;
       updateHeroView(movies[0]);
-
-      // Tự động chuyển phim sau mỗi 5 giây
       heroInterval = setInterval(() => {
         heroIndex = (heroIndex + 1) % movies.length;
         updateHeroView(movies[heroIndex]);
@@ -438,10 +541,7 @@
     function updateHeroView(m) {
       if (!m) return;
       const backdrop = document.getElementById('heroBackdrop');
-      // Dùng thumb_url nếu có, nếu lỗi tự động lấy poster_url làm nền
       const img = formatImageUrl(m.thumb_url || m.poster_url);
-      
-      // Hiệu ứng mờ dần khi chuyển ảnh
       backdrop.style.opacity = '0.3';
       setTimeout(() => {
         backdrop.style.backgroundImage = `url('${img}')`;
@@ -475,7 +575,7 @@
       fetchMovies(page); document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 4. TRÌNH PHÁT CHỐNG QUẢNG CÁO HLS.JS
+    // 4. TRÌNH PHÁT HLS.JS CHỐNG QUẢNG CÁO
     async function openPlayer(slug) {
       try {
         const res = await fetch(`https://phimapi.com/phim/${slug}`); const data = await res.json();
@@ -663,7 +763,10 @@
     }
 
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
-    window.onload = () => fetchMovies(1);
+    window.onload = () => {
+      checkDisclaimerNotice();
+      fetchMovies(1);
+    };
   </script>
 </body>
 </html>
