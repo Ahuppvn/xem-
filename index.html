@@ -211,18 +211,33 @@
     .btn-poke { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.4); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: var(--transition); white-space: nowrap; }
     .btn-poke:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
-    /* MINI TOAST KHI BỊ CHỌC */
+    /* ========================================================
+       HIỆU ỨNG RUNG LẮC SIÊU BÁ ĐẠO CHO THÔNG BÁO BỊ CHỌC
+    ======================================================== */
+    @keyframes pokeShakeAnim {
+      0%, 100% { transform: translateX(0); }
+      15%, 45%, 75% { transform: translateX(-8px) rotate(-1.5deg); }
+      30%, 60%, 90% { transform: translateX(8px) rotate(1.5deg); }
+    }
     .poke-notification {
       position: fixed; top: 75px; right: 20px; z-index: 9999;
-      background: rgba(18, 21, 30, 0.95); border: 1.5px solid var(--primary); border-radius: 14px;
-      padding: 12px 16px; display: none; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      backdrop-filter: blur(10px); animation: slideInRight 0.35s ease; max-width: 360px;
+      background: rgba(18, 21, 30, 0.96); border: 2px solid #ff0f1b; border-radius: 16px;
+      padding: 14px 18px; display: none; align-items: flex-start; gap: 14px; box-shadow: 0 12px 40px rgba(229, 9, 20, 0.6);
+      backdrop-filter: blur(12px); max-width: 380px;
+    }
+    .poke-notification.active-shake {
+      animation: slideInRight 0.3s ease, pokeShakeAnim 0.6s ease 0.3s;
     }
     @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    .poke-notify-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
-    .poke-notify-actions { display: flex; gap: 8px; margin-top: 6px; }
-    .btn-poke-back { background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
-    .btn-poke-mute { background: rgba(255,255,255,0.1); color: var(--text-muted); border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; }
+    .poke-notify-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
+    .poke-quote-box {
+      background: rgba(255, 255, 255, 0.06); border: 1px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 8px; padding: 6px 10px; margin-top: 6px; font-size: 0.82rem; color: #fde047;
+      line-height: 1.45; font-style: italic; word-break: break-word;
+    }
+    .poke-notify-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .btn-poke-back { background: var(--primary); color: #fff; border: none; padding: 5px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+    .btn-poke-mute { background: rgba(255,255,255,0.1); color: var(--text-muted); border: 1px solid var(--border); padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; }
     .btn-poke-mute:hover { color: #fff; }
 
     /* MODAL BẢNG XẾP HẠNG CÀY PHIM */
@@ -321,15 +336,15 @@
     </div>
   </div>
 
-  <!-- POP-UP MINI KHI BỊ BẠN BÈ CHỌC -->
+  <!-- POP-UP MINI KHI BỊ BẠN BÈ CHỌC (HIỆU ỨNG RUNG LẮC BÁ ĐẠO) -->
   <div class="poke-notification" id="pokeNotification">
     <img src="" class="poke-notify-avatar" id="pokeSenderAvatar">
     <div style="flex:1; overflow:hidden;">
-      <div style="font-weight:700; font-size:0.85rem;" id="pokeSenderName">Bạn bè vừa chọc bạn!</div>
-      <div style="font-size:0.75rem; color:#cbd5e1;">👉 Ê cày tiếp phim đi kìa!</div>
+      <div style="font-weight:800; font-size:0.9rem; color:#fff;" id="pokeSenderName">Bạn bè vừa chọc bạn!</div>
+      <div class="poke-quote-box" id="pokeSenderQuote">"Đang tải câu cà khịa..."</div>
       <div class="poke-notify-actions">
         <button class="btn-poke-back" id="btnPokeBack">Chọc lại 👉</button>
-        <button class="btn-poke-mute" onclick="mutePoke24h()">🔕 Tắt 24h</button>
+        <button class="btn-poke-mute" onclick="mutePoke24h()">🔕 Chặn 24h</button>
       </div>
     </div>
   </div>
@@ -372,7 +387,6 @@
         </div>
       </div>
 
-      <!-- Đổi Biệt Danh -->
       <div class="form-group">
         <label>Đổi Tên Hiển Thị:</label>
         <div style="display:flex; gap:8px;">
@@ -381,7 +395,6 @@
         </div>
       </div>
 
-      <!-- Tiểu Sử Cá Nhân -->
       <div class="form-group">
         <label>Tiểu Sử Cá Nhân:</label>
         <div style="display:flex; gap:8px;">
@@ -390,7 +403,6 @@
         </div>
       </div>
 
-      <!-- Chọn Avatar từ Thiết Bị hoặc Kho Sẵn -->
       <div class="form-group">
         <label style="display:flex; justify-content:space-between; align-items:center;">
           <span>Ảnh Đại Diện (Từ máy / Kho sẵn):</span>
@@ -405,7 +417,6 @@
         </div>
       </div>
 
-      <!-- Đổi Mật Khẩu -->
       <div class="form-group">
         <label>Đổi Mật Khẩu:</label>
         <div style="display:flex; gap:8px;">
@@ -414,7 +425,6 @@
         </div>
       </div>
 
-      <!-- Đăng Xuất An Toàn -->
       <div style="margin-top:16px; border-top:1px solid var(--border); padding-top:14px; display:flex; justify-content:space-between; align-items:center;">
         <span style="font-size:0.82rem; color:var(--text-muted);">Phiên đăng nhập an toàn</span>
         <button class="btn-poke-back" style="background:#dc2626; padding:8px 16px; border-radius:8px;" onclick="logoutAccount()">
@@ -571,7 +581,6 @@
               <p><strong>Diễn viên:</strong> <span id="metaActor"></span></p>
             </div>
             
-            <!-- BỘ CHỌN THUYẾT MINH / LỒNG TIẾNG / VIETSUB -->
             <div class="server-choice-wrap" id="serverChoiceWrap">
               <div style="font-size:0.88rem; font-weight:700; color:#38bdf8; display:flex; align-items:center; gap:8px;">
                 <i class="fa-solid fa-headphones"></i> Chọn Bản Dịch & Âm Thanh:
@@ -649,7 +658,7 @@
 
   <div class="toast-msg" id="toastMsg"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span id="toastContent"></span></div>
 
-  <!-- ==================== HỆ THỐNG JAVASCRIPT ĐÃ TỐI ƯU TOÀN DIỆN ==================== -->
+  <!-- ==================== HỆ THỐNG JAVASCRIPT ==================== -->
   <script>
     const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     firebase.initializeApp(firebaseConfig);
@@ -675,6 +684,44 @@
       "https://api.dicebear.com/7.x/bottts/svg?seed=Ninja",
       "meme-meo-like.jpg"
     ];
+
+    // DANH SÁCH CÂU CHỌC BÁ KHÍ, MẬP MỜ, CÀ KHỊA, CHÚC PHIM
+    const pokeQuotes = [
+      "🍿 Ê mọt phim! Chúc bạn xem phim vui vẻ, bớt cô đơn lại nhé!",
+      "🥀 Người ta có đôi có cặp đi chơi, còn bạn ở đây cày phim một mình à?",
+      "💔 Nghe nói người yêu cũ của bạn vừa có người yêu mới rồi đấy...",
+      "🚗 Chúc mừng bạn đã thăng cấp thành 'Lốp Dự Phòng Kim Cương'!",
+      "👀 Chúng ta chỉ là mập mờ thôi, đừng nghĩ sẽ có danh phận nhé!",
+      "👑 Bá khí ngút trời nhưng trong lòng toàn là vết thương tình cảm!",
+      "💬 Nhắn tin cả ngày không rep, mà thấy online cày phim là sao ta?",
+      "🧊 Trái tim người ta lạnh giá rồi, phim này có sưởi ấm được đâu!",
+      "🚶‍♂️ Cô ấy bỏ bạn đi rồi, thôi ở lại đây cày nốt tập phim đi bạn hiền...",
+      "☕ Uống ngụm nước, xem tập phim rồi quên kẻ vô tâm đó đi nào!",
+      "🎭 Diễn viên trong phim diễn đạt lắm, nhưng chưa bằng người ta diễn yêu bạn đâu!",
+      "🚨 CẢNH BÁO: Bạn vừa bị chọc thủng màng tim vì quá rảnh rỗi!",
+      "✨ Chúc bạn một buổi xem phim siêu cuốn, drama ngoài đời cứ kệ đi!",
+      "🌧️ Ngoài trời mưa rơi tầm tã, trong lòng bạn đã có ai lau nước mắt chưa?"
+    ];
+
+    // ========================================================
+    // TỰ ĐỘNG ĐỒNG BỘ ĐỒNG HỒ MÁY CHỦ (CHỐNG LỆCH PHÚT GIỮA PC & MOBILE)
+    // ========================================================
+    let serverTimeOffset = 0;
+    async function syncGlobalClock() {
+      try {
+        const start = Date.now();
+        const res = await fetch('https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=1', { method: 'HEAD' });
+        const serverDateHeader = res.headers.get('date');
+        if (serverDateHeader) {
+          const serverTime = new Date(serverDateHeader).getTime();
+          const latency = (Date.now() - start) / 2;
+          serverTimeOffset = (serverTime + latency) - Date.now();
+        }
+      } catch (e) {}
+    }
+    function getSyncedNow() {
+      return Date.now() + serverTimeOffset;
+    }
 
     // 0. BẢNG THÔNG BÁO MIỄN TRỪ TRÁCH NHIỆM
     function checkDisclaimerNotice() {
@@ -729,7 +776,6 @@
       return globalAudioCtx;
     }
 
-    // Kích hoạt ngay khi người dùng chạm màn hình lần đầu
     ['click', 'touchstart'].forEach(evt => {
       document.addEventListener(evt, () => { getAudioContext(); }, { once: true });
     });
@@ -743,12 +789,12 @@
         osc.type = 'sine';
         osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+        gain.gain.setValueAtTime(0.14, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.36);
+        osc.stop(audioCtx.currentTime + 0.41);
       } catch (e) {}
     }
 
@@ -884,7 +930,7 @@
         showToast("✅ Đổi mật khẩu thành công!");
       } catch (err) {
         if (err.code === 'auth/requires-recent-login') {
-          showToast("⚠️ Vui lòng đăng xuất và đăng nhập lại để đổi mật khẩu!");
+          showToast("⚠️️ Vui lòng đăng xuất và đăng nhập lại để đổi mật khẩu!");
         } else {
           showToast("Lỗi: " + err.message);
         }
@@ -1062,33 +1108,37 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 5: CHỌC VĂN MINH — ĐÃ KHẮC PHỤC TRIỆT ĐỂ LỆCH GIỜ
+    // TÍNH NĂNG 5: CHỌC BÁ KHÍ + RANDOM CÂU CÀ KHỊA + CHẶN 24H
     // ========================================================
     const pokeCooldowns = {};
     async function pokeUser(targetUid, targetName) {
-      const now = Date.now();
+      const now = getSyncedNow();
       if (targetUid === getMyUid()) return showToast("Bạn không thể tự chọc chính mình!");
       if (pokeCooldowns[targetUid] && (now - pokeCooldowns[targetUid] < 15000)) {
         const remain = Math.ceil((15000 - (now - pokeCooldowns[targetUid])) / 1000);
         return showToast(`⏳ Chờ ${remain}s để chọc lại ${targetName}!`);
       }
 
+      // Random 1 câu thoại bá đạo
+      const randomQuote = pokeQuotes[Math.floor(Math.random() * pokeQuotes.length)];
       pokeCooldowns[targetUid] = now;
+
       try {
         await db.collection('pokes').add({
           fromUid: getMyUid(),
           fromName: getMyName(),
           fromAvatar: getMyAvatar(),
           toUid: targetUid,
+          message: randomQuote,
           timestamp: now
         });
-        showToast(`👉 Đã chọc ${targetName}!`);
+        showToast(`👉 Đã gửi đòn chọc siêu bá khí tới ${targetName}!`);
       } catch (e) {
         showToast("Lỗi gửi chọc!");
       }
     }
 
-    // LẮNG NGHE CHỌC THEO TO_UID: CHỐNG LỖI LỆCH MÚI GIỜ HOÀN TOÀN
+    // LẮNG NGHE CHỌC REALTIME THEO TO_UID
     let isInitialPokeLoad = true;
     let pokeNotificationTimeout = null;
     let unsubscribePokes = null;
@@ -1102,7 +1152,7 @@
         .onSnapshot(snapshot => {
           if (isInitialPokeLoad) {
             isInitialPokeLoad = false;
-            return; // Bỏ qua các tin chọc cũ trước khi mở trang
+            return;
           }
           snapshot.docChanges().forEach(change => {
             if (change.type === 'added') {
@@ -1116,34 +1166,47 @@
     }
 
     function triggerPokeNotice(data) {
+      // Kiểm tra chế độ Chặn 24 giờ
       const dndUntil = localStorage.getItem('phimnha_dnd_until');
-      if (dndUntil && Date.now() < parseInt(dndUntil)) return;
+      if (dndUntil && getSyncedNow() < parseInt(dndUntil)) return;
 
       playSoftChime();
       if (navigator.vibrate) {
-        try { navigator.vibrate([100, 50, 100]); } catch(e){}
+        try { navigator.vibrate([150, 80, 150, 80, 200]); } catch(e){}
       }
 
       const toast = document.getElementById('pokeNotification');
       document.getElementById('pokeSenderAvatar').src = data.fromAvatar || defaultAvatar;
       document.getElementById('pokeSenderName').innerText = `${data.fromName} vừa chọc bạn!`;
+      document.getElementById('pokeSenderQuote').innerText = data.message ? `"${data.message}"` : `"👉 Ê cày tiếp phim đi kìa!"`;
       
       const btnBack = document.getElementById('btnPokeBack');
       btnBack.onclick = () => {
         pokeUser(data.fromUid, data.fromName);
         toast.style.display = 'none';
+        toast.classList.remove('active-shake');
       };
 
       toast.style.display = 'flex';
+      toast.classList.remove('active-shake');
+      void toast.offsetWidth; // Trigger reflow để kích hoạt lại animation rung
+      toast.classList.add('active-shake');
+
       clearTimeout(pokeNotificationTimeout);
-      pokeNotificationTimeout = setTimeout(() => { toast.style.display = 'none'; }, 6500);
+      // Giữ thông báo hiển thị 10 giây để người xem đọc hết câu cà khịa
+      pokeNotificationTimeout = setTimeout(() => { 
+        toast.style.display = 'none'; 
+        toast.classList.remove('active-shake');
+      }, 10000);
     }
 
     function mutePoke24h() {
-      const until = Date.now() + (24 * 60 * 60 * 1000);
+      const until = getSyncedNow() + (24 * 60 * 60 * 1000);
       localStorage.setItem('phimnha_dnd_until', until.toString());
-      document.getElementById('pokeNotification').style.display = 'none';
-      showToast("🔕 Đã tắt chuông chọc trong 24 giờ tới!");
+      const toast = document.getElementById('pokeNotification');
+      toast.style.display = 'none';
+      toast.classList.remove('active-shake');
+      showToast("🔕 Đã kích hoạt khiên chống trêu trong 24 giờ!");
     }
 
     // ========================================================
@@ -1160,7 +1223,7 @@
             name: getMyName(),
             avatar: getMyAvatar(),
             watchMinutes: firebase.firestore.FieldValue.increment(0.5),
-            lastUpdated: Date.now()
+            lastUpdated: getSyncedNow()
           }, { merge: true }).catch(() => {});
         }
       }, 30000);
@@ -1211,7 +1274,7 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 7: ONLINE PRESENCE THỜI GIAN THỰC (BÙ TRỪ LỆCH GIỜ)
+    // TÍNH NĂNG 7: ONLINE PRESENCE CHUẨN ĐỒNG HỒ ĐỒNG BỘ
     // ========================================================
     function updateOnlinePresence() {
       const uid = getMyUid();
@@ -1223,23 +1286,22 @@
         avatar: getMyAvatar(),
         isMember: !!currentUser,
         status: isWatching ? `🎬 Đang xem: ${isWatching}` : '🟢 Đang lướt web',
-        lastSeen: Date.now()
+        lastSeen: getSyncedNow()
       }, { merge: true }).catch(() => {});
     }
 
-    // Gửi tín hiệu online mỗi 20s và ngay khi người dùng bật lại màn hình điện thoại
     setInterval(updateOnlinePresence, 20000);
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') updateOnlinePresence();
     });
 
     db.collection('online_presence').onSnapshot(snapshot => {
-      const now = Date.now();
+      const now = getSyncedNow();
       let activeUsers = [];
       snapshot.forEach(doc => {
         const data = doc.data();
-        // Cho phép dung sai chênh lệch đồng hồ lên đến 3 phút (180.000ms)
-        if (data.lastSeen && Math.abs(now - data.lastSeen) < 180000) {
+        // Nhờ đồng hồ đồng bộ chuẩn máy chủ, thời gian chờ 60s lọc cực chuẩn, không bị lệch phiên
+        if (data.lastSeen && (now - data.lastSeen > -10000 && now - data.lastSeen < 65000)) {
           activeUsers.push(data);
         }
       });
@@ -1250,7 +1312,6 @@
       const modalCount = document.getElementById('modalOnlineCount');
       if (modalCount) modalCount.innerText = count;
 
-      // Nếu người dùng đang mở modal online thì tự động cập nhật danh sách ngay lập tức!
       if (document.getElementById('onlineUsersModal').style.display === 'flex') {
         renderOnlineUsersList();
       }
@@ -1301,7 +1362,7 @@
       }
       renderAuthUI(user);
       updateOnlinePresence();
-      initPokeListener(); // Cập nhật lại kênh lắng nghe chọc đúng theo UID
+      initPokeListener();
       if (document.getElementById('playerModal').style.display === 'flex') updateCommentInputUI();
     });
 
@@ -1719,7 +1780,7 @@
        const txt = document.getElementById('txtComment').value.trim(); if (!txt) return showToast("Vui lòng nhập nội dung!");
        try {
          await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add({
-           uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: Date.now(), likes: [], dislikes: [], replies: []
+           uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: getSyncedNow(), likes: [], dislikes: [], replies: []
          });
          showToast("Đã gửi bình luận!");
        } catch(e) {}
@@ -1735,7 +1796,7 @@
       const txt = document.getElementById('txtReply-' + cId).value.trim(); if(!txt) return;
       try {
         const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
-        await ref.update({ replies: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: Date.now() }) });
+        await ref.update({ replies: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: getSyncedNow() }) });
         showToast("Đã trả lời!");
       } catch (e) {}
     }
@@ -1757,7 +1818,7 @@
     // TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
     function saveToHistory(m) {
       if(!currentUser) return;
-      db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: Date.now() });
+      db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: getSyncedNow() });
     }
     async function checkFavoriteStatus() {
       if(!currentUser || !currentPlayingMovie) return;
@@ -1771,7 +1832,7 @@
       const ref = db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug);
       const btn = document.getElementById('btnToggleFav');
       if(btn.classList.contains('active')) { await ref.delete(); showToast("Đã bỏ yêu thích!"); }
-      else { await ref.set({ slug: currentPlayingMovie.slug, name: currentPlayingMovie.name, thumb_url: currentPlayingMovie.thumb_url, timestamp: Date.now() }); showToast("Đã lưu vào Tủ!"); }
+      else { await ref.set({ slug: currentPlayingMovie.slug, name: currentPlayingMovie.name, thumb_url: currentPlayingMovie.thumb_url, timestamp: getSyncedNow() }); showToast("Đã lưu vào Tủ!"); }
       checkFavoriteStatus();
     }
     function openLibraryModal() { if(!currentUser) return; document.getElementById('libraryModal').style.display = 'flex'; switchLibTab('history'); }
@@ -1787,7 +1848,8 @@
     }
 
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
-    window.onload = () => {
+    window.onload = async () => {
+      await syncGlobalClock(); // Cân bằng đồng hồ máy chủ ngay khi mở web
       checkDisclaimerNotice();
       updateOnlinePresence();
       initPokeListener();
