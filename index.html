@@ -59,7 +59,8 @@
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
     
     .btn-auth { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 50px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .user-profile-btn { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); padding: 4px 8px; border-radius: 50px; cursor: pointer; }
+    .user-profile-btn { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 50px; cursor: pointer; transition: var(--transition); }
+    .user-profile-btn:hover { border-color: var(--primary); }
     .user-avatar-img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
 
     /* HERO POSTER */
@@ -96,7 +97,7 @@
     .page-btn.active { background: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);}
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* PLAYER MODAL */
+    /* PLAYER MODAL VÀ VÙNG CHẠM TUA NHANH */
     .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
     .cinema-mode-active .player-details-container { opacity: 0.08; filter: blur(3px); pointer-events: none; }
@@ -104,8 +105,24 @@
     .player-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .player-tools { display: flex; gap: 8px; }
     .btn-tool { background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8);}
+    
+    .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); user-select: none; }
     .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; }
+
+    /* CỬ CHỈ CHẠM 2 LẦN ĐỂ TUA NHANH TRÊN MOBILE */
+    .seek-touch-area { position: absolute; top: 0; bottom: 50px; width: 40%; z-index: 5; }
+    .seek-touch-left { left: 0; }
+    .seek-touch-right { right: 0; }
+    .seek-indicator {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; padding: 12px 18px; border-radius: 50px; font-weight: 800; font-size: 0.95rem;
+      display: none; align-items: center; gap: 8px; z-index: 10; pointer-events: none;
+      animation: popSeek 0.4s ease;
+    }
+    .seek-indicator.left { left: 15%; }
+    .seek-indicator.right { right: 15%; }
+    @keyframes popSeek { 0% { transform: translateY(-50%) scale(0.8); opacity: 0; } 50% { transform: translateY(-50%) scale(1.1); opacity: 1; } 100% { transform: translateY(-50%) scale(1); opacity: 1; } }
 
     .player-details-container { margin-top: 20px; display: grid; grid-template-columns: 2.2fr 1fr; gap: 24px; align-items: start; }
     .player-col-left { display: flex; flex-direction: column; gap: 20px; }
@@ -168,23 +185,12 @@
     .btn-poke { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.4); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: var(--transition); white-space: nowrap; }
     .btn-poke:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
-    /* MINI TOAST KHI BỊ CHỌC (GÓC TRÊN, KHÔNG GIÁN ĐOẠN XEM PHIM) */
+    /* MINI TOAST KHI BỊ CHỌC */
     .poke-notification {
-      position: fixed;
-      top: 75px;
-      right: 20px;
-      z-index: 9999;
-      background: rgba(18, 21, 30, 0.95);
-      border: 1.5px solid var(--primary);
-      border-radius: 14px;
-      padding: 12px 16px;
-      display: none;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      backdrop-filter: blur(10px);
-      animation: slideInRight 0.35s ease;
-      max-width: 360px;
+      position: fixed; top: 75px; right: 20px; z-index: 9999;
+      background: rgba(18, 21, 30, 0.95); border: 1.5px solid var(--primary); border-radius: 14px;
+      padding: 12px 16px; display: none; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px); animation: slideInRight 0.35s ease; max-width: 360px;
     }
     @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     .poke-notify-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); }
@@ -199,6 +205,18 @@
     .rank-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
     .rank-name { font-weight: 700; font-size: 0.95rem; }
     .rank-hours { font-size: 0.85rem; color: #38bdf8; font-weight: 700; margin-left: auto; }
+
+    /* MODAL PROFILE (HỒ SƠ CÁ NHÂN MỚI) */
+    .profile-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 480px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.9); }
+    .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .profile-big-avatar { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+    .profile-stat-box { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+    .stat-pill { background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 10px; border-radius: 10px; text-align: center; }
+    .stat-pill .num { font-size: 1.15rem; font-weight: 800; color: #38bdf8; }
+    .stat-pill .lbl { font-size: 0.75rem; color: var(--text-muted); }
+    .avatar-presets { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; margin-bottom: 12px; }
+    .preset-img { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: var(--transition); }
+    .preset-img.active { border-color: var(--primary); transform: scale(1.1); }
 
     /* CÁC MODAL PHỤ */
     .library-modal, .auth-modal, .troll-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 16px; }
@@ -273,7 +291,7 @@
     </div>
   </div>
 
-  <!-- POP-UP MINI KHI BỊ BẠN BÈ CHỌC (ÊM ÁI, KHÔNG PHIỀN) -->
+  <!-- POP-UP MINI KHI BỊ BẠN BÈ CHỌC -->
   <div class="poke-notification" id="pokeNotification">
     <img src="" class="poke-notify-avatar" id="pokeSenderAvatar">
     <div style="flex:1; overflow:hidden;">
@@ -282,6 +300,67 @@
       <div class="poke-notify-actions">
         <button class="btn-poke-back" id="btnPokeBack">Chọc lại 👉</button>
         <button class="btn-poke-mute" onclick="mutePoke24h()">🔕 Tắt 24h</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PROFILE CÁ NHÂN -->
+  <div class="auth-modal" id="profileModal">
+    <div class="profile-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 style="font-weight:800; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-id-badge" style="color:var(--primary);"></i> Hồ Sơ Thành Viên
+        </h3>
+        <button class="btn-tool" onclick="document.getElementById('profileModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="profile-header">
+        <img src="" class="profile-big-avatar" id="profileModalAvatar">
+        <div style="flex:1; overflow:hidden;">
+          <div style="font-size:1.1rem; font-weight:800; display:flex; align-items:center; gap:6px;">
+            <span id="profileModalName">Chunha</span>
+            <span style="font-size:0.7rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 8px; border-radius:50px;">Thành viên</span>
+          </div>
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;" id="profileModalEmail">user@phimnha.vn</div>
+        </div>
+      </div>
+
+      <div class="profile-stat-box">
+        <div class="stat-pill">
+          <div class="num" id="statWatchTime">0h 0p</div>
+          <div class="lbl">Thời gian cày phim</div>
+        </div>
+        <div class="stat-pill">
+          <div class="num" id="statFavoritesCount">0</div>
+          <div class="lbl">Phim trong Tủ</div>
+        </div>
+      </div>
+
+      <!-- Đổi Biệt Danh -->
+      <div class="form-group">
+        <label>Đổi Tên Hiển Thị:</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="inputNewDisplayName" placeholder="Nhập tên mới...">
+          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileName()">Lưu</button>
+        </div>
+      </div>
+
+      <!-- Đổi Avatar -->
+      <div class="form-group">
+        <label>Chọn Avatar Nhanh hoặc Dán Link:</label>
+        <div class="avatar-presets" id="avatarPresetsWrap"></div>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="inputCustomAvatarUrl" placeholder="Dán URL ảnh đại diện bất kỳ...">
+          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileAvatar()">Lưu</button>
+        </div>
+      </div>
+
+      <!-- Đăng Xuất An Toàn -->
+      <div style="margin-top:20px; border-top:1px solid var(--border); padding-top:16px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.82rem; color:var(--text-muted);">Phiên đăng nhập an toàn</span>
+        <button class="btn-poke-back" style="background:#dc2626; padding:8px 16px; border-radius:8px;" onclick="logoutAccount()">
+          <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+        </button>
       </div>
     </div>
   </div>
@@ -378,7 +457,14 @@
         </div>
       </div>
 
-      <div class="video-wrapper"><video id="videoPlayer" controls crossorigin playsinline></video></div>
+      <div class="video-wrapper" id="videoWrapper">
+        <video id="videoPlayer" controls crossorigin playsinline></video>
+        <!-- VÙNG CẢM ỨNG GÕ ĐÚP TUA TRÊN MOBILE -->
+        <div class="seek-touch-area seek-touch-left" id="seekTouchLeft"></div>
+        <div class="seek-touch-area seek-touch-right" id="seekTouchRight"></div>
+        <div class="seek-indicator left" id="seekIndicatorLeft"><i class="fa-solid fa-backward"></i> -10s</div>
+        <div class="seek-indicator right" id="seekIndicatorRight">+10s <i class="fa-solid fa-forward"></i></div>
+      </div>
 
       <div class="player-details-container">
         <div class="player-col-left">
@@ -472,9 +558,18 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth(); const db = firebase.firestore();
 
-    let currentUser = null; let currentPlayingMovie = null; let hlsInstance = null; let unsubscribeComments = null;
+    let currentUser = null; let currentPlayingMovie = null; let currentEpIndex = 0; let hlsInstance = null; let unsubscribeComments = null;
     let allMoviesCache = []; let currentPage = 1; let totalPages = 50;
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
+
+    const presetAvatarsList = [
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Felix",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Shadow",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=King",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Queen",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Ninja",
+      "meme-meo-like.jpg"
+    ];
 
     // 0. BẢNG THÔNG BÁO MIỄN TRỪ TRÁCH NHIỆM
     function checkDisclaimerNotice() {
@@ -494,7 +589,194 @@
     }
 
     // ========================================================
-    // TÍNH NĂNG 1: CHỌC VĂN MINH & ÂM THANH ÊM ÁI
+    // TÍNH NĂNG 1: PROFILE CÁ NHÂN (ĐỔI TÊN, ĐỔI AVATAR, THỐNG KÊ)
+    // ========================================================
+    function openProfileModal() {
+      if (!currentUser) return;
+      document.getElementById('profileModalAvatar').src = currentUser.photoURL || defaultAvatar;
+      document.getElementById('profileModalName').innerText = currentUser.displayName || currentUser.email.split('@')[0];
+      document.getElementById('profileModalEmail').innerText = currentUser.email;
+      document.getElementById('inputNewDisplayName').value = currentUser.displayName || '';
+
+      // Render preset avatars
+      const wrap = document.getElementById('avatarPresetsWrap');
+      wrap.innerHTML = presetAvatarsList.map(url => `
+        <img src="${url}" class="preset-img ${currentUser.photoURL === url ? 'active' : ''}" onclick="selectPresetAvatar('${url}', this)">
+      `).join('');
+
+      // Tải thống kê cá nhân
+      loadProfileStats();
+      document.getElementById('profileModal').style.display = 'flex';
+    }
+
+    function selectPresetAvatar(url, el) {
+      document.querySelectorAll('.preset-img').forEach(x => x.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('inputCustomAvatarUrl').value = url;
+    }
+
+    async function updateProfileName() {
+      if (!currentUser) return;
+      const newName = document.getElementById('inputNewDisplayName').value.trim();
+      if (!newName) return showToast("Tên không được để trống!");
+      try {
+        await currentUser.updateProfile({ displayName: newName });
+        // Đồng bộ lên stats và online
+        db.collection('user_stats').doc(currentUser.uid).set({ name: newName }, { merge: true });
+        updateOnlinePresence();
+        document.getElementById('profileModalName').innerText = newName;
+        renderAuthUI(currentUser);
+        showToast("✅ Đã cập nhật biệt danh!");
+      } catch (e) {
+        showToast("Lỗi cập nhật tên!");
+      }
+    }
+
+    async function updateProfileAvatar() {
+      if (!currentUser) return;
+      const newUrl = document.getElementById('inputCustomAvatarUrl').value.trim();
+      if (!newUrl) return showToast("Vui lòng chọn hoặc dán URL ảnh!");
+      try {
+        await currentUser.updateProfile({ photoURL: newUrl });
+        db.collection('user_stats').doc(currentUser.uid).set({ avatar: newUrl }, { merge: true });
+        updateOnlinePresence();
+        document.getElementById('profileModalAvatar').src = newUrl;
+        renderAuthUI(currentUser);
+        showToast("✅ Đã thay ảnh đại diện!");
+      } catch (e) {
+        showToast("Lỗi thay đổi avatar!");
+      }
+    }
+
+    async function loadProfileStats() {
+      if (!currentUser) return;
+      // Lấy thời gian cày phim
+      try {
+        const doc = await db.collection('user_stats').doc(currentUser.uid).get();
+        if (doc.exists) {
+          const totalMin = Math.round(doc.data().watchMinutes || 0);
+          const hours = Math.floor(totalMin / 60);
+          const mins = totalMin % 60;
+          document.getElementById('statWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
+        }
+        // Lấy số phim trong tủ
+        const favSnap = await db.collection('users').doc(currentUser.uid).collection('favorites').get();
+        document.getElementById('statFavoritesCount').innerText = favSnap.size;
+      } catch (e) {}
+    }
+
+    function logoutAccount() {
+      if (confirm("Bạn có chắc muốn đăng xuất?")) {
+        auth.signOut();
+        document.getElementById('profileModal').style.display = 'none';
+        showToast("Đã đăng xuất tài khoản.");
+      }
+    }
+
+    // ========================================================
+    // TÍNH NĂNG 2: RESUME PLAYBACK (TỰ LƯU ĐOẠN ĐANG XEM DỞ)
+    // ========================================================
+    function getResumeKey(slug, epIndex) {
+      return `resume_${slug}_ep${epIndex}`;
+    }
+
+    function initVideoProgressTracking() {
+      const video = document.getElementById('videoPlayer');
+      video.addEventListener('timeupdate', () => {
+        if (!currentPlayingMovie || video.duration <= 30) return;
+        // Lưu mỗi 3 giây nếu đã xem qua 10s và chưa sát cuối video
+        if (video.currentTime > 10 && (video.duration - video.currentTime > 15)) {
+          localStorage.setItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex), Math.floor(video.currentTime).toString());
+        }
+      });
+
+      video.addEventListener('ended', () => {
+        if (currentPlayingMovie) {
+          localStorage.removeItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex));
+        }
+      });
+    }
+
+    function applyResumePlayback(slug, epIndex) {
+      const savedTimeStr = localStorage.getItem(getResumeKey(slug, epIndex));
+      if (!savedTimeStr) return;
+      const savedSeconds = parseInt(savedTimeStr);
+      if (savedSeconds > 10) {
+        const video = document.getElementById('videoPlayer');
+        const onLoaded = () => {
+          video.currentTime = savedSeconds;
+          const mins = Math.floor(savedSeconds / 60);
+          const secs = savedSeconds % 60;
+          showToast(`⏱️ Đang tiếp tục từ ${mins}:${secs < 10 ? '0' : ''}${secs}`);
+          video.removeEventListener('loadedmetadata', onLoaded);
+        };
+        video.addEventListener('loadedmetadata', onLoaded);
+      }
+    }
+
+    // ========================================================
+    // TÍNH NĂNG 3: GÕ ĐÚP TUA NHANH 10S & PHÍM TẮT (ANTI-ADS)
+    // ========================================================
+    let lastTapLeft = 0;
+    let lastTapRight = 0;
+
+    function initDoubleTapAndShortcuts() {
+      const leftArea = document.getElementById('seekTouchLeft');
+      const rightArea = document.getElementById('seekTouchRight');
+      const video = document.getElementById('videoPlayer');
+
+      // Gõ đúp lùi 10s bên trái
+      leftArea.addEventListener('click', (e) => {
+        const now = Date.now();
+        if (now - lastTapLeft < 320) {
+          e.preventDefault();
+          video.currentTime = Math.max(0, video.currentTime - 10);
+          showSeekAnim('left');
+          lastTapLeft = 0;
+        } else {
+          lastTapLeft = now;
+        }
+      });
+
+      // Gõ đúp tiến 10s bên phải (Lướt qua quảng cáo cờ bạc nhanh gọn)
+      rightArea.addEventListener('click', (e) => {
+        const now = Date.now();
+        if (now - lastTapRight < 320) {
+          e.preventDefault();
+          video.currentTime = Math.min(video.duration, video.currentTime + 10);
+          showSeekAnim('right');
+          lastTapRight = 0;
+        } else {
+          lastTapRight = now;
+        }
+      });
+
+      // Phím tắt bàn phím trên máy tính
+      window.addEventListener('keydown', (e) => {
+        if (document.getElementById('playerModal').style.display !== 'flex') return;
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+        if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'l') {
+          video.currentTime = Math.min(video.duration, video.currentTime + 10);
+          showSeekAnim('right');
+        } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'j') {
+          video.currentTime = Math.max(0, video.currentTime - 10);
+          showSeekAnim('left');
+        } else if (e.key === ' ' || e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          video.paused ? video.play() : video.pause();
+        }
+      });
+    }
+
+    function showSeekAnim(direction) {
+      const ind = document.getElementById(direction === 'left' ? 'seekIndicatorLeft' : 'seekIndicatorRight');
+      ind.style.display = 'flex';
+      setTimeout(() => { ind.style.display = 'none'; }, 500);
+    }
+
+    // ========================================================
+    // TÍNH NĂNG 4: CHỌC VĂN MINH & ÂM THANH ÊM ÁI
     // ========================================================
     let guestId = sessionStorage.getItem('phimnha_guest_id');
     if (!guestId) {
@@ -506,15 +788,14 @@
     function getMyName() { return currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : `Khách #${guestId.slice(-4)}`; }
     function getMyAvatar() { return currentUser ? (currentUser.photoURL || defaultAvatar) : `https://api.dicebear.com/7.x/bottts/svg?seed=${guestId}`; }
 
-    // Tạo âm thanh chuông nhẹ nhàng bằng Web Audio API (không phụ thuộc file ngoài)
     function playSoftChime() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); // A5
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
         gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
         osc.connect(gain);
@@ -524,7 +805,6 @@
       } catch (e) {}
     }
 
-    // Gửi chọc bạn bè với Cooldown 15 giây
     const pokeCooldowns = {};
     async function pokeUser(targetUid, targetName) {
       const now = Date.now();
@@ -549,7 +829,6 @@
       }
     }
 
-    // Lắng nghe tín hiệu khi bị người khác chọc
     let pokeNotificationTimeout = null;
     const sessionStartTime = Date.now() - 5000;
 
@@ -567,11 +846,9 @@
       });
 
     function triggerPokeNotice(data) {
-      // Kiểm tra xem người dùng có đang bật chế độ tắt chuông 24h không
       const dndUntil = localStorage.getItem('phimnha_dnd_until');
-      if (dndUntil && Date.now() < parseInt(dndUntil)) return; // Đang tắt tiếng
+      if (dndUntil && Date.now() < parseInt(dndUntil)) return;
 
-      // Phát âm thanh và rung nhẹ trên điện thoại
       playSoftChime();
       if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
 
@@ -590,33 +867,26 @@
       pokeNotificationTimeout = setTimeout(() => { toast.style.display = 'none'; }, 6000);
     }
 
-    // Chức năng tắt chuông 24 giờ tự mở lại
     function mutePoke24h() {
-      const until = Date.now() + (24 * 60 * 60 * 1000); // 24 giờ
+      const until = Date.now() + (24 * 60 * 60 * 1000);
       localStorage.setItem('phimnha_dnd_until', until.toString());
       document.getElementById('pokeNotification').style.display = 'none';
       showToast("🔕 Đã tắt chuông chọc trong 24 giờ tới!");
     }
 
     // ========================================================
-    // TÍNH NĂNG 2: BẢNG XẾP HẠNG CÀY PHIM (LEADERBOARD)
+    // TÍNH NĂNG 5: BẢNG XẾP HẠNG CÀY PHIM (LEADERBOARD)
     // ========================================================
     let watchTimeTrackerInterval = null;
     function initWatchTimeTracker() {
       if (watchTimeTrackerInterval) clearInterval(watchTimeTrackerInterval);
-      
-      // Cứ 30 giây kiểm tra nếu video đang chạy thì cộng điểm
       watchTimeTrackerInterval = setInterval(() => {
         const video = document.getElementById('videoPlayer');
         if (video && !video.paused && !video.ended && document.visibilityState === 'visible') {
           const uid = getMyUid();
-          const name = getMyName();
-          const avatar = getMyAvatar();
-
-          // Tăng 0.5 phút (30 giây) vào Firestore
           db.collection('user_stats').doc(uid).set({
-            name: name,
-            avatar: avatar,
+            name: getMyName(),
+            avatar: getMyAvatar(),
             watchMinutes: firebase.firestore.FieldValue.increment(0.5),
             lastUpdated: Date.now()
           }, { merge: true }).catch(() => {});
@@ -726,23 +996,32 @@
       document.getElementById('onlineUsersModal').style.display = 'flex';
     }
 
-    // AUTH
+    // AUTH VÀ RENDER PROFILE GÓC TRÊN
     auth.onAuthStateChanged(user => {
       currentUser = user;
+      renderAuthUI(user);
+      updateOnlinePresence();
+      if (document.getElementById('playerModal').style.display === 'flex') updateCommentInputUI();
+    });
+
+    function renderAuthUI(user) {
       const authContainer = document.getElementById('authContainer');
       const btnLib = document.getElementById('btnLibrary');
       if (user) {
-        const name = user.email.split('@')[0];
+        const name = user.displayName || user.email.split('@')[0];
         const photo = user.photoURL || defaultAvatar;
-        authContainer.innerHTML = `<div class="user-profile-btn" onclick="auth.signOut()"><img src="${photo}" class="user-avatar-img"><span style="font-size:0.85rem;font-weight:700;padding:0 4px;">${name} (Thoát)</span></div>`;
+        authContainer.innerHTML = `
+          <div class="user-profile-btn" onclick="openProfileModal()" title="Mở Hồ Sơ Cá Nhân">
+            <img src="${photo}" class="user-avatar-img">
+            <span style="font-size:0.85rem;font-weight:700;padding:0 4px;">${name}</span>
+          </div>
+        `;
         btnLib.style.display = 'flex';
       } else {
         authContainer.innerHTML = `<button class="btn-auth" onclick="document.getElementById('authModal').style.display='flex'"><i class="fa-regular fa-user"></i></button>`;
         btnLib.style.display = 'none';
       }
-      updateOnlinePresence();
-      if (document.getElementById('playerModal').style.display === 'flex') updateCommentInputUI();
-    });
+    }
 
     async function handleAuthSubmit() {
       const u = document.getElementById('authUsername').value.trim(); const p = document.getElementById('authPassword').value;
@@ -899,9 +1178,14 @@
           document.getElementById('metaActor').innerText = m.actor && m.actor[0] ? m.actor.join(", ") : 'Đang cập nhật';
           
           const epData = data.episodes[0].server_data;
-          document.getElementById('episodesList').innerHTML = epData.map((ep, idx) => `<button class="btn-ep ${idx === 0 ? 'active' : ''}" onclick="playEpisode('${ep.link_m3u8}', this)">${ep.name}</button>`).join('');
+          document.getElementById('episodesList').innerHTML = epData.map((ep, idx) => `
+            <button class="btn-ep ${idx === 0 ? 'active' : ''}" onclick="playEpisode('${ep.link_m3u8}', this, ${idx})">
+              ${ep.name}
+            </button>
+          `).join('');
           
-          playEpisode(epData[0].link_m3u8, document.querySelector('.btn-ep'));
+          currentEpIndex = 0;
+          playEpisode(epData[0].link_m3u8, document.querySelector('.btn-ep'), 0);
           
           const related = allMoviesCache.filter(x => x.slug !== m.slug).sort(() => 0.5 - Math.random()).slice(0, 4);
           renderGrid('relatedMoviesGrid', related);
@@ -914,25 +1198,36 @@
       } catch (err) { showToast("Lỗi tải phim!"); }
     }
 
-    function playEpisode(m3u8Url, btnElement) {
-      if(btnElement) { document.querySelectorAll('.btn-ep').forEach(b => b.classList.remove('active')); btnElement.classList.add('active'); }
+    function playEpisode(m3u8Url, btnElement, epIndex = 0) {
+      currentEpIndex = epIndex;
+      if (btnElement) { document.querySelectorAll('.btn-ep').forEach(b => b.classList.remove('active')); btnElement.classList.add('active'); }
       const video = document.getElementById('videoPlayer');
+      
       if (Hls.isSupported()) {
-        if(hlsInstance) hlsInstance.destroy();
+        if (hlsInstance) hlsInstance.destroy();
         hlsInstance = new Hls(); hlsInstance.loadSource(m3u8Url); hlsInstance.attachMedia(video);
-        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() { video.play().catch(e=>{}); });
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.play().catch(e=>{});
+          if (currentPlayingMovie) applyResumePlayback(currentPlayingMovie.slug, currentEpIndex);
+        });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = m3u8Url; video.addEventListener('loadedmetadata', function() { video.play(); });
+        video.src = m3u8Url;
+        video.addEventListener('loadedmetadata', function() {
+          video.play();
+          if (currentPlayingMovie) applyResumePlayback(currentPlayingMovie.slug, currentEpIndex);
+        });
       }
     }
+
     function closePlayerModal() { 
       document.getElementById('playerModal').style.display = 'none'; 
-      if(hlsInstance) hlsInstance.destroy(); 
+      if (hlsInstance) hlsInstance.destroy(); 
       document.getElementById('videoPlayer').src = ""; 
-      if(unsubscribeComments) unsubscribeComments();
+      if (unsubscribeComments) unsubscribeComments();
       currentPlayingMovie = null;
       updateOnlinePresence();
     }
+
     let isCinemaMode = false;
     function toggleCinemaMode() { isCinemaMode = !isCinemaMode; const modal = document.getElementById('playerModal'); if(isCinemaMode){ modal.classList.add('cinema-mode-active'); showToast("Đã bật Rạp Chiếu!"); }else{ modal.classList.remove('cinema-mode-active'); } }
 
@@ -1084,6 +1379,8 @@
       checkDisclaimerNotice();
       updateOnlinePresence();
       initWatchTimeTracker();
+      initVideoProgressTracking();
+      initDoubleTapAndShortcuts();
       fetchMovies(1);
     };
   </script>
