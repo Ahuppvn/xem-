@@ -247,7 +247,7 @@
     .rank-name { font-weight: 700; font-size: 0.95rem; }
     .rank-hours { font-size: 0.85rem; color: #38bdf8; font-weight: 700; margin-left: auto; }
 
-    /* PROFILE CÁ NHÂN */
+    /* PROFILE CÁ NHÂN[cite: 1] */
     .profile-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 480px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.9); max-height: 85vh; overflow-y: auto; }
     .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
     .profile-avatar-wrap { position: relative; width: 72px; height: 72px; flex-shrink: 0; }
@@ -262,7 +262,7 @@
     .preset-img { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: var(--transition); flex-shrink: 0; }
     .preset-img.active { border-color: var(--primary); transform: scale(1.1); }
 
-    /* MODAL PHỤ */
+    /* CÁC MODAL PHỤ */
     .library-modal, .auth-modal, .troll-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 16px; }
     .library-card { background: var(--surface); width: 100%; max-width: 800px; height: 80vh; border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
     .lib-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
@@ -488,20 +488,20 @@
         </div>
         <div style="flex:1; overflow:hidden;">
           <div style="font-size:1.1rem; font-weight:800; display:flex; align-items:center; gap:6px;">
-            <span id="profileModalName">Admin</span>[cite: 1]
+            <span id="profileModalName">Chunha</span>[cite: 1]
             <span id="profileModalRoleBadge" style="font-size:0.7rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 8px; border-radius:50px;">Thành viên</span>[cite: 1]
           </div>
-          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;" id="profileModalEmail">chunha@phimnha.vn</div>[cite: 1]
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;" id="profileModalEmail">user@phimnha.vn</div>[cite: 1]
         </div>
       </div>
 
       <div class="profile-stat-box">
         <div class="stat-pill">
-          <div class="num" id="statWatchTime">46 phút</div>[cite: 1]
+          <div class="num" id="statWatchTime">0h 0p</div>[cite: 1]
           <div class="lbl">Thời gian cày phim</div>[cite: 1]
         </div>
         <div class="stat-pill">
-          <div class="num" id="statFavoritesCount">1</div>[cite: 1]
+          <div class="num" id="statFavoritesCount">0</div>[cite: 1]
           <div class="lbl">Phim trong Tủ</div>[cite: 1]
         </div>
       </div>
@@ -787,7 +787,7 @@
     </div>
   </div>
 
-  <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
+  <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ[cite: 3] -->
   <div class="auth-modal" id="authModal">
     <div class="auth-card">
       <div class="form-group"><input type="text" id="authUsername" placeholder="Tên tài khoản hoặc Email"></div>
@@ -799,7 +799,7 @@
         <span onclick="openRescueModalFromAuth()" style="color:#f87171; cursor:pointer; font-weight:700;">
           Quên mật khẩu? Cứu Net 🆘
         </span>
-        <button onclick="document.getElementById('authModal').style.display='none'" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">
+        <button onclick="document.getElementById('authModal').style.display='none'" style="margin-top: 0; background:none; border:none; color:var(--text-muted); cursor:pointer;">
           Đóng
         </button>
       </div>
@@ -1156,7 +1156,9 @@
 
     async function viewUserProfile(targetUid, targetName, targetAvatar) {
       if (!targetUid) return;
-      if (currentUser && targetUid === currentUser.uid) return openProfileModal();
+      if (currentUser && targetUid === currentUser.uid) {
+        return openProfileModal();
+      }
 
       document.getElementById('publicModalAvatar').src = targetAvatar || defaultAvatar;
       document.getElementById('publicModalName').innerText = targetName || 'Người dùng';
@@ -1165,7 +1167,9 @@
       document.getElementById('publicModalStatus').innerText = "🟢 Trực tuyến";
 
       const btnPoke = document.getElementById('btnPublicPokeAction');
-      btnPoke.onclick = () => { pokeUser(targetUid, targetName); };
+      btnPoke.onclick = () => {
+        pokeUser(targetUid, targetName);
+      };
 
       document.getElementById('publicUserModal').style.display = 'flex';
 
@@ -1187,7 +1191,10 @@
     }
 
     // --- TIẾP TỤC XEM DỞ DANG & THEO DÕI HỘP QUÀ ---
-    function getResumeKey(slug, epIndex) { return `resume_${slug}_ep${epIndex}`; }
+    function getResumeKey(slug, epIndex) {
+      return `resume_${slug}_ep${epIndex}`;
+    }
+
     function initVideoProgressTracking() {
       const video = document.getElementById('videoPlayer');
       video.addEventListener('timeupdate', () => {
@@ -1233,6 +1240,7 @@
 
     let lastTapLeft = 0;
     let lastTapRight = 0;
+
     function initDoubleTapAndShortcuts() {
       const leftArea = document.getElementById('seekTouchLeft');
       const rightArea = document.getElementById('seekTouchRight');
@@ -1245,7 +1253,9 @@
           video.currentTime = Math.max(0, video.currentTime - 10);
           showSeekAnim('left');
           lastTapLeft = 0;
-        } else { lastTapLeft = now; }
+        } else {
+          lastTapLeft = now;
+        }
       });
 
       rightArea.addEventListener('click', (e) => {
@@ -1255,7 +1265,9 @@
           video.currentTime = Math.min(video.duration, video.currentTime + 10);
           showSeekAnim('right');
           lastTapRight = 0;
-        } else { lastTapRight = now; }
+        } else {
+          lastTapRight = now;
+        }
       });
 
       window.addEventListener('keydown', (e) => {
@@ -1573,7 +1585,6 @@
               if (dnd && getSyncedNow() < parseInt(dnd)) return;
 
               playSoftChime();
-              // Hiện nổi ngay trên màn hình video (kể cả Fullscreen)
               const inPlayerOverlay = document.getElementById('inPlayerWhisper');
               if (inPlayerOverlay) {
                 document.getElementById('inPlayerWhisperText').innerText = data.message;
@@ -1581,7 +1592,6 @@
                 setTimeout(() => { inPlayerOverlay.style.display = 'none'; }, 10000);
               }
 
-              // Popup thông báo dự phòng
               document.getElementById('adminWhisperText').innerText = data.message;
               document.getElementById('adminWhisperModal').style.display = 'flex';
               change.doc.ref.delete().catch(()=>{});
@@ -1798,8 +1808,7 @@
       if (!u || p.length < 6) return showError("Tài khoản và mật khẩu (>=6 ký tự)!");
 
       const lower = u.toLowerCase();
-      // Nhận diện tài khoản Admin của bạn[cite: 1, 2]
-      if (lower === 'chunha' || lower === 'admin' || lower === 'chunha@phimnha.vn' || lower === '00000000') {
+      if (lower === 'chunha' || lower === 'admin' || lower === 'chunha@phimnha.vn' || lower === '00000000') {[cite: 1, 2]
         currentUser = {
           uid: ADMIN_CONFIG.UID,
           email: ADMIN_CONFIG.EMAIL,[cite: 1]
@@ -1969,7 +1978,7 @@
     function parseServerBadge(serverName) {
       const nameLower = serverName.toLowerCase();
       if (nameLower.includes('thuyết minh') || nameLower.includes('thuyet minh')) {
-        return { text: '🎙️️ Thuyết Minh', type: 'tm' };
+        return { text: '🎙️ Thuyết Minh', type: 'tm' };
       }
       if (nameLower.includes('lồng tiếng') || nameLower.includes('long tieng')) {
         return { text: '🗣️ Lồng Tiếng', type: 'lt' };
@@ -2288,14 +2297,14 @@
       grid.innerHTML = html;
     }
 
-    // --- KHỞI CHẠY KHÔNG CHẶN MẠNG ---
+    // --- KHỞI CHẠY KHÔNG CHẶN MẠNG (AN TOÀN TUYỆT ĐỐI) ---
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
     window.onload = () => {
-      // 1. Hiện Bảng Thông Báo Nội Quy ngay lập tức[cite: 6]
+      // 1. Kiểm tra hiện Bảng Nội Quy ngay lập tức[cite: 6]
       checkDisclaimerNotice();
-      // 2. Tải danh sách phim
+      // 2. Chạy tải phim ngay lập tức[cite: 5]
       fetchMovies(1);
-      // 3. Khởi chạy các module ngầm
+      // 3. Khởi chạy các module ngầm không đồng bộ
       updateOnlinePresence();
       initPokeListener();
       initWhisperListener();
