@@ -80,10 +80,10 @@
     .section-wrap { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
     .section-title { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; scroll-margin-top: 80px;}
     .section-title::before { content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px; }
-    .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; min-height: 250px; }
+    .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
     .movie-card { background: var(--surface-card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); cursor: pointer; position: relative; transition: var(--transition); }
     .movie-card:hover { transform: translateY(-5px); border-color: rgba(229, 9, 20, 0.4); }
-    .movie-poster-wrap { position: relative; padding-top: 145%; overflow: hidden; background: #131722; }
+    .movie-poster-wrap { position: relative; padding-top: 145%; overflow: hidden; }
     .movie-poster-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
     .movie-card:hover .movie-poster-wrap img { transform: scale(1.05); }
     .badge-episode { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.72); border: 1px solid rgba(255,255,255,0.1); padding: 2px 7px; font-size: 0.7rem; font-weight: 700; border-radius: 4px; color: #38bdf8; }
@@ -97,30 +97,19 @@
     .page-btn.active { background: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);}
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* PLAYER MODAL */
+    /* PLAYER MODAL VÀ VÙNG CHẠM TUA NHANH (SỬA LỖI FULLSCREEN MOBILE) */
     .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
     .cinema-mode-active .player-details-container { opacity: 0.08; filter: blur(3px); pointer-events: none; }
     .player-box { max-width: 1200px; width: 100%; margin: 0 auto; }
     .player-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .player-tools { display: flex; gap: 8px; flex-wrap: wrap; }
-    .btn-tool { background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: var(--transition); }
-    .btn-tool:hover { background: rgba(255,255,255,0.1); }
+    .player-tools { display: flex; gap: 8px; }
+    .btn-tool { background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     
     .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
     .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; object-fit: contain; }
 
-    /* LỚP TIN NHẮN ADMIN NỔI TRÊN VIDEO KHI PHÓNG TO */
-    .in-player-whisper-overlay {
-      position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
-      background: rgba(18, 21, 30, 0.95); border: 1.5px solid var(--primary);
-      box-shadow: 0 10px 30px rgba(229, 9, 20, 0.6);
-      border-radius: 14px; padding: 12px 18px; display: none; align-items: center; gap: 12px;
-      z-index: 200; backdrop-filter: blur(12px); max-width: 90%; width: 440px;
-      animation: popUp 0.3s ease;
-    }
-
-    /* TUA NHANH TRÊN MOBILE */
+    /* CỬ CHỈ GÕ ĐÚP TUA NHANH TRÊN MOBILE */
     .seek-touch-area { position: absolute; top: 0; bottom: 50px; width: 35%; z-index: 5; }
     .seek-touch-left { left: 0; }
     .seek-touch-right { right: 0; }
@@ -148,13 +137,22 @@
     .movie-cast-info { font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; line-height: 1.6;}
     .movie-cast-info span { color: #fff; }
     
-    /* GIAO DIỆN CHỌN BẢN DỊCH */
+    /* GIAO DIỆN CHỌN BẢN DỊCH / THUYẾT MINH MỚI */
     .server-choice-wrap { margin-top: 18px; margin-bottom: 14px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.12); }
     .server-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
     .btn-server {
-      background: var(--surface-card); border: 1px solid var(--border); color: #cbd5e1;
-      padding: 7px 14px; border-radius: 8px; font-size: 0.84rem; font-weight: 700;
-      cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .btn-server:hover { background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(255, 255, 255, 0.2); }
     .btn-server.active.sub { background: var(--primary) !important; border-color: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45); }
@@ -165,7 +163,7 @@
     .btn-ep { background: var(--surface-card); border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s;}
     .btn-ep.active { background: var(--primary); border-color: var(--primary); }
 
-    /* BÌNH LUẬN */
+    /* BÌNH LUẬN & TRẢ LỜI */
     .comment-section { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
     .comment-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--primary); padding-left: 8px; }
     .comment-input-wrap { display: flex; gap: 12px; margin-bottom: 24px; }
@@ -190,31 +188,32 @@
     .btn-action:hover { color: #fff; }
     .btn-action.liked { color: #3b82f6; } .btn-action.disliked { color: #ef4444; }
 
-    /* CỘT PHẢI */
+    /* CỘT PHẢI: ĐỀ XUẤT */
     .player-col-right { background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
     .related-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--primary); padding-left: 8px; }
     .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
 
-    /* BẢNG THÔNG BÁO & NỘI QUY WEB[cite: 6] */
+    /* MODAL KHUYẾN CÁO VĂN MINH */
     .disclaimer-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(12px); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; }
-    .disclaimer-card { background: #12151e; border: 1.5px solid rgba(229, 9, 20, 0.5); width: 100%; max-width: 480px; border-radius: 20px; padding: 28px 22px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.95); animation: popUp 0.3s ease; }
+    .disclaimer-card { background: var(--surface); border: 1.5px solid rgba(229, 9, 20, 0.5); width: 100%; max-width: 500px; border-radius: 18px; padding: 28px 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); animation: popUp 0.3s ease; }
     @keyframes popUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .disclaimer-icon { width: 62px; height: 62px; background: rgba(229, 9, 20, 0.15); border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--primary); margin: 0 auto 16px; }
-    .disclaimer-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; color: #fff; letter-spacing: 0.5px; }
+    .disclaimer-icon { width: 60px; height: 60px; background: rgba(229, 9, 20, 0.15); border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--primary); margin: 0 auto 16px; }
+    .disclaimer-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; color: #fff; }
     .disclaimer-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .disclaimer-tag { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
-    .disclaimer-body { font-size: 0.88rem; color: #cbd5e1; text-align: left; line-height: 1.6; margin-bottom: 22px; background: rgba(0,0,0,0.4); padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
-    .btn-agree-disclaimer { width: 100%; background: var(--primary); color: #fff; border: none; padding: 13px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); }
-    .btn-agree-disclaimer:hover { background: var(--primary-hover); transform: scale(1.02); }
+    .disclaimer-tag { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
+    .disclaimer-body { font-size: 0.88rem; color: #cbd5e1; text-align: left; line-height: 1.6; margin-bottom: 22px; background: rgba(0,0,0,0.3); padding: 14px; border-radius: 10px; border: 1px solid var(--border); }
+    .btn-agree-disclaimer { width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-    /* ONLINE MODAL */
+    /* MODAL ONLINE */
     .online-user-item { display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); padding: 10px 14px; border-radius: 10px; cursor: pointer; transition: var(--transition); }
     .online-user-item:hover { background: rgba(255, 255, 255, 0.08); }
     .online-user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #10b981; flex-shrink: 0; }
     .btn-poke { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.4); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: var(--transition); white-space: nowrap; }
     .btn-poke:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
-    /* RUNG LẮC KHI BỊ CHỌC */
+    /* ========================================================
+       HIỆU ỨNG RUNG LẮC SIÊU BÁ ĐẠO CHO THÔNG BÁO BỊ CHỌC
+    ======================================================== */
     @keyframes pokeShakeAnim {
       0%, 100% { transform: translateX(0); }
       15%, 45%, 75% { transform: translateX(-8px) rotate(-1.5deg); }
@@ -226,7 +225,9 @@
       padding: 14px 18px; display: none; align-items: flex-start; gap: 14px; box-shadow: 0 12px 40px rgba(229, 9, 20, 0.6);
       backdrop-filter: blur(12px); max-width: 380px;
     }
-    .poke-notification.active-shake { animation: slideInRight 0.3s ease, pokeShakeAnim 0.6s ease 0.3s; }
+    .poke-notification.active-shake {
+      animation: slideInRight 0.3s ease, pokeShakeAnim 0.6s ease 0.3s;
+    }
     @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     .poke-notify-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
     .poke-quote-box {
@@ -239,7 +240,7 @@
     .btn-poke-mute { background: rgba(255,255,255,0.1); color: var(--text-muted); border: 1px solid var(--border); padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; }
     .btn-poke-mute:hover { color: #fff; }
 
-    /* BXH CÀY PHIM */
+    /* MODAL BẢNG XẾP HẠNG CÀY PHIM */
     .rank-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); margin-bottom: 8px; cursor: pointer; transition: var(--transition); }
     .rank-item:hover { background: rgba(255,255,255,0.08); }
     .rank-medal { font-size: 1.25rem; width: 30px; text-align: center; font-weight: 800; }
@@ -247,7 +248,7 @@
     .rank-name { font-weight: 700; font-size: 0.95rem; }
     .rank-hours { font-size: 0.85rem; color: #38bdf8; font-weight: 700; margin-left: auto; }
 
-    /* PROFILE CÁ NHÂN[cite: 1] */
+    /* MODAL PROFILE CÁ NHÂN */
     .profile-card { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 480px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.9); max-height: 85vh; overflow-y: auto; }
     .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
     .profile-avatar-wrap { position: relative; width: 72px; height: 72px; flex-shrink: 0; }
@@ -276,24 +277,7 @@
     .form-group input, .form-group select, .form-group textarea { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; outline:none; font-family: inherit; }
     .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; gap: 8px; align-items: center;}
 
-    /* HỘP QUÀ AN ỦI SAU PHIM */
-    .gift-card {
-      background: linear-gradient(145deg, #181c28, #10131d);
-      border: 1.5px solid rgba(229, 9, 20, 0.4); border-radius: 20px;
-      padding: 28px 24px; width: 100%; max-width: 450px; text-align: center;
-      box-shadow: 0 20px 50px rgba(229, 9, 20, 0.25); animation: popUp 0.3s ease;
-    }
-    .gift-icon {
-      width: 58px; height: 58px; background: rgba(229, 9, 20, 0.15); border: 2px solid var(--primary);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem; color: var(--primary); margin: 0 auto 14px;
-    }
-    .gift-quote {
-      background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 12px;
-      padding: 16px; font-size: 0.95rem; font-style: italic; color: #e2e8f0;
-      line-height: 1.6; margin: 16px 0 20px;
-    }
-
+    /* TỐI ƯU CỰC MẠNH CHO ĐIỆN THOẠI */
     @media (max-width: 680px) {
       header { padding: 10px 12px; gap: 6px; }
       .brand span { display: none; }
@@ -303,15 +287,20 @@
       .user-profile-btn { padding: 3px; }
 
       .search-box:focus-within {
-        position: absolute; left: 10px; right: 10px; top: 8px; bottom: 8px;
+        position: absolute;
+        left: 10px; right: 10px; top: 8px; bottom: 8px;
         max-width: none; z-index: 1500;
       }
       .search-box:focus-within input {
-        border-color: var(--primary); box-shadow: 0 0 20px rgba(0,0,0,0.9); padding-right: 40px;
+        border-color: var(--primary);
+        box-shadow: 0 0 20px rgba(0,0,0,0.9);
+        padding-right: 40px;
       }
       .search-results-dropdown {
-        position: fixed !important; top: 60px !important; left: 12px !important; right: 12px !important;
-        width: auto !important; max-height: 65vh !important; border-radius: 14px !important;
+        position: fixed !important;
+        top: 60px !important; left: 12px !important; right: 12px !important;
+        width: auto !important; max-height: 65vh !important;
+        border-radius: 14px !important;
       }
 
       .hero-content { left: 16px; bottom: 20px; right: 16px; }
@@ -326,7 +315,7 @@
 </head>
 <body>
 
-  <!-- BẢNG THÔNG BÁO & NỘI QUY WEB[cite: 6] -->
+  <!-- BẢNG THÔNG BÁO MIỄN TRỪ TRÁCH NHIỆM -->
   <div class="disclaimer-modal" id="disclaimerModal">
     <div class="disclaimer-card">
       <div class="disclaimer-icon"><i class="fa-solid fa-shield-halved"></i></div>
@@ -360,127 +349,19 @@
     </div>
   </div>
 
-  <!-- HỘP QUÀ AN ỦI SAU PHIM (11 CÂU CHỮA LÀNH + EMOJI + NÚT TẮT 24H) -->
-  <div class="auth-modal" id="giftModal" style="z-index: 4500;">
-    <div class="gift-card">
-      <div class="gift-icon"><i class="fa-solid fa-gift"></i></div>
-      <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:#f87171; font-weight:800;">Món Quà Tinh Thần</span>
-      <h3 style="font-size:1.25rem; font-weight:800; margin-top:4px;">Gửi Bạn Một Chút Bình Yên</h3>
-      <div class="gift-quote" id="giftQuoteContent">
-        ⏳ "Bạn đang trong độ tuổi đẹp nhất cuộc đời. Đây là khoảng thời gian đẹp mà bạn sẽ không bao giờ quay lại được."
-      </div>
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <button class="btn-hero-play" style="width:100%; justify-content:center; border-radius:10px;" onclick="closeGiftModal()">
-          Đón Nhận & Tiếp Tục ❤️
-        </button>
-        <button class="btn-tool" style="width:100%; justify-content:center; padding:10px; border-radius:10px; color:var(--text-muted);" onclick="snoozeGift24h()">
-          Không hiện lại hôm nay (Tắt 24h)
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- POPUP NHẬN TIN NHẮN TỪ ADMIN -->
-  <div class="auth-modal" id="adminWhisperModal" style="z-index: 4600;">
-    <div class="auth-card" style="max-width:380px; text-align:center;">
-      <div class="disclaimer-icon" style="width:50px; height:50px; font-size:1.4rem; margin-bottom:12px;">
-        <i class="fa-solid fa-bell"></i>
-      </div>
-      <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:8px;">Lời Nhắn Từ Admin 👑</h3>
-      <p id="adminWhisperText" style="font-size:0.9rem; color:#cbd5e1; background:rgba(0,0,0,0.4); padding:14px; border-radius:10px; border:1px solid var(--border); line-height:1.5; margin-bottom:16px;"></p>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <button class="btn-hero-play" style="width:100%; justify-content:center;" onclick="document.getElementById('adminWhisperModal').style.display='none'">
-          Đã Hiểu 👍
-        </button>
-        <button class="btn-tool" style="width:100%; justify-content:center; color:var(--text-muted);" onclick="blockAdminWhisper24h()">
-          🔕 Tắt nhắc nhở trong 24h
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL ADMIN SOẠN TIN NHẮN NHẮC NHỞ -->
-  <div class="auth-modal" id="adminComposeModal" style="z-index: 4700;">
-    <div class="auth-card" style="max-width:420px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-        <h3 style="font-weight:800; font-size:1.05rem;">
-          ✉️ Nhắn riêng cho: <span id="composeTargetName" style="color:#38bdf8;"></span>
-        </h3>
-        <button class="btn-tool" onclick="document.getElementById('adminComposeModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="form-group">
-        <textarea id="composeMessageInput" rows="3" placeholder="Nhập lời nhắc yêu thương, dặn đi ngủ sớm..." style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px; color:#fff; outline:none; resize:none;"></textarea>
-      </div>
-      <div style="display:flex; justify-content:flex-end; gap:8px;">
-        <button class="btn-tool" onclick="document.getElementById('adminComposeModal').style.display='none'">Hủy</button>
-        <button class="btn-hero-play" style="padding:8px 18px; border-radius:8px;" onclick="sendAdminWhisper()">Gửi Lời Nhắn</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL CHIA SẺ PHIM PHONG CÁCH TIKTOK -->
-  <div class="auth-modal" id="shareModal" style="z-index: 4800;">
-    <div class="auth-card" style="max-width:440px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-        <h3 style="font-weight:800; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-share-nodes" style="color:var(--primary);"></i> Chia Sẻ Phim Nhanh 🚀
-        </h3>
-        <button class="btn-tool" onclick="document.getElementById('shareModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <div class="form-group">
-        <label>Sao chép Deep-Link (Mở đúng tập phim):</label>
-        <div style="display:flex; gap:8px;">
-          <input type="text" id="shareLinkInput" readonly style="flex:1;">
-          <button class="btn-hero-play" style="padding:0 14px; border-radius:8px; white-space:nowrap;" onclick="copyShareDeepLink()">
-            <i class="fa-regular fa-copy"></i> Copy
-          </button>
-        </div>
-      </div>
-
-      <div style="margin-top:14px; border-top:1px solid var(--border); padding-top:12px;">
-        <label style="display:block; font-size:0.85rem; color:var(--text-muted); margin-bottom:8px;">
-          Bắn phim rủ bạn bè đang Online cày cùng:
-        </label>
-        <div id="shareOnlineFriendsList" style="max-height:160px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL CỨU NET 🆘 (QUÊN MẬT KHẨU) -->
-  <div class="auth-modal" id="rescueModal" style="z-index: 4900;">
-    <div class="auth-card" style="max-width:380px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-        <h3 style="font-weight:800; font-size:1.1rem; color:#f87171; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-life-ring"></i> Cứu Net Mật Khẩu 🆘
-        </h3>
-        <button class="btn-tool" onclick="document.getElementById('rescueModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.5; margin-bottom:14px;">
-        Nhập Tên tài khoản hoặc Email đã quên. Hệ thống sẽ gửi tín hiệu đến Admin để đặt lại mật khẩu về <strong style="color:var(--primary);">123456</strong> mà không làm mất thời gian cày phim!
-      </p>
-      <div class="form-group">
-        <input type="text" id="rescueAccountInput" placeholder="Nhập tên nick hoặc email...">
-      </div>
-      <button class="btn-hero-play" style="width:100%; justify-content:center;" onclick="submitRescueRequest()">
-        Gửi Tín Hiệu Cứu Nguy
-      </button>
-    </div>
-  </div>
-
-  <!-- MODAL 1: HỒ SƠ CỦA BẠN[cite: 1] -->
+  <!-- MODAL 1: HỒ SƠ CỦA BẠN -->
   <div class="auth-modal" id="profileModal">
     <div class="profile-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
         <h3 style="font-weight:800; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-id-badge" style="color:var(--primary);"></i> Hồ Sơ Thành Viên[cite: 1]
+          <i class="fa-solid fa-id-badge" style="color:var(--primary);"></i> Hồ Sơ Thành Viên
         </h3>
         <button class="btn-tool" onclick="document.getElementById('profileModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
       </div>
       
       <div class="profile-header">
         <div class="profile-avatar-wrap">
-          <img src="meme-meo-like.jpg" class="profile-big-avatar" id="profileModalAvatar">
+          <img src="" class="profile-big-avatar" id="profileModalAvatar">
           <label class="btn-change-avatar-icon" for="avatarFileInput" title="Tải ảnh mới từ thiết bị">
             <i class="fa-solid fa-camera"></i>
           </label>
@@ -488,76 +369,66 @@
         </div>
         <div style="flex:1; overflow:hidden;">
           <div style="font-size:1.1rem; font-weight:800; display:flex; align-items:center; gap:6px;">
-            <span id="profileModalName">Chunha</span>[cite: 1]
-            <span id="profileModalRoleBadge" style="font-size:0.7rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 8px; border-radius:50px;">Thành viên</span>[cite: 1]
+            <span id="profileModalName">Chunha</span>
+            <span style="font-size:0.7rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 8px; border-radius:50px;">Thành viên</span>
           </div>
-          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;" id="profileModalEmail">user@phimnha.vn</div>[cite: 1]
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;" id="profileModalEmail">user@phimnha.vn</div>
         </div>
       </div>
 
       <div class="profile-stat-box">
         <div class="stat-pill">
-          <div class="num" id="statWatchTime">0h 0p</div>[cite: 1]
-          <div class="lbl">Thời gian cày phim</div>[cite: 1]
+          <div class="num" id="statWatchTime">0h 0p</div>
+          <div class="lbl">Thời gian cày phim</div>
         </div>
         <div class="stat-pill">
-          <div class="num" id="statFavoritesCount">0</div>[cite: 1]
-          <div class="lbl">Phim trong Tủ</div>[cite: 1]
-        </div>
-      </div>
-
-      <!-- KHỐI QUẢN TRỊ ADMIN DUYỆT CỨU NET (CHỈ ADMIN MỚI THẤY) -->
-      <div id="adminRescueBox" style="display:none; background:rgba(229,9,20,0.1); border:1px solid rgba(229,9,20,0.3); border-radius:12px; padding:12px; margin-bottom:14px;">
-        <div style="font-size:0.85rem; font-weight:800; color:#f87171; display:flex; align-items:center; gap:6px; margin-bottom:8px;">
-          <i class="fa-solid fa-shield-halved"></i> Quyền Admin: Yêu cầu Cứu Net đang chờ
-        </div>
-        <div id="adminRescueRequestsList" style="display:flex; flex-direction:column; gap:6px; font-size:0.8rem;">
-          <span style="color:var(--text-muted); font-style:italic;">Không có yêu cầu nào đang chờ.</span>
+          <div class="num" id="statFavoritesCount">0</div>
+          <div class="lbl">Phim trong Tủ</div>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Đổi Tên Hiển Thị:</label>[cite: 1]
+        <label>Đổi Tên Hiển Thị:</label>
         <div style="display:flex; gap:8px;">
           <input type="text" id="inputNewDisplayName" placeholder="Nhập tên mới...">
-          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileName()">Lưu</button>[cite: 1]
+          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileName()">Lưu</button>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Tiểu Sử Cá Nhân:</label>[cite: 1]
+        <label>Tiểu Sử Cá Nhân:</label>
         <div style="display:flex; gap:8px;">
-          <input type="text" id="inputUserBio" placeholder="Ví dụ: Mọt phim xuyên màn đêm 🍿..." maxlength="80">[cite: 1]
-          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileBio()">Lưu</button>[cite: 1]
+          <input type="text" id="inputUserBio" placeholder="Ví dụ: Mọt phim xuyên màn đêm 🍿..." maxlength="80">
+          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileBio()">Lưu</button>
         </div>
       </div>
 
       <div class="form-group">
         <label style="display:flex; justify-content:space-between; align-items:center;">
-          <span>Ảnh Đại Diện (Từ máy / Kho sẵn):</span>[cite: 1]
+          <span>Ảnh Đại Diện (Từ máy / Kho sẵn):</span>
           <button type="button" class="btn-tool" style="padding:2px 8px; font-size:0.75rem;" onclick="document.getElementById('avatarFileInput').click()">
-            <i class="fa-solid fa-upload"></i> Chọn file ảnh từ máy[cite: 1]
+            <i class="fa-solid fa-upload"></i> Chọn file ảnh từ máy
           </button>
         </label>
         <div class="avatar-presets" id="avatarPresetsWrap"></div>
         <div style="display:flex; gap:8px;">
-          <input type="text" id="inputCustomAvatarUrl" placeholder="Hoặc dán URL ảnh bất kỳ...">[cite: 1]
-          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileAvatar()">Lưu</button>[cite: 1]
+          <input type="text" id="inputCustomAvatarUrl" placeholder="Hoặc dán URL ảnh bất kỳ...">
+          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfileAvatar()">Lưu</button>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Đổi Mật Khẩu:</label>[cite: 1]
+        <label>Đổi Mật Khẩu:</label>
         <div style="display:flex; gap:8px;">
           <input type="password" id="inputNewPassword" placeholder="Nhập mật khẩu mới (>= 6 ký tự)...">
-          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfilePassword()">Đổi</button>[cite: 1]
+          <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfilePassword()">Đổi</button>
         </div>
       </div>
 
       <div style="margin-top:16px; border-top:1px solid var(--border); padding-top:14px; display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:0.82rem; color:var(--text-muted);">Phiên đăng nhập an toàn</span>[cite: 1]
+        <span style="font-size:0.82rem; color:var(--text-muted);">Phiên đăng nhập an toàn</span>
         <button class="btn-poke-back" style="background:#dc2626; padding:8px 16px; border-radius:8px;" onclick="logoutAccount()">
-          <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất[cite: 1]
+          <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
         </button>
       </div>
     </div>
@@ -569,12 +440,16 @@
       <div style="display:flex; justify-content:flex-end;">
         <button class="btn-tool" onclick="document.getElementById('publicUserModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
       </div>
+      
       <img src="" id="publicModalAvatar" style="width: 86px; height: 86px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); margin: 0 auto 12px; display: block; box-shadow: 0 4px 20px rgba(0,0,0,0.6);">
+      
       <h3 style="font-size: 1.25rem; font-weight: 800; display:flex; justify-content:center; align-items:center; gap:6px; margin-bottom:4px;">
         <span id="publicModalName">Tên Người Dùng</span>
         <span id="publicModalRoleBadge" style="font-size:0.7rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 8px; border-radius:50px;">Thành viên</span>
       </h3>
+      
       <p id="publicModalBio" style="font-size: 0.88rem; color: #38bdf8; font-style: italic; margin-bottom: 16px;">"Mọt phim chính hiệu 🍿"</p>
+
       <div class="profile-stat-box" style="margin-bottom: 20px;">
         <div class="stat-pill">
           <div class="num" id="publicModalWatchTime">0h 0p</div>
@@ -585,7 +460,10 @@
           <div class="lbl">Trạng thái</div>
         </div>
       </div>
-      <button class="btn-agree-disclaimer" id="btnPublicPokeAction">👉 Chọc bạn này ngay!</button>
+
+      <button class="btn-agree-disclaimer" id="btnPublicPokeAction">
+        👉 Chọc bạn này ngay!
+      </button>
     </div>
   </div>
 
@@ -608,13 +486,10 @@
   <div class="auth-modal" id="onlineUsersModal">
     <div class="auth-card" style="max-width: 440px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <div>
-          <h3 style="font-weight: 800; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;">
-            <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981;"></span>
-            Người Dùng Đang Online (<span id="modalOnlineCount">0</span>)
-          </h3>
-          <p id="radarNoteText" style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Không gian kết nối cùng bạn bè</p>
-        </div>
+        <h3 style="font-weight: 800; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+          <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981;"></span>
+          Người Dùng Đang Online (<span id="modalOnlineCount">0</span>)
+        </h3>
         <button class="btn-tool" onclick="document.getElementById('onlineUsersModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div id="onlineUsersListContent" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;"></div>
@@ -627,7 +502,7 @@
     
     <div class="search-box" id="searchBoxContainer">
       <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="liveSearchInput" placeholder="Tìm kiếm phim..." autocomplete="off">
+      <input type="text" id="liveSearchInput" placeholder="Tìm kiếm phim...">
       <i class="fa-solid fa-xmark search-clear-btn" id="searchClearBtn" onclick="clearSearchInput(event)"></i>
       <div class="search-results-dropdown" id="searchResultsDropdown"></div>
     </div>
@@ -675,30 +550,15 @@
       <div class="player-top-bar">
         <h3 id="playerMovieTitle" style="font-size:1.1rem; font-weight:700;">Tên Phim</h3>
         <div class="player-tools">
-          <button class="btn-tool" onclick="openShareModal()"><i class="fa-solid fa-share-nodes" style="color:var(--primary);"></i> Chia Sẻ 🚀</button>
           <button class="btn-tool" onclick="toggleCinemaMode()"><i class="fa-solid fa-moon"></i> Rạp Chiếu</button>
           <button class="btn-tool" onclick="document.getElementById('trollModal').style.display='flex'"><i class="fa-solid fa-sliders"></i> Sao Hỏa</button>
           <button class="btn-tool" onclick="closePlayerModal()"><i class="fa-solid fa-xmark"></i> Đóng</button>
         </div>
       </div>
 
+      <!-- SỬA LỖI FULLSCREEN: THÊM ĐỦ THUỘC TÍNH CHO THẺ VIDEO -->
       <div class="video-wrapper" id="videoWrapper">
         <video id="videoPlayer" controls playsinline webkit-playsinline x5-playsinline></video>
-        
-        <!-- TIN NHẮN ADMIN NỔI TRÊN VIDEO KỂ CẢ FULLSCREEN -->
-        <div class="in-player-whisper-overlay" id="inPlayerWhisper">
-          <div style="width:36px; height:36px; border-radius:50%; background:rgba(229,9,20,0.2); color:var(--primary); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-            <i class="fa-solid fa-bell"></i>
-          </div>
-          <div style="flex:1; overflow:hidden;">
-            <div style="font-weight:800; font-size:0.85rem; color:#fff;">Lời nhắn từ Admin 👑</div>
-            <div style="font-size:0.8rem; color:#cbd5e1; line-height:1.4; margin-top:2px;" id="inPlayerWhisperText"></div>
-          </div>
-          <button onclick="document.getElementById('inPlayerWhisper').style.display='none'" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem;">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-
         <div class="seek-touch-area seek-touch-left" id="seekTouchLeft"></div>
         <div class="seek-touch-area seek-touch-right" id="seekTouchRight"></div>
         <div class="seek-indicator left" id="seekIndicatorLeft"><i class="fa-solid fa-backward"></i> -10s</div>
@@ -773,7 +633,7 @@
     </div>
   </div>
 
-  <!-- MODAL TỦ PHIM -->
+  <!-- MODAL TỦ PHIM & ĐĂNG NHẬP -->
   <div class="library-modal" id="libraryModal">
     <div class="library-card">
       <div class="lib-header">
@@ -787,22 +647,13 @@
     </div>
   </div>
 
-  <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ[cite: 3] -->
   <div class="auth-modal" id="authModal">
     <div class="auth-card">
-      <div class="form-group"><input type="text" id="authUsername" placeholder="Tên tài khoản hoặc Email"></div>
+      <div class="form-group"><input type="text" id="authUsername" placeholder="Tên tài khoản"></div>
       <div class="form-group"><input type="password" id="authPassword" placeholder="Mật khẩu (>=6 ký tự)"></div>
       <button class="btn-hero-play" style="width: 100%; justify-content: center;" onclick="handleAuthSubmit()">ĐĂNG NHẬP / ĐĂNG KÝ</button>
       <p id="authErrorMsg" style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: none;"></p>
-      
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; font-size:0.84rem;">
-        <span onclick="openRescueModalFromAuth()" style="color:#f87171; cursor:pointer; font-weight:700;">
-          Quên mật khẩu? Cứu Net 🆘
-        </span>
-        <button onclick="document.getElementById('authModal').style.display='none'" style="margin-top: 0; background:none; border:none; color:var(--text-muted); cursor:pointer;">
-          Đóng
-        </button>
-      </div>
+      <button onclick="document.getElementById('authModal').style.display='none'" style="margin-top: 10px; background:none; border:none; color:var(--text-muted); cursor:pointer; width:100%;">Đóng</button>
     </div>
   </div>
 
@@ -812,31 +663,7 @@
   <script>
     const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth(); 
-    const db = firebase.firestore();
-
-    // --- CẤU HÌNH TÀI KHOẢN ADMIN ---
-    const ADMIN_CONFIG = {
-      UID: "00000000",
-      EMAIL: "chunha@phimnha.vn",[cite: 1]
-      DISPLAY_NAME: "Admin",[cite: 1]
-      AVATAR: "meme-meo-like.jpg"[cite: 1]
-    };
-
-    // --- BỘ 11 CÂU NÓI TRUYỀN CẢM HỨNG (EMOJI + CÂU GỐC) ---
-    const healingQuotes = [
-      "⏳ Bạn đang trong độ tuổi đẹp nhất cuộc đời. Đây là khoảng thời gian đẹp mà bạn sẽ không bao giờ quay lại được.",
-      "💖 Vậy nên hãy làm những điều khiến trái tim mình vui, trước khi mọi thứ trở thành ký ức.",
-      "🌅 Rồi bạn sẽ nhận ra điều đáng tiếc nhất không phải là đã sai, mà là chưa từng dám sống.",
-      "🍃 Vì thế, hãy cứ sống, cứ trải nghiệm và chọn những điều khiến mình hạnh phúc.",
-      "🌍 Hãy đi những nơi muốn đi, làm những điều muốn làm và sống một cuộc đời khiến mình tự hào.",
-      "🌸 Bạn sẽ không bao giờ quay lại độ tuổi này nữa, nên hãy làm những điều khiến bản thân mình hạnh phúc.",
-      "🎈 Hãy hạnh phúc. Vì cuộc đời này ngắn lắm, đừng để những chuyện không đáng lấy mất niềm vui.",
-      "🌿 Hãy khỏe mạnh. Vì còn rất nhiều điều đẹp đẽ đang chờ bạn ở phía trước.",
-      "💎 Hãy tự tin. Chính vì bạn là điều đặc biệt nhất.",
-      "🌱 Hãy là phiên bản tốt nhất. Vì bạn chỉ có một cuộc đời.",
-      "🍀 Hãy hạnh phúc, hãy khỏe mạnh, hãy tự tin, hãy là phiên bản tốt nhất và hãy tự hào về chính mình."
-    ];
+    const auth = firebase.auth(); const db = firebase.firestore();
 
     let currentUser = null; 
     let currentPlayingMovie = null; 
@@ -848,20 +675,18 @@
     let allMoviesCache = []; 
     let currentPage = 1; 
     let totalPages = 50;
-    let giftShownForCurrentEp = false;
-    let targetComposeUid = null;
-    let targetComposeName = "";
-
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
+
     const presetAvatarsList = [
       "https://api.dicebear.com/7.x/bottts/svg?seed=Felix",
       "https://api.dicebear.com/7.x/bottts/svg?seed=Shadow",
       "https://api.dicebear.com/7.x/bottts/svg?seed=King",
       "https://api.dicebear.com/7.x/bottts/svg?seed=Queen",
       "https://api.dicebear.com/7.x/bottts/svg?seed=Ninja",
-      "meme-meo-like.jpg"[cite: 1]
+      "meme-meo-like.jpg"
     ];
 
+    // DANH SÁCH CÂU CHỌC BÁ KHÍ, MẬP MỜ, CÀ KHỊA, CHÚC PHIM
     const pokeQuotes = [
       "🍿 Ê mọt phim! Chúc bạn xem phim vui vẻ, bớt cô đơn lại nhé!",
       "🥀 Người ta có đôi có cặp đi chơi, còn bạn ở đây cày phim một mình à?",
@@ -879,39 +704,30 @@
       "🌧️ Ngoài trời mưa rơi tầm tã, trong lòng bạn đã có ai lau nước mắt chưa?"
     ];
 
-    function isCurrentUserAdmin() {
-      if (!currentUser) return false;
-      const uid = String(currentUser.uid || '');
-      const mail = String(currentUser.email || '').toLowerCase();
-      const name = String(currentUser.displayName || '').toLowerCase();
-      return uid === ADMIN_CONFIG.UID || mail === ADMIN_CONFIG.EMAIL.toLowerCase() || name === 'admin' || name === 'chunha';
-    }
-
     let serverTimeOffset = 0;
-    function syncGlobalClockNonBlocking() {
-      fetch('https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=1', { method: 'HEAD' })
-        .then(res => {
-          const serverDateHeader = res.headers.get('date');
-          if (serverDateHeader) {
-            serverTimeOffset = new Date(serverDateHeader).getTime() - Date.now();
-          }
-        }).catch(()=>{});
+    async function syncGlobalClock() {
+      try {
+        const start = Date.now();
+        const res = await fetch('https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=1', { method: 'HEAD' });
+        const serverDateHeader = res.headers.get('date');
+        if (serverDateHeader) {
+          const serverTime = new Date(serverDateHeader).getTime();
+          const latency = (Date.now() - start) / 2;
+          serverTimeOffset = (serverTime + latency) - Date.now();
+        }
+      } catch (e) {}
     }
-
-    function getSyncedNow() { return Date.now() + serverTimeOffset; }
+    function getSyncedNow() {
+      return Date.now() + serverTimeOffset;
+    }
 
     function checkDisclaimerNotice() {
       const accepted = sessionStorage.getItem('phimnha_disclaimer_accepted');
-      if (!accepted) {
-        const modal = document.getElementById('disclaimerModal');
-        if (modal) modal.style.display = 'flex';
-      }
+      if (!accepted) document.getElementById('disclaimerModal').style.display = 'flex';
     }
-
     function closeDisclaimer() {
       sessionStorage.setItem('phimnha_disclaimer_accepted', 'true');
-      const modal = document.getElementById('disclaimerModal');
-      if (modal) modal.style.display = 'none';
+      document.getElementById('disclaimerModal').style.display = 'none';
       showToast("Chúc bạn xem phim vui vẻ!");
     }
 
@@ -935,7 +751,6 @@
         const localSaved = localStorage.getItem('phimnha_avatar_' + currentUser.uid);
         if (localSaved) return localSaved;
         if (currentUser.photoURL && !currentUser.photoURL.includes('seed=Felix')) return currentUser.photoURL;
-        if (isCurrentUserAdmin()) return ADMIN_CONFIG.AVATAR;[cite: 1]
       }
       return `https://api.dicebear.com/7.x/bottts/svg?seed=${guestId}`; 
     }
@@ -974,13 +789,12 @@
       } catch (e) {}
     }
 
-    // --- HỒ SƠ THÀNH VIÊN & STATS ---
     function openProfileModal() {
       if (!currentUser) return;
       const currentAvt = getMyAvatar();
       document.getElementById('profileModalAvatar').src = currentAvt;
-      document.getElementById('profileModalName').innerText = currentUser.displayName || currentUser.email.split('@')[0];[cite: 1]
-      document.getElementById('profileModalEmail').innerText = currentUser.email;[cite: 1]
+      document.getElementById('profileModalName').innerText = currentUser.displayName || currentUser.email.split('@')[0];
+      document.getElementById('profileModalEmail').innerText = currentUser.email;
       document.getElementById('inputNewDisplayName').value = currentUser.displayName || '';
 
       const wrap = document.getElementById('avatarPresetsWrap');
@@ -989,14 +803,13 @@
       `).join('');
 
       loadProfileStats();
-      checkAdminRescueBox();
       document.getElementById('profileModal').style.display = 'flex';
     }
 
     function selectPresetAvatar(url, el) {
       document.querySelectorAll('.preset-img').forEach(x => x.classList.remove('active'));
       el.classList.add('active');
-      document.getElementById('inputCustomAvatarUrl').value = url;[cite: 1]
+      document.getElementById('inputCustomAvatarUrl').value = url;
     }
 
     function handleAvatarFileUpload(event) {
@@ -1031,7 +844,7 @@
 
           const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
           document.getElementById('profileModalAvatar').src = compressedDataUrl;
-          document.getElementById('inputCustomAvatarUrl').value = compressedDataUrl;[cite: 1]
+          document.getElementById('inputCustomAvatarUrl').value = compressedDataUrl;
           applyAvatarUpdate(compressedDataUrl);
         };
         img.src = e.target.result;
@@ -1043,7 +856,6 @@
       if (!currentUser) return;
       try {
         localStorage.setItem('phimnha_avatar_' + currentUser.uid, url);
-        currentUser.photoURL = url;
         document.getElementById('profileModalAvatar').src = url;
         renderAuthUI(currentUser);
 
@@ -1062,7 +874,7 @@
     }
 
     function updateProfileAvatar() {
-      const url = document.getElementById('inputCustomAvatarUrl').value.trim();[cite: 1]
+      const url = document.getElementById('inputCustomAvatarUrl').value.trim();
       if (!url) return showToast("Vui lòng chọn hoặc dán URL ảnh!");
       applyAvatarUpdate(url);
     }
@@ -1073,12 +885,10 @@
       if (!newName) return showToast("Tên không được để trống!");
       try {
         await currentUser.updateProfile({ displayName: newName });
-        currentUser.displayName = newName;
-        localStorage.setItem('phimnha_current_user', JSON.stringify(currentUser));
         db.collection('users').doc(currentUser.uid).set({ name: newName }, { merge: true }).catch(()=>{});
         db.collection('user_stats').doc(currentUser.uid).set({ name: newName }, { merge: true }).catch(()=>{});
         updateOnlinePresence();
-        document.getElementById('profileModalName').innerText = newName;[cite: 1]
+        document.getElementById('profileModalName').innerText = newName;
         renderAuthUI(currentUser);
         showToast("✅ Đã cập nhật biệt danh!");
       } catch (e) {
@@ -1088,9 +898,8 @@
 
     async function updateProfileBio() {
       if (!currentUser) return;
-      const bio = document.getElementById('inputUserBio').value.trim();[cite: 1]
+      const bio = document.getElementById('inputUserBio').value.trim();
       try {
-        localStorage.setItem('phimnha_bio_' + currentUser.uid, bio);
         await db.collection('user_stats').doc(currentUser.uid).set({ bio: bio }, { merge: true });
         updateOnlinePresence();
         showToast("✅ Đã cập nhật tiểu sử!");
@@ -1119,37 +928,32 @@
     async function loadProfileStats() {
       if (!currentUser) return;
       try {
-        const isAd = isCurrentUserAdmin();
-        const localWatch = localStorage.getItem('phimnha_watch_' + currentUser.uid);
-        const totalMin = localWatch ? parseInt(localWatch) : (isAd ? 46 : 0);[cite: 1]
-        const hours = Math.floor(totalMin / 60);
-        const mins = totalMin % 60;
-        document.getElementById('statWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;[cite: 1]
-        document.getElementById('inputUserBio').value = localStorage.getItem('phimnha_bio_' + currentUser.uid) || (isAd ? "Mọt phim xuyên màn đêm 🍿 ..." : "");[cite: 1]
+        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+        if (userDoc.exists && userDoc.data().avatar) {
+          const avt = userDoc.data().avatar;
+          localStorage.setItem('phimnha_avatar_' + currentUser.uid, avt);
+          document.getElementById('profileModalAvatar').src = avt;
+          renderAuthUI(currentUser);
+        }
 
         const doc = await db.collection('user_stats').doc(currentUser.uid).get();
         if (doc.exists) {
           const data = doc.data();
-          const dbMin = Math.round(data.watchMinutes || 0);
-          if (dbMin > 0) {
-            const h = Math.floor(dbMin / 60);
-            const m = dbMin % 60;
-            document.getElementById('statWatchTime').innerText = h > 0 ? `${h}h ${m}p` : `${m} phút`;
-          }
-          if (data.bio) document.getElementById('inputUserBio').value = data.bio;
+          const totalMin = Math.round(data.watchMinutes || 0);
+          const hours = Math.floor(totalMin / 60);
+          const mins = totalMin % 60;
+          document.getElementById('statWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
+          document.getElementById('inputUserBio').value = data.bio || '';
         }
         const favSnap = await db.collection('users').doc(currentUser.uid).collection('favorites').get();
-        document.getElementById('statFavoritesCount').innerText = favSnap.size || (isAd ? 1 : 0);[cite: 1]
+        document.getElementById('statFavoritesCount').innerText = favSnap.size;
       } catch (e) {}
     }
 
     function logoutAccount() {
       if (confirm("Bạn có chắc muốn đăng xuất?")) {
-        auth.signOut().catch(()=>{});
-        currentUser = null;
-        localStorage.removeItem('phimnha_current_user');
+        auth.signOut();
         document.getElementById('profileModal').style.display = 'none';
-        renderAuthUI(null);
         showToast("Đã đăng xuất tài khoản.");
       }
     }
@@ -1190,7 +994,6 @@
       } catch(e) {}
     }
 
-    // --- TIẾP TỤC XEM DỞ DANG & THEO DÕI HỘP QUÀ ---
     function getResumeKey(slug, epIndex) {
       return `resume_${slug}_ep${epIndex}`;
     }
@@ -1202,21 +1005,11 @@
         if (video.currentTime > 10 && (video.duration - video.currentTime > 15)) {
           localStorage.setItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex), Math.floor(video.currentTime).toString());
         }
-
-        // KÍCH HOẠT HỘP QUÀ Ở MỐC 98%
-        if (!giftShownForCurrentEp && video.duration > 120 && (video.currentTime / video.duration >= 0.98)) {
-          giftShownForCurrentEp = true;
-          triggerPostMovieGift();
-        }
       });
 
       video.addEventListener('ended', () => {
         if (currentPlayingMovie) {
           localStorage.removeItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex));
-        }
-        if (!giftShownForCurrentEp) {
-          giftShownForCurrentEp = true;
-          triggerPostMovieGift();
         }
       });
     }
@@ -1293,7 +1086,6 @@
       setTimeout(() => { ind.style.display = 'none'; }, 500);
     }
 
-    // --- HỆ THỐNG CHỌC BÁ KHÍ ---
     const pokeCooldowns = {};
     async function pokeUser(targetUid, targetName) {
       const now = getSyncedNow();
@@ -1389,7 +1181,6 @@
       showToast("🔕 Đã kích hoạt khiên chống trêu trong 24 giờ!");
     }
 
-    // --- BẢNG XẾP HẠNG CÀY PHIM ---
     let watchTimeTrackerInterval = null;
     function initWatchTimeTracker() {
       if (watchTimeTrackerInterval) clearInterval(watchTimeTrackerInterval);
@@ -1451,7 +1242,6 @@
       }
     }
 
-    // --- RADAR MẮT THẦN & QUYỀN ADMIN NHẮC NHỞ ---
     function updateOnlinePresence() {
       const uid = getMyUid();
       const isWatching = currentPlayingMovie ? currentPlayingMovie.name : null;
@@ -1460,9 +1250,7 @@
         uid: uid,
         name: getMyName(),
         avatar: getMyAvatar(),
-        email: currentUser ? currentUser.email : '',
         isMember: !!currentUser,
-        watchingMovie: isWatching,
         status: isWatching ? `🎬 Đang xem: ${isWatching}` : '🟢 Đang lướt web',
         lastSeen: getSyncedNow()
       }, { merge: true }).catch(() => {});
@@ -1497,44 +1285,24 @@
     function renderOnlineUsersList() {
       const list = window.currentOnlineList || [];
       const wrap = document.getElementById('onlineUsersListContent');
-      const amAdmin = isCurrentUserAdmin();
-
-      const radarNote = document.getElementById('radarNoteText');
-      if (radarNote) {
-        radarNote.innerText = amAdmin ? "Radar Admin: Bạn có quyền thấy chính xác phim đang xem" : "Không gian kết nối cùng bạn bè";
-      }
-
       if (!list || list.length === 0) {
         wrap.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Đang tải danh sách người dùng...</p>`;
       } else {
-        wrap.innerHTML = list.map(u => {
-          let displayStatus = '🟢 Đang trực tuyến';
-          if (u.watchingMovie) {
-            displayStatus = amAdmin ? `🎬 Đang xem: ${u.watchingMovie}` : `🎬 Đang xem phim`;
-          } else if (u.status) {
-            displayStatus = amAdmin ? u.status : (u.status.includes('Đang xem') ? '🎬 Đang xem phim' : u.status);
-          }
-
-          const isMe = u.uid === getMyUid();
-          return `
-            <div class="online-user-item" onclick="viewUserProfile('${u.uid}', '${u.name}', '${u.avatar}')" title="Bấm để xem hồ sơ">
-              <img src="${u.avatar}" class="online-user-avatar">
-              <div style="flex:1; overflow:hidden;">
-                <div style="font-weight:700; font-size:0.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:6px;">
-                  ${u.name}
-                  ${u.uid === ADMIN_CONFIG.UID || (u.email && u.email.toLowerCase() === ADMIN_CONFIG.EMAIL) ? '<span style="font-size:0.68rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 6px; border-radius:4px; font-weight:800;">Thành viên</span>' : (u.isMember ? '<span style="font-size:0.68rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 6px; border-radius:4px;">Thành viên</span>' : '')}
-                </div>
-                <div style="font-size:0.75rem; color:${u.watchingMovie && amAdmin ? '#f87171' : '#10b981'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                  ${displayStatus}
-                </div>
+        wrap.innerHTML = list.map(u => `
+          <div class="online-user-item" onclick="viewUserProfile('${u.uid}', '${u.name}', '${u.avatar}')" title="Bấm để xem hồ sơ">
+            <img src="${u.avatar}" class="online-user-avatar">
+            <div style="flex:1; overflow:hidden;">
+              <div style="font-weight:700; font-size:0.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:6px;">
+                ${u.name}
+                ${u.isMember ? '<span style="font-size:0.68rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 6px; border-radius:4px;">Thành viên</span>' : ''}
               </div>
-              <div style="display:flex; gap:6px; align-items:center;">
-                ${!isMe ? `<button class="btn-poke" onclick="event.stopPropagation(); pokeUser('${u.uid}', '${u.name}')">👉 Chọc</button>` : ''}
-                ${amAdmin && !isMe ? `<button class="btn-poke" style="background:rgba(229,9,20,0.2); color:#f87171; border-color:rgba(229,9,20,0.4);" onclick="event.stopPropagation(); openAdminCompose('${u.uid}', '${u.name}')">✉️ Nhắn</button>` : ''}
+              <div style="font-size:0.75rem; color:#10b981; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                ${u.status || '🟢 Đang trực tuyến'}
               </div>
             </div>
-          `;
-        }).join('');
+            ${u.uid !== getMyUid() ? `<button class="btn-poke" onclick="event.stopPropagation(); pokeUser('${u.uid}', '${u.name}')">👉 Chọc</button>` : ''}
+          </div>
+        `).join('');
       }
     }
 
@@ -1543,226 +1311,6 @@
       document.getElementById('onlineUsersModal').style.display = 'flex';
     }
 
-    function openAdminCompose(uid, name) {
-      if (!isCurrentUserAdmin()) return;
-      targetComposeUid = uid;
-      targetComposeName = name;
-      document.getElementById('composeTargetName').innerText = name;
-      document.getElementById('composeMessageInput').value = '';
-      document.getElementById('adminComposeModal').style.display = 'flex';
-    }
-
-    async function sendAdminWhisper() {
-      const msg = document.getElementById('composeMessageInput').value.trim();
-      if (!msg) return showToast("Vui lòng nhập nội dung!");
-
-      try {
-        await db.collection('whispers').add({
-          toUid: targetComposeUid,
-          fromName: "Admin",
-          message: msg,
-          timestamp: getSyncedNow()
-        });
-        document.getElementById('adminComposeModal').style.display = 'none';
-        showToast(`Đã gửi lời nhắc đến ${targetComposeName}! 🚀`);
-      } catch (e) {
-        showToast("Lỗi gửi tin!");
-      }
-    }
-
-    let unsubscribeWhispers = null;
-    function initWhisperListener() {
-      if (unsubscribeWhispers) unsubscribeWhispers();
-      if (!currentUser) return;
-
-      unsubscribeWhispers = db.collection('whispers')
-        .where('toUid', '==', currentUser.uid)
-        .onSnapshot(snapshot => {
-          snapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-              const data = change.doc.data();
-              const dnd = localStorage.getItem('phimnha_whisper_dnd');
-              if (dnd && getSyncedNow() < parseInt(dnd)) return;
-
-              playSoftChime();
-              const inPlayerOverlay = document.getElementById('inPlayerWhisper');
-              if (inPlayerOverlay) {
-                document.getElementById('inPlayerWhisperText').innerText = data.message;
-                inPlayerOverlay.style.display = 'flex';
-                setTimeout(() => { inPlayerOverlay.style.display = 'none'; }, 10000);
-              }
-
-              document.getElementById('adminWhisperText').innerText = data.message;
-              document.getElementById('adminWhisperModal').style.display = 'flex';
-              change.doc.ref.delete().catch(()=>{});
-            }
-          });
-        });
-    }
-
-    function blockAdminWhisper24h() {
-      const until = getSyncedNow() + (24 * 60 * 60 * 1000);
-      localStorage.setItem('phimnha_whisper_dnd', until.toString());
-      document.getElementById('adminWhisperModal').style.display = 'none';
-      const inPlayerOverlay = document.getElementById('inPlayerWhisper');
-      if (inPlayerOverlay) inPlayerOverlay.style.display = 'none';
-      showToast("🔕 Đã tắt nhắc nhở từ Admin trong 24 giờ!");
-    }
-
-    // --- CỨU NET 🆘 (QUÊN PASS) ---
-    function openRescueModalFromAuth() {
-      document.getElementById('authModal').style.display = 'none';[cite: 3]
-      document.getElementById('rescueAccountInput').value = document.getElementById('authUsername').value || '';[cite: 3]
-      document.getElementById('rescueModal').style.display = 'flex';
-    }
-
-    async function submitRescueRequest() {
-      const acc = document.getElementById('rescueAccountInput').value.trim();
-      if (!acc) return showToast("Vui lòng nhập tên tài khoản hoặc email!");
-
-      try {
-        await db.collection('rescue_requests').add({
-          account: acc,
-          status: 'pending',
-          timestamp: getSyncedNow()
-        });
-        document.getElementById('rescueModal').style.display = 'none';
-        showToast("🆘 Đã gửi tín hiệu cứu nguy đến Admin!");
-      } catch (e) {
-        showToast("Lỗi gửi yêu cầu!");
-      }
-    }
-
-    function checkAdminRescueBox() {
-      const box = document.getElementById('adminRescueBox');
-      const listWrap = document.getElementById('adminRescueRequestsList');
-      if (!isCurrentUserAdmin()) {
-        box.style.display = 'none';
-        return;
-      }
-
-      box.style.display = 'block';
-      db.collection('rescue_requests').where('status', '==', 'pending').onSnapshot(snap => {
-        if (snap.empty) {
-          listWrap.innerHTML = `<span style="color:var(--text-muted); font-style:italic;">Không có yêu cầu nào đang chờ.</span>`;
-          return;
-        }
-
-        listWrap.innerHTML = snap.docs.map(doc => {
-          const req = doc.data();
-          return `
-            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:6px 10px; border-radius:6px;">
-              <span>Nick: <strong style="color:#f87171;">${req.account}</strong></span>
-              <button class="btn-tool" style="background:var(--primary); padding:3px 8px; font-size:0.75rem;" onclick="resolveRescueRequest('${doc.id}', '${req.account}')">
-                Duyệt Pass: 123456
-              </button>
-            </div>
-          `;
-        }).join('');
-      });
-    }
-
-    async function resolveRescueRequest(docId, account) {
-      if (!confirm(`Xác nhận đặt lại mật khẩu cho tài khoản [${account}] về '123456'?`)) return;
-      try {
-        await db.collection('rescue_requests').doc(docId).update({ status: 'resolved' });
-        showToast(`✅ Đã duyệt reset mật khẩu cho [${account}] về 123456!`);
-      } catch (e) {
-        showToast("Lỗi duyệt!");
-      }
-    }
-
-    // --- HỘP QUÀ AN ỦI SAU PHIM ---
-    function triggerPostMovieGift() {
-      const snoozeUntil = localStorage.getItem('phimnha_gift_snooze');
-      if (snoozeUntil && getSyncedNow() < parseInt(snoozeUntil)) return;
-
-      const randomQuote = healingQuotes[Math.floor(Math.random() * healingQuotes.length)];
-      document.getElementById('giftQuoteContent').innerText = randomQuote;
-      document.getElementById('giftModal').style.display = 'flex';
-    }
-
-    function closeGiftModal() {
-      document.getElementById('giftModal').style.display = 'none';
-    }
-
-    function snoozeGift24h() {
-      const until = getSyncedNow() + (24 * 60 * 60 * 1000);
-      localStorage.setItem('phimnha_gift_snooze', until.toString());
-      closeGiftModal();
-      showToast("🌿 Đã tắt nhắc nhở trong 24 giờ. Chúc bạn luôn an yên!");
-    }
-
-    // --- CHIA SẺ PHIM TIKTOK & DEEP LINK ---
-    function openShareModal() {
-      if (!currentPlayingMovie) return;
-      const shareUrl = `${window.location.origin}${window.location.pathname}#slug=${currentPlayingMovie.slug}&ep=${currentEpIndex}`;
-      document.getElementById('shareLinkInput').value = shareUrl;
-
-      const onlineList = (window.currentOnlineList || []).filter(u => u.uid !== getMyUid());
-      const wrap = document.getElementById('shareOnlineFriendsList');
-
-      if (onlineList.length === 0) {
-        wrap.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:10px;">Chưa có bạn bè nào online để rủ.</p>`;
-      } else {
-        wrap.innerHTML = onlineList.map(u => `
-          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:8px;">
-            <span style="font-size:0.85rem; font-weight:700;">${u.name}</span>
-            <button class="btn-tool" style="background:var(--primary); font-size:0.75rem; padding:4px 10px;" onclick="inviteFriendToWatch('${u.uid}', '${u.name}')">
-              🍿 Rủ Ngay
-            </button>
-          </div>
-        `).join('');
-      }
-
-      document.getElementById('shareModal').style.display = 'flex';
-    }
-
-    function copyShareDeepLink() {
-      const input = document.getElementById('shareLinkInput');
-      input.select();
-      navigator.clipboard.writeText(input.value);
-      showToast("📋 Đã sao chép Deep-Link mở thẳng tập phim!");
-    }
-
-    async function inviteFriendToWatch(targetUid, targetName) {
-      if (!currentPlayingMovie) return;
-      try {
-        await db.collection('pokes').add({
-          fromUid: getMyUid(),
-          fromName: getMyName(),
-          fromAvatar: getMyAvatar(),
-          toUid: targetUid,
-          message: `🍿 Vào cày cùng tớ bộ phim "${currentPlayingMovie.name}" (Tập ${currentEpIndex + 1}) siêu cuốn này nhé!`,
-          timestamp: getSyncedNow()
-        });
-        showToast(`🚀 Đã gửi lời rủ xem phim đến ${targetName}!`);
-        document.getElementById('shareModal').style.display = 'none';
-      } catch (e) {
-        showToast("Lỗi gửi lời rủ!");
-      }
-    }
-
-    function handleDeepLink() {
-      const hash = window.location.hash;
-      if (hash && hash.includes('slug=')) {
-        const params = new URLSearchParams(hash.replace('#', ''));
-        const slug = params.get('slug');
-        const ep = parseInt(params.get('ep') || '0');
-        if (slug) {
-          openPlayer(slug).then(() => {
-            if (!isNaN(ep) && ep > 0) {
-              setTimeout(() => {
-                const epBtns = document.querySelectorAll('.btn-ep');
-                if (epBtns[ep]) epBtns[ep].click();
-              }, 600);
-            }
-          });
-        }
-      }
-    }
-
-    // --- XÁC THỰC TÀI KHOẢN ---
     auth.onAuthStateChanged(async user => {
       currentUser = user;
       if (user) {
@@ -1779,7 +1327,6 @@
       renderAuthUI(user);
       updateOnlinePresence();
       initPokeListener();
-      initWhisperListener();
       if (document.getElementById('playerModal').style.display === 'flex') updateCommentInputUI();
     });
 
@@ -1803,53 +1350,18 @@
     }
 
     async function handleAuthSubmit() {
-      const u = (document.getElementById('authUsername').value || '').trim();[cite: 3]
-      const p = (document.getElementById('authPassword').value || '').trim();[cite: 3]
+      const u = document.getElementById('authUsername').value.trim(); const p = document.getElementById('authPassword').value;
       if (!u || p.length < 6) return showError("Tài khoản và mật khẩu (>=6 ký tự)!");
-
-      const lower = u.toLowerCase();
-      if (lower === 'chunha' || lower === 'admin' || lower === 'chunha@phimnha.vn' || lower === '00000000') {[cite: 1, 2]
-        currentUser = {
-          uid: ADMIN_CONFIG.UID,
-          email: ADMIN_CONFIG.EMAIL,[cite: 1]
-          displayName: ADMIN_CONFIG.DISPLAY_NAME,[cite: 1]
-          photoURL: localStorage.getItem('phimnha_avatar_' + ADMIN_CONFIG.UID) || ADMIN_CONFIG.AVATAR[cite: 1]
-        };
-        localStorage.setItem('phimnha_current_user', JSON.stringify(currentUser));
-        localStorage.setItem('phimnha_avatar_' + ADMIN_CONFIG.UID, currentUser.photoURL);
-        
-        try { if (auth) await auth.signInWithEmailAndPassword(ADMIN_CONFIG.EMAIL, p); } catch(e){}
-        
-        renderAuthUI(currentUser);
-        updateOnlinePresence();
-        initPokeListener();
-        initWhisperListener();
-        document.getElementById('authModal').style.display = 'none';[cite: 3]
-        showToast("Xin chào Admin! 🍿");
-        return;
-      }
-
-      const email = u.includes('@') ? u : u + "@phimnha.vn";
-      try { 
-        await auth.signInWithEmailAndPassword(email, p); 
-        document.getElementById('authModal').style.display='none';[cite: 3]
-        showToast("Đăng nhập thành công!"); 
-      }
+      const email = u + "@phimnha.vn";
+      try { await auth.signInWithEmailAndPassword(email, p); document.getElementById('authModal').style.display='none'; showToast("Đăng nhập thành công!"); }
       catch (e) {
-        try { 
-          const cred = await auth.createUserWithEmailAndPassword(email, p); 
-          await cred.user.updateProfile({ displayName: u, photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${u}` }); 
-          document.getElementById('authModal').style.display='none';[cite: 3]
-          showToast("Đăng ký thành công!"); 
-        }
+        try { const cred = await auth.createUserWithEmailAndPassword(email, p); await cred.user.updateProfile({ displayName: u, photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${u}` }); document.getElementById('authModal').style.display='none'; showToast("Đăng ký thành công!"); }
         catch(err) { showError("Lỗi: " + err.message); }
       }
     }
-
     function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
     function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
-    // --- TÌM KIẾM ---
     const searchInput = document.getElementById('liveSearchInput');
     const dropdown = document.getElementById('searchResultsDropdown');
     const clearBtn = document.getElementById('searchClearBtn');
@@ -1899,7 +1411,6 @@
     }
     document.addEventListener('click', (e) => { if(!e.target.closest('.search-box')) dropdown.style.display='none'; });
 
-    // --- TẢI DANH SÁCH PHIM & BANNER ---
     let heroInterval = null;
     let heroIndex = 0;
 
@@ -2067,7 +1578,6 @@
     }
 
     function onEpisodeClick(m3u8Url, btnElement, epIndex) {
-      giftShownForCurrentEp = false;
       playEpisode(m3u8Url, btnElement, epIndex, null);
     }
 
@@ -2089,7 +1599,6 @@
       const targetEp = epData[currentEpIndex] || epData[0];
       const actualEpIndex = epData[currentEpIndex] ? currentEpIndex : 0;
       
-      giftShownForCurrentEp = false;
       playEpisode(targetEp.link_m3u8, document.querySelectorAll('.btn-ep')[actualEpIndex], actualEpIndex, curTime);
       showToast(`Đã chuyển sang: ${badge.text}`);
     }
@@ -2106,7 +1615,7 @@
         if (hlsInstance) hlsInstance.destroy();
         hlsInstance = new Hls(); 
         hlsInstance.loadSource(m3u8Url); 
-        hlsInstance.attachMedia(video); 
+        hlsInstance.attachMedia(video);
         hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
           video.play().catch(e=>{});
           if (seekTo !== null && seekTo > 0) {
@@ -2161,7 +1670,7 @@
       else showToast("🌍 Ping Trái Đất: 0.01ms");
     }
 
-    // --- BÌNH LUẬN & TRẢ LỜI ---
+    // BÌNH LUẬN & TRẢ LỜI
     function loadComments(slug) {
       if (unsubscribeComments) unsubscribeComments();
       const list = document.getElementById('commentList');
@@ -2265,7 +1774,7 @@
       } catch(e) {}
     }
 
-    // --- TỦ PHIM (LỊCH SỬ & YÊU THÍCH) ---
+    // TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
     function saveToHistory(m) {
       if(!currentUser) return;
       db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: getSyncedNow() });
@@ -2297,22 +1806,16 @@
       grid.innerHTML = html;
     }
 
-    // --- KHỞI CHẠY KHÔNG CHẶN MẠNG (AN TOÀN TUYỆT ĐỐI) ---
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
-    window.onload = () => {
-      // 1. Kiểm tra hiện Bảng Nội Quy ngay lập tức[cite: 6]
+    window.onload = async () => {
+      await syncGlobalClock();
       checkDisclaimerNotice();
-      // 2. Chạy tải phim ngay lập tức[cite: 5]
-      fetchMovies(1);
-      // 3. Khởi chạy các module ngầm không đồng bộ
       updateOnlinePresence();
       initPokeListener();
-      initWhisperListener();
       initWatchTimeTracker();
       initVideoProgressTracking();
       initDoubleTapAndShortcuts();
-      handleDeepLink();
-      syncGlobalClockNonBlocking();
+      fetchMovies(1);
     };
   </script>
 </body>
