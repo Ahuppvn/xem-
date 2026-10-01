@@ -76,9 +76,7 @@
     .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 12px 26px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); transition: var(--transition); }
     .btn-hero-play:hover { background: var(--primary-hover); transform: scale(1.03); }
 
-    /* ========================================================
-       PHẦN RO-PHIM: "BẠN ĐANG QUAN TÂM GÌ?" (GRADIENT CARDS)
-    ======================================================== */
+    /* CỤM RO-PHIM: "BẠN ĐANG QUAN TÂM GÌ?" */
     .category-section-wrap { max-width: 1400px; margin: 0 auto 28px; padding: 0 20px; }
     .category-section-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
     .category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
@@ -123,7 +121,7 @@
     .page-btn.active { background: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);}
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* PLAYER MODAL VÀ SỬA LỖI PHÓNG TO NATIVE TRÊN DI ĐỘNG */
+    /* PLAYER MODAL */
     .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
     .cinema-mode-active .player-details-container { opacity: 0.08; filter: blur(3px); pointer-events: none; }
@@ -135,7 +133,7 @@
     .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
     .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; object-fit: contain; }
 
-    /* SỬA LỖI: VÙNG TUA ĐÃ ĐƯỢC THU GỌN ĐỂ KHÔNG CHE NÚT PHÓNG TO NATIVE Ở GÓC TRÊN VÀ THANH ĐIỀU KHIỂN Ở DƯỚI */
+    /* VÙNG TUA ĐÃ THU GỌN ĐỂ KHÔNG CHẶN NÚT PHÓNG TO NATIVE TRÊN DI ĐỘNG */
     .seek-touch-area { position: absolute; top: 75px; bottom: 75px; width: 35%; z-index: 5; }
     .seek-touch-left { left: 0; }
     .seek-touch-right { right: 0; }
@@ -244,7 +242,7 @@
       30%, 60%, 90% { transform: translateX(8px) rotate(1.5deg); }
     }
     .poke-notification {
-      position: fixed; top: 75px; right: 20px; z-index: 9999;
+      position: fixed; top: 75px; right: 20px; z-index: 99999;
       background: rgba(18, 21, 30, 0.96); border: 2px solid #ff0f1b; border-radius: 16px;
       padding: 14px 18px; display: none; align-items: flex-start; gap: 14px; box-shadow: 0 12px 40px rgba(229, 9, 20, 0.6);
       backdrop-filter: blur(12px); max-width: 380px;
@@ -263,6 +261,13 @@
     .btn-poke-back { background: var(--primary); color: #fff; border: none; padding: 5px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
     .btn-poke-mute { background: rgba(255,255,255,0.1); color: var(--text-muted); border: 1px solid var(--border); padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; }
     .btn-poke-mute:hover { color: #fff; }
+
+    /* ICON MẮT SOI MẬT KHẨU */
+    .eye-toggle-icon {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); cursor: pointer; font-size: 0.95rem; transition: color 0.2s;
+    }
+    .eye-toggle-icon:hover { color: #fff; }
 
     /* MODAL BẢNG XẾP HẠNG CÀY PHIM */
     .rank-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); margin-bottom: 8px; cursor: pointer; transition: var(--transition); }
@@ -296,10 +301,10 @@
     .lib-content { padding: 20px; overflow-y: auto; flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px;}
     
     .auth-card, .troll-card { background: var(--surface); width: 100%; max-width: 420px; border-radius: 16px; padding: 24px; border: 1px solid var(--border);}
-    .form-group { margin-bottom: 14px; }
+    .form-group { margin-bottom: 14px; position: relative; }
     .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; outline:none; font-family: inherit; }
-    .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; gap: 8px; align-items: center;}
+    .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 99999; display: none; gap: 8px; align-items: center;}
 
     /* TỐI ƯU CỰC MẠNH CHO ĐIỆN THOẠI */
     @media (max-width: 680px) {
@@ -442,10 +447,14 @@
         </div>
       </div>
 
+      <!-- ĐỔI MẬT KHẨU CÓ ICON MẮT SOI -->
       <div class="form-group">
         <label>Đổi Mật Khẩu:</label>
         <div style="display:flex; gap:8px;">
-          <input type="password" id="inputNewPassword" placeholder="Nhập mật khẩu mới (>= 6 ký tự)...">
+          <div style="position: relative; flex: 1;">
+            <input type="password" id="inputNewPassword" placeholder="Nhập mật khẩu mới (>= 6 ký tự)..." style="padding-right: 42px;">
+            <i class="fa-solid fa-eye eye-toggle-icon" id="eyeNewPass" onclick="togglePassView('inputNewPassword', 'eyeNewPass')"></i>
+          </div>
           <button class="btn-hero-play" style="padding:0 16px; border-radius:8px;" onclick="updateProfilePassword()">Đổi</button>
         </div>
       </div>
@@ -602,10 +611,8 @@
         </div>
       </div>
 
-      <!-- VIDEO WRAPPER & THẺ VIDEO ĐẦY ĐỦ THUỘC TÍNH NATIVE DI ĐỘNG -->
       <div class="video-wrapper" id="videoWrapper">
         <video id="videoPlayer" controls playsinline webkit-playsinline x5-playsinline></video>
-        <!-- VÙNG CẢM ỨNG ĐÃ ĐƯỢC THU GỌN TOP/BOTTOM 75PX ĐỂ NÚT FULLSCREEN NATIVE KHÔNG BỊ CHẶN -->
         <div class="seek-touch-area seek-touch-left" id="seekTouchLeft"></div>
         <div class="seek-touch-area seek-touch-right" id="seekTouchRight"></div>
         <div class="seek-indicator left" id="seekIndicatorLeft"><i class="fa-solid fa-backward"></i> -10s</div>
@@ -680,7 +687,7 @@
     </div>
   </div>
 
-  <!-- MODAL TỦ PHIM & ĐĂNG NHẬP -->
+  <!-- MODAL TỦ PHIM -->
   <div class="library-modal" id="libraryModal">
     <div class="library-card">
       <div class="lib-header">
@@ -694,13 +701,32 @@
     </div>
   </div>
 
+  <!-- ==================== MODAL ĐĂNG NHẬP / ĐĂNG KÝ (TÁCH BIỆT 2 NÚT + MẮT SOI) ==================== -->
   <div class="auth-modal" id="authModal">
     <div class="auth-card">
-      <div class="form-group"><input type="text" id="authUsername" placeholder="Tên tài khoản"></div>
-      <div class="form-group"><input type="password" id="authPassword" placeholder="Mật khẩu (>=6 ký tự)"></div>
-      <button class="btn-hero-play" style="width: 100%; justify-content: center;" onclick="handleAuthSubmit()">ĐĂNG NHẬP / ĐĂNG KÝ</button>
-      <p id="authErrorMsg" style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: none;"></p>
-      <button onclick="document.getElementById('authModal').style.display='none'" style="margin-top: 10px; background:none; border:none; color:var(--text-muted); cursor:pointer; width:100%;">Đóng</button>
+      <h3 style="margin-bottom: 16px; font-weight: 800; text-align: center; font-size: 1.2rem;">
+        <i class="fa-solid fa-user-shield" style="color: var(--primary);"></i> Tài Khoản Thành Viên
+      </h3>
+      <div class="form-group">
+        <label>Tên tài khoản (Hỗ trợ tiếng Việt có dấu):</label>
+        <input type="text" id="authUsername" placeholder="Ví dụ: Nguyễn Văn A, Tuan123...">
+      </div>
+      <div class="form-group">
+        <label>Mật khẩu (>=6 ký tự):</label>
+        <input type="password" id="authPassword" placeholder="Nhập mật khẩu..." style="padding-right: 42px;">
+        <i class="fa-solid fa-eye eye-toggle-icon" id="eyeAuthPass" onclick="togglePassView('authPassword', 'eyeAuthPass')"></i>
+      </div>
+      <p id="authErrorMsg" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 12px; display: none; line-height: 1.4;"></p>
+      
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button class="btn-hero-play" style="width: 100%; justify-content: center;" onclick="handleLoginSubmit()">
+          <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP
+        </button>
+        <button class="btn-tool" style="width: 100%; justify-content: center; padding: 11px; font-weight: 700; border-radius: 8px; background: rgba(255,255,255,0.08);" onclick="handleRegisterSubmit()">
+          <i class="fa-solid fa-user-plus"></i> ĐĂNG KÝ TÀI KHOẢN MỚI
+        </button>
+      </div>
+      <button onclick="document.getElementById('authModal').style.display='none'" style="margin-top: 14px; background:none; border:none; color:var(--text-muted); cursor:pointer; width:100%; font-size:0.85rem;">Đóng</button>
     </div>
   </div>
 
@@ -724,6 +750,7 @@
     let totalPages = 50;
     let currentFilterType = null;
     let currentFilterSlug = null;
+    let serverTimeOffset = 0;
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
 
     const presetAvatarsList = [
@@ -752,21 +779,29 @@
       "🌧️ Ngoài trời mưa rơi tầm tã, trong lòng bạn đã có ai lau nước mắt chưa?"
     ];
 
-    let serverTimeOffset = 0;
-    async function syncGlobalClock() {
-      try {
-        const start = Date.now();
-        const res = await fetch('https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=1', { method: 'HEAD' });
-        const serverDateHeader = res.headers.get('date');
-        if (serverDateHeader) {
-          const serverTime = new Date(serverDateHeader).getTime();
-          const latency = (Date.now() - start) / 2;
-          serverTimeOffset = (serverTime + latency) - Date.now();
-        }
-      } catch (e) {}
+    // HÀM CHUẨN HÓA USERNAME THÀNH EMAIL NỘI BỘ HỢP LỆ (CHO PHÉP TIẾNG VIỆT CÓ DẤU & DẤU CÁCH)
+    function makeSafeEmail(rawUsername) {
+      let clean = rawUsername.trim().toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[đĐ]/g, 'd')
+        .replace(/[^a-z0-9]/g, '');
+      if (!clean) clean = 'user' + Date.now();
+      return clean + '@phimnha.vn';
     }
-    function getSyncedNow() {
-      return Date.now() + serverTimeOffset;
+
+    // HÀM SOI / ẨN MẬT KHẨU
+    function togglePassView(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
     }
 
     function checkDisclaimerNotice() {
@@ -792,7 +827,12 @@
     }
 
     function getMyUid() { return currentUser ? currentUser.uid : guestId; }
-    function getMyName() { return currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : `Khách #${guestId.slice(-4)}`; }
+    function getMyName() { 
+      if (currentUser) {
+        return currentUser.displayName || currentUser.email.split('@')[0];
+      }
+      return `Khách #${guestId.slice(-4)}`; 
+    }
     
     function getMyAvatar() { 
       if (currentUser) {
@@ -1000,6 +1040,8 @@
 
     function logoutAccount() {
       if (confirm("Bạn có chắc muốn đăng xuất?")) {
+        const uid = currentUser ? currentUser.uid : null;
+        if (uid) db.collection('online_presence').doc(uid).delete().catch(()=>{});
         auth.signOut();
         document.getElementById('profileModal').style.display = 'none';
         showToast("Đã đăng xuất tài khoản.");
@@ -1134,7 +1176,6 @@
       setTimeout(() => { ind.style.display = 'none'; }, 500);
     }
 
-    // NÚT PHÓNG TO HỖ TRỢ CẢ NATIVE IOS & ANDROID/PC
     function requestVideoFullscreen() {
       const video = document.getElementById('videoPlayer');
       const wrapper = document.getElementById('videoWrapper');
@@ -1152,9 +1193,12 @@
       }
     }
 
+    // ========================================================
+    // TÍNH NĂNG CHỌC BÁ ĐẠO: ĐẢM BẢO NHẬN TIN 100%
+    // ========================================================
     const pokeCooldowns = {};
     async function pokeUser(targetUid, targetName) {
-      const now = getSyncedNow();
+      const now = Date.now();
       if (targetUid === getMyUid()) return showToast("Bạn không thể tự chọc chính mình!");
       if (pokeCooldowns[targetUid] && (now - pokeCooldowns[targetUid] < 15000)) {
         const remain = Math.ceil((15000 - (now - pokeCooldowns[targetUid])) / 1000);
@@ -1179,26 +1223,29 @@
       }
     }
 
-    let isInitialPokeLoad = true;
+    const shownPokes = new Set();
+    const sessionLoadTime = Date.now() - 10000;
     let pokeNotificationTimeout = null;
     let unsubscribePokes = null;
 
     function initPokeListener() {
       if (unsubscribePokes) unsubscribePokes();
-      isInitialPokeLoad = true;
 
+      const myId = getMyUid();
       unsubscribePokes = db.collection('pokes')
-        .where('toUid', '==', getMyUid())
+        .where('toUid', '==', myId)
         .onSnapshot(snapshot => {
-          if (isInitialPokeLoad) {
-            isInitialPokeLoad = false;
-            return;
-          }
           snapshot.docChanges().forEach(change => {
             if (change.type === 'added') {
               const data = change.doc.data();
-              if (data.fromUid !== getMyUid()) {
-                triggerPokeNotice(data);
+              const pokeId = change.doc.id;
+
+              if (!shownPokes.has(pokeId) && data.fromUid !== myId) {
+                shownPokes.add(pokeId);
+                // Nhận thông báo chọc phát sinh từ lúc mở tab trở đi
+                if (data.timestamp && data.timestamp > sessionLoadTime) {
+                  triggerPokeNotice(data);
+                }
               }
             }
           });
@@ -1207,7 +1254,7 @@
 
     function triggerPokeNotice(data) {
       const dndUntil = localStorage.getItem('phimnha_dnd_until');
-      if (dndUntil && getSyncedNow() < parseInt(dndUntil)) return;
+      if (dndUntil && Date.now() < parseInt(dndUntil)) return;
 
       playSoftChime();
       if (navigator.vibrate) {
@@ -1239,7 +1286,7 @@
     }
 
     function mutePoke24h() {
-      const until = getSyncedNow() + (24 * 60 * 60 * 1000);
+      const until = Date.now() + (24 * 60 * 60 * 1000);
       localStorage.setItem('phimnha_dnd_until', until.toString());
       const toast = document.getElementById('pokeNotification');
       toast.style.display = 'none';
@@ -1258,7 +1305,7 @@
             name: getMyName(),
             avatar: getMyAvatar(),
             watchMinutes: firebase.firestore.FieldValue.increment(0.5),
-            lastUpdated: getSyncedNow()
+            lastUpdated: Date.now()
           }, { merge: true }).catch(() => {});
         }
       }, 30000);
@@ -1308,6 +1355,9 @@
       }
     }
 
+    // ========================================================
+    // TÍNH NĂNG ONLINE: CHỐNG BÓNG MA & ĐỒNG BỘ THỜI GIAN THẬT
+    // ========================================================
     function updateOnlinePresence() {
       const uid = getMyUid();
       const isWatching = currentPlayingMovie ? currentPlayingMovie.name : null;
@@ -1318,21 +1368,53 @@
         avatar: getMyAvatar(),
         isMember: !!currentUser,
         status: isWatching ? `🎬 Đang xem: ${isWatching}` : '🟢 Đang lướt web',
-        lastSeen: getSyncedNow()
+        clientTime: Date.now(),
+        serverTime: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true }).catch(() => {});
     }
 
-    setInterval(updateOnlinePresence, 20000);
+    // Gửi nhịp tim mỗi 15 giây
+    setInterval(updateOnlinePresence, 15000);
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') updateOnlinePresence();
     });
 
+    // Khi đóng tab hoặc chuyển trang, xóa ngay phiên online hiện tại
+    const cleanExit = () => {
+      const uid = getMyUid();
+      if (uid) db.collection('online_presence').doc(uid).delete().catch(()=>{});
+    };
+    window.addEventListener('beforeunload', cleanExit);
+    window.addEventListener('pagehide', cleanExit);
+
     db.collection('online_presence').onSnapshot(snapshot => {
-      const now = getSyncedNow();
+      const now = Date.now();
+      
+      // Tìm tài liệu của chính mình để đo độ lệch giờ với server Firestore
+      snapshot.forEach(doc => {
+        if (doc.id === getMyUid()) {
+          const d = doc.data();
+          if (d.serverTime && d.clientTime) {
+            const sMillis = d.serverTime.toMillis ? d.serverTime.toMillis() : (d.serverTime.seconds * 1000);
+            serverTimeOffset = sMillis - now;
+          }
+        }
+      });
+
+      const currentGoogleTime = Date.now() + serverTimeOffset;
       let activeUsers = [];
+
       snapshot.forEach(doc => {
         const data = doc.data();
-        if (data.lastSeen && (now - data.lastSeen > -10000 && now - data.lastSeen < 65000)) {
+        let docTime = 0;
+        if (data.serverTime) {
+          docTime = data.serverTime.toMillis ? data.serverTime.toMillis() : (data.serverTime.seconds * 1000);
+        } else if (data.clientTime) {
+          docTime = data.clientTime + serverTimeOffset;
+        }
+
+        // CHỐNG BÓNG MA: Chỉ giữ tài liệu hoạt động trong vòng 35-40 giây trở lại đây
+        if (doc.id === getMyUid() || (docTime && (currentGoogleTime - docTime < 38000))) {
           activeUsers.push(data);
         }
       });
@@ -1415,17 +1497,94 @@
       }
     }
 
-    async function handleAuthSubmit() {
-      const u = document.getElementById('authUsername').value.trim(); const p = document.getElementById('authPassword').value;
-      if (!u || p.length < 6) return showError("Tài khoản và mật khẩu (>=6 ký tự)!");
-      const email = u + "@phimnha.vn";
-      try { await auth.signInWithEmailAndPassword(email, p); document.getElementById('authModal').style.display='none'; showToast("Đăng nhập thành công!"); }
-      catch (e) {
-        try { const cred = await auth.createUserWithEmailAndPassword(email, p); await cred.user.updateProfile({ displayName: u, photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${u}` }); document.getElementById('authModal').style.display='none'; showToast("Đăng ký thành công!"); }
-        catch(err) { showError("Lỗi: " + err.message); }
+    // ========================================================
+    // TÁCH BIỆT RÕ RÀNG HÀM ĐĂNG NHẬP VÀ ĐĂNG KÝ
+    // ========================================================
+    async function handleLoginSubmit() {
+      const u = document.getElementById('authUsername').value.trim();
+      const p = document.getElementById('authPassword').value;
+      const errBox = document.getElementById('authErrorMsg');
+
+      if (!u || p.length < 6) {
+        errBox.innerText = "Vui lòng nhập tài khoản và mật khẩu (>=6 ký tự)!";
+        errBox.style.display = 'block';
+        return;
+      }
+      const email = makeSafeEmail(u);
+      try {
+        const cred = await auth.signInWithEmailAndPassword(email, p);
+        
+        // Xóa sạch session khách cũ để không bị đếm dư người
+        const oldGuest = localStorage.getItem('phimnha_guest_id');
+        if (oldGuest && oldGuest !== cred.user.uid) {
+          db.collection('online_presence').doc(oldGuest).delete().catch(()=>{});
+        }
+
+        document.getElementById('authModal').style.display = 'none';
+        errBox.style.display = 'none';
+        showToast("Đăng nhập thành công!");
+      } catch (e) {
+        errBox.style.display = 'block';
+        if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+          errBox.innerText = "Tài khoản hoặc mật khẩu không chính xác! Nếu chưa có tài khoản, hãy bấm Đăng Ký.";
+        } else if (e.code === 'auth/wrong-password') {
+          errBox.innerText = "Mật khẩu không chính xác!";
+        } else {
+          errBox.innerText = "Lỗi đăng nhập: " + e.message;
+        }
       }
     }
-    function showError(msg) { document.getElementById('authErrorMsg').innerText = msg; document.getElementById('authErrorMsg').style.display='block'; }
+
+    async function handleRegisterSubmit() {
+      const u = document.getElementById('authUsername').value.trim();
+      const p = document.getElementById('authPassword').value;
+      const errBox = document.getElementById('authErrorMsg');
+
+      if (!u) {
+        errBox.innerText = "Vui lòng nhập tên tài khoản muốn đăng ký!";
+        errBox.style.display = 'block';
+        return;
+      }
+      if (p.length < 6) {
+        errBox.innerText = "Mật khẩu phải từ 6 ký tự trở lên!";
+        errBox.style.display = 'block';
+        return;
+      }
+
+      const email = makeSafeEmail(u);
+      try {
+        const cred = await auth.createUserWithEmailAndPassword(email, p);
+        const seedAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(u)}`;
+        await cred.user.updateProfile({ displayName: u, photoURL: seedAvatar });
+
+        // Xóa sạch session khách cũ ngay khi vừa tạo tài khoản
+        const oldGuest = localStorage.getItem('phimnha_guest_id');
+        if (oldGuest && oldGuest !== cred.user.uid) {
+          db.collection('online_presence').doc(oldGuest).delete().catch(()=>{});
+        }
+
+        await db.collection('users').doc(cred.user.uid).set({ name: u, avatar: seedAvatar }, { merge: true });
+        await db.collection('user_stats').doc(cred.user.uid).set({ name: u, avatar: seedAvatar, watchMinutes: 0 }, { merge: true });
+        localStorage.setItem('phimnha_avatar_' + cred.user.uid, seedAvatar);
+
+        currentUser = cred.user;
+        renderAuthUI(currentUser);
+        updateOnlinePresence();
+        initPokeListener();
+
+        document.getElementById('authModal').style.display = 'none';
+        errBox.style.display = 'none';
+        showToast("🎉 Đăng ký thành công! Chào mừng " + u);
+      } catch (e) {
+        errBox.style.display = 'block';
+        if (e.code === 'auth/email-already-in-use') {
+          errBox.innerText = "Tên tài khoản này đã có người đăng ký! Vui lòng chọn tên khác.";
+        } else {
+          errBox.innerText = "Lỗi đăng ký: " + e.message;
+        }
+      }
+    }
+
     function showToast(msg) { document.getElementById('toastContent').innerText = msg; document.getElementById('toastMsg').style.display='flex'; setTimeout(()=>document.getElementById('toastMsg').style.display='none', 3000); }
 
     const searchInput = document.getElementById('liveSearchInput');
@@ -1480,9 +1639,6 @@
     let heroInterval = null;
     let heroIndex = 0;
 
-    // ========================================================
-    // TÍNH NĂNG RO-PHIM: LỌC PHIM THEO DANH MỤC & THỂ LOẠI
-    // ========================================================
     function filterByCategory(type, slug, title, element) {
       document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
       if (element) element.classList.add('active');
@@ -1789,7 +1945,7 @@
     }
 
     // ========================================================
-    // BÌNH LUẬN & TRẢ LỜI: ĐÃ FIX LỖI TỰ ĐỘNG XÓA CHỮ SAU KHI GỬI
+    // BÌNH LUẬN & TRẢ LỜI
     // ========================================================
     function loadComments(slug) {
       if (unsubscribeComments) unsubscribeComments();
@@ -1862,9 +2018,9 @@
 
        try {
          await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add({
-           uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: getSyncedNow(), likes: [], dislikes: [], replies: []
+           uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: Date.now(), likes: [], dislikes: [], replies: []
          });
-         txtInput.value = ''; // SỬA LỖI: Tự động xóa trắng ô nhập chữ sau khi gửi
+         txtInput.value = '';
          showToast("Đã gửi bình luận!");
        } catch(e) {}
     }
@@ -1882,8 +2038,8 @@
 
       try {
         const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
-        await ref.update({ replies: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: getSyncedNow() }) });
-        txtInput.value = ''; // SỬA LỖI: Tự động xóa trắng ô phản hồi sau khi gửi
+        await ref.update({ replies: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: Date.now() }) });
+        txtInput.value = '';
         toggleReplyBox(cId);
         showToast("Đã trả lời!");
       } catch (e) {}
@@ -1906,7 +2062,7 @@
     // TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
     function saveToHistory(m) {
       if(!currentUser) return;
-      db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: getSyncedNow() });
+      db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: Date.now() });
     }
     async function checkFavoriteStatus() {
       if(!currentUser || !currentPlayingMovie) return;
@@ -1920,7 +2076,7 @@
       const ref = db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug);
       const btn = document.getElementById('btnToggleFav');
       if(btn.classList.contains('active')) { await ref.delete(); showToast("Đã bỏ yêu thích!"); }
-      else { await ref.set({ slug: currentPlayingMovie.slug, name: currentPlayingMovie.name, thumb_url: currentPlayingMovie.thumb_url, timestamp: getSyncedNow() }); showToast("Đã lưu vào Tủ!"); }
+      else { await ref.set({ slug: currentPlayingMovie.slug, name: currentPlayingMovie.name, thumb_url: currentPlayingMovie.thumb_url, timestamp: Date.now() }); showToast("Đã lưu vào Tủ!"); }
       checkFavoriteStatus();
     }
     function openLibraryModal() { if(!currentUser) return; document.getElementById('libraryModal').style.display = 'flex'; switchLibTab('history'); }
@@ -1936,8 +2092,7 @@
     }
 
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
-    window.onload = async () => {
-      await syncGlobalClock();
+    window.onload = () => {
       checkDisclaimerNotice();
       updateOnlinePresence();
       initPokeListener();
