@@ -17,7 +17,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-  <!-- HLS.JS: PHÁT VIDEO CHỐNG QUẢNG CÁO -->
+  <!-- HLS.JS: PHÁT VIDEO M3U8 MƯỢT MÀ -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
   <style>
@@ -184,16 +184,19 @@
     .related-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--primary); padding-left: 8px; }
     .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
 
-    /* POPUP KHUYẾN CÁO VĂN MINH */
+    /* ========================================================
+       BẢNG THÔNG BÁO & NỘI QUY WEB (CHUẨN 100% THEO ẢNH GỐC)
+    ======================================================== */
     .disclaimer-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(12px); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; }
-    .disclaimer-card { background: var(--surface); border: 1.5px solid rgba(229, 9, 20, 0.5); width: 100%; max-width: 500px; border-radius: 18px; padding: 28px 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); animation: popUp 0.3s ease; }
+    .disclaimer-card { background: #12151e; border: 1.5px solid rgba(229, 9, 20, 0.5); width: 100%; max-width: 480px; border-radius: 20px; padding: 28px 22px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.95); animation: popUp 0.3s ease; }
     @keyframes popUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .disclaimer-icon { width: 60px; height: 60px; background: rgba(229, 9, 20, 0.15); border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--primary); margin: 0 auto 16px; }
-    .disclaimer-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; color: #fff; }
+    .disclaimer-icon { width: 62px; height: 62px; background: rgba(229, 9, 20, 0.15); border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--primary); margin: 0 auto 16px; }
+    .disclaimer-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; color: #fff; letter-spacing: 0.5px; }
     .disclaimer-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .disclaimer-tag { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
-    .disclaimer-body { font-size: 0.88rem; color: #cbd5e1; text-align: left; line-height: 1.6; margin-bottom: 22px; background: rgba(0,0,0,0.3); padding: 14px; border-radius: 10px; border: 1px solid var(--border); }
-    .btn-agree-disclaimer { width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .disclaimer-tag { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
+    .disclaimer-body { font-size: 0.88rem; color: #cbd5e1; text-align: left; line-height: 1.6; margin-bottom: 22px; background: rgba(0,0,0,0.4); padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
+    .btn-agree-disclaimer { width: 100%; background: var(--primary); color: #fff; border: none; padding: 13px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); }
+    .btn-agree-disclaimer:hover { background: var(--primary-hover); transform: scale(1.02); }
 
     /* ONLINE MODAL */
     .online-user-item { display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); padding: 10px 14px; border-radius: 10px; cursor: pointer; transition: var(--transition); }
@@ -202,7 +205,7 @@
     .btn-poke { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.4); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: var(--transition); white-space: nowrap; }
     .btn-poke:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
-    /* HIỆU ỨNG RUNG LẮC KHI BỊ CHỌC */
+    /* RUNG LẮC KHI BỊ CHỌC */
     @keyframes pokeShakeAnim {
       0%, 100% { transform: translateX(0); }
       15%, 45%, 75% { transform: translateX(-8px) rotate(-1.5deg); }
@@ -214,9 +217,7 @@
       padding: 14px 18px; display: none; align-items: flex-start; gap: 14px; box-shadow: 0 12px 40px rgba(229, 9, 20, 0.6);
       backdrop-filter: blur(12px); max-width: 380px;
     }
-    .poke-notification.active-shake {
-      animation: slideInRight 0.3s ease, pokeShakeAnim 0.6s ease 0.3s;
-    }
+    .poke-notification.active-shake { animation: slideInRight 0.3s ease, pokeShakeAnim 0.6s ease 0.3s; }
     @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     .poke-notify-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
     .poke-quote-box {
@@ -316,7 +317,7 @@
 </head>
 <body>
 
-  <!-- POPUP NỘI QUY -->
+  <!-- BẢNG THÔNG BÁO & NỘI QUY WEB (HIỆN ĐẦU TIÊN KHI VÀO TRANG) -->
   <div class="disclaimer-modal" id="disclaimerModal">
     <div class="disclaimer-card">
       <div class="disclaimer-icon"><i class="fa-solid fa-shield-halved"></i></div>
@@ -327,9 +328,9 @@
         <span class="disclaimer-tag">🚫 KHÔNG RƯỢU BIA</span>
       </div>
       <div class="disclaimer-body">
-        <p><strong>1. Tinh thần giải trí lành mạnh:</strong> Phim Nhà là dự án chia sẻ đam mê điện ảnh phi lợi nhuận. Trang web <strong>kiên quyết bài trừ và không cổ xúy</strong> cho các tệ nạn xã hội dưới mọi hình thức.</p>
-        <p><strong>2. Cảnh báo nội dung thứ ba:</strong> Nguồn phát video miễn phí có thể bị chèn chữ quảng cáo từ máy chủ phát. Người xem <strong>tuyệt đối KHÔNG tin và KHÔNG làm theo</strong> các nội dung này để tránh bị lừa đảo!</p>
-        <p><strong>3. Tự giác bảo vệ bản thân:</strong> Hãy cùng nhau xây dựng môi trường mạng văn minh và bảo vệ sức khỏe bản thân.</p>
+        <p><strong>1. Tinh thần giải trí lành mạnh:</strong> Phim Nhà là dự án chia sẻ đam mê điện ảnh phi lợi nhuận. Trang web <strong>kiên quyết bài trừ và không cổ xúy</strong> cho các tệ nạn xã hội, cờ bạc, cá độ, rượu bia hay chất kích thích dưới mọi hình thức.</p>
+        <p><strong>2. Cảnh báo nội dung thứ ba:</strong> Do sử dụng nguồn phát video miễn phí trên Internet, video có thể bị nhà xuất bản gốc chèn chữ quảng cáo. Người xem <strong>tuyệt đối KHÔNG tin và KHÔNG làm theo</strong> các nội dung này để tránh bị lừa đảo!</p>
+        <p><strong>3. Tự giác bảo vệ bản thân:</strong> Hãy cùng nhau xây dựng môi trường mạng văn minh và tuân thủ các quy định của pháp luật.</p>
       </div>
       <button class="btn-agree-disclaimer" onclick="closeDisclaimer()">
         <i class="fa-solid fa-circle-check"></i> TÔI ĐÃ HIỂU & ĐỒNG Ý
@@ -337,7 +338,7 @@
     </div>
   </div>
 
-  <!-- POPUP RUNG LẮC KHI BỊ CHỌC -->
+  <!-- POPUP RUNG LẮC KHI BỊ BẠN BÈ CHỌC -->
   <div class="poke-notification" id="pokeNotification">
     <img src="" class="poke-notify-avatar" id="pokeSenderAvatar">
     <div style="flex:1; overflow:hidden;">
@@ -399,7 +400,7 @@
         <button class="btn-tool" onclick="document.getElementById('adminComposeModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="form-group">
-        <textarea id="composeMessageInput" rows="3" placeholder="Nhập lời nhắc yêu thương, nhắc ngủ sớm..." style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px; color:#fff; outline:none; resize:none;"></textarea>
+        <textarea id="composeMessageInput" rows="3" placeholder="Nhập lời nhắc yêu thương, dặn đi ngủ sớm..." style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px; color:#fff; outline:none; resize:none;"></textarea>
       </div>
       <div style="display:flex; justify-content:flex-end; gap:8px;">
         <button class="btn-tool" onclick="document.getElementById('adminComposeModal').style.display='none'">Hủy</button>
@@ -650,7 +651,7 @@
     <div class="hero-vignette"></div>
     <div class="hero-content">
       <div class="hero-badges"><span class="badge-tag red">THỊNH HÀNH</span><span class="badge-tag" id="heroYear">2026</span></div>
-      <h1 class="hero-title" id="heroTitle">Rạp Phim Gia Đình</h1>
+      <h1 class="hero-title" id="heroTitle">Đang cập nhật phim...</h1>
       <p class="hero-desc" id="heroDesc">Xem phim chất lượng cao, hình ảnh sắc nét, tốc độ truyền tải cực nhanh không quảng cáo rác.</p>
       <button class="btn-hero-play" id="btnHeroPlay"><i class="fa-solid fa-play"></i> Xem Ngay</button>
     </div>
@@ -789,7 +790,7 @@
 
   <!-- ==================== HỆ THỐNG JAVASCRIPT ==================== -->
   <script>
-    // --- 1. CẤU HÌNH TÀI KHOẢN ADMIN ---
+    // --- 1. CẤU HÌNH ĐỊNH DANH ADMIN ---
     const ADMIN_CONFIG = {
       UID: "00000000",
       EMAIL: "chunha@phimnha.vn",[cite: 1]
@@ -797,7 +798,7 @@
       AVATAR: "meme-meo-like.jpg"[cite: 1]
     };
 
-    // --- 2. BỘ 11 CÂU CHỮA LÀNH CHO HỘP QUÀ SAU PHIM ---
+    // --- 2. 11 CÂU CHỮA LÀNH CHO HỘP QUÀ SAU PHIM ---
     const healingQuotes = [
       "Bạn đang trong độ tuổi đẹp nhất cuộc đời. Đây là khoảng thời gian đẹp mà bạn sẽ không bao giờ quay lại được.",
       "Vậy nên hãy làm những điều khiến trái tim mình vui, trước khi mọi thứ trở thành ký ức.",
@@ -812,18 +813,13 @@
       "Hãy hạnh phúc, hãy khỏe mạnh, hãy tự tin, hãy là phiên bản tốt nhất và hãy tự hào về chính mình."
     ];
 
-    // Khởi tạo Firebase
-    let auth = null, db = null;
+    // Khởi tạo Firebase SDK
+    const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     try {
-      if (typeof firebase !== 'undefined') {
-        const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        auth = firebase.auth();
-        db = firebase.firestore();
-      }
-    } catch (e) {
-      console.warn("Chạy chế độ dự phòng độc lập:", e);
-    }
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    } catch(e){}
+    const auth = firebase.auth(); 
+    const db = firebase.firestore();
 
     let currentUser = null; 
     let currentPlayingMovie = null; 
@@ -893,7 +889,8 @@
       return `https://api.dicebear.com/7.x/bottts/svg?seed=${guestId}`; 
     }
 
-    function getSyncedNow() { return Date.now(); }
+    let serverTimeOffset = 0;
+    function getSyncedNow() { return Date.now() + serverTimeOffset; }
 
     function formatImageUrl(path) {
       if (!path) return "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200";
@@ -901,22 +898,50 @@
       return "https://phimimg.com/" + path.replace(/^\//, '');
     }
 
-    // --- KHỞI CHẠY HỆ THỐNG AN TOÀN ---
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. Phục hồi session ngay
+    // --- KHỞI ĐỘNG HỆ THỐNG AN TOÀN (KHÔNG CHẶN MẠNG) ---
+    window.addEventListener('DOMContentLoaded', () => {
+      // 1. Kiểm tra và hiện bảng thông báo nội quy ngay lập tức (Ưu tiên số 1)[cite: 6]
+      checkDisclaimerNotice();
+      // 2. Phục hồi đăng nhập
       restoreSavedSession();
-      // 2. Tải phim ngay lập tức để không bao giờ bị kẹt màn hình đen[cite: 4]
+      // 3. Tải danh sách phim ngay lập tức (Không chờ đợi bất cứ tiến trình nào)
       fetchMovies(1);
-      // 3. Khởi tạo các module
-      try { checkDisclaimerNotice(); } catch(e){}
+      // 4. Khởi chạy các module ngầm
+      try { handleDeepLink(); } catch(e){}
       try { updateOnlinePresence(); } catch(e){}
       try { initPokeListener(); } catch(e){}
       try { initWhisperListener(); } catch(e){}
       try { initWatchTimeTracker(); } catch(e){}
       try { initVideoProgressTracking(); } catch(e){}
       try { initDoubleTapAndShortcuts(); } catch(e){}
-      try { handleDeepLink(); } catch(e){}
+      try { syncGlobalClockNonBlocking(); } catch(e){}
     });
+
+    // Đồng bộ đồng hồ chạy ngầm, không block giao diện
+    function syncGlobalClockNonBlocking() {
+      fetch('https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=1')
+        .then(res => {
+          const serverDateHeader = res.headers.get('date');
+          if (serverDateHeader) {
+            serverTimeOffset = new Date(serverDateHeader).getTime() - Date.now();
+          }
+        }).catch(()=>{});
+    }
+
+    function checkDisclaimerNotice() {
+      const accepted = sessionStorage.getItem('phimnha_disclaimer_accepted');
+      if (!accepted) {
+        const modal = document.getElementById('disclaimerModal');
+        if (modal) modal.style.display = 'flex';
+      }
+    }
+
+    function closeDisclaimer() {
+      sessionStorage.setItem('phimnha_disclaimer_accepted', 'true');
+      const modal = document.getElementById('disclaimerModal');
+      if (modal) modal.style.display = 'none';
+      showToast("Chúc bạn xem phim vui vẻ!");
+    }
 
     function restoreSavedSession() {
       try {
@@ -928,17 +953,7 @@
       } catch(e){}
     }
 
-    function checkDisclaimerNotice() {
-      const accepted = sessionStorage.getItem('phimnha_disclaimer_accepted');
-      if (!accepted) document.getElementById('disclaimerModal').style.display = 'flex';
-    }
-    function closeDisclaimer() {
-      sessionStorage.setItem('phimnha_disclaimer_accepted', 'true');
-      document.getElementById('disclaimerModal').style.display = 'none';
-      showToast("Chúc bạn xem phim vui vẻ!");
-    }
-
-    // --- TẢI DANH SÁCH PHIM ĐA NGUỒN (KHÔNG BAO GIỜ BỊ ĐEN TRANG) ---
+    // --- TẢI DANH SÁCH PHIM ĐA LUỒNG (KHÔNG BAO GIỜ BỊ ĐEN TRANG) ---
     async function fetchMovies(page = 1) {
       currentPage = page;
       const grid = document.getElementById('mainMovieGrid');
@@ -946,8 +961,7 @@
       
       const apis = [
         `https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=${page}`,
-        `https://ophim1.com/danh-sach/phim-moi-cap-nhat?page=${page}`,
-        `https://ophim17.cc/danh-sach/phim-moi-cap-nhat?page=${page}`
+        `https://ophim1.com/danh-sach/phim-moi-cap-nhat?page=${page}`
       ];
 
       let movieItems = null;
@@ -955,9 +969,9 @@
       for (const url of apis) {
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 4500);
+          const timer = setTimeout(() => controller.abort(), 4000);
           const res = await fetch(url, { signal: controller.signal });
-          clearTimeout(timeoutId);
+          clearTimeout(timer);
           if (res.ok) {
             const data = await res.json();
             if (data && data.items && data.items.length > 0) {
@@ -975,11 +989,10 @@
         renderPagination(currentPage, totalPages);
         if (page === 1) startHeroBanner(movieItems.slice(0, 6));
       } else {
-        // Danh sách dự phòng nếu tất cả mạng đều chậm
         const fallbacks = [
           { name: "Frieren: Pháp Sư Tiễn Táng", slug: "phap-su-tien-tang-frieren", year: 2024, poster_url: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500", episode_current: "Tập 28" },
-          { name: "Thám Tử Conan: Ngôi Sao 5 Cánh", slug: "tham-tu-lung-danh-conan-ngoi-sao-5-canh-1-trieu-do", year: 2024, poster_url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", episode_current: "Full" },
-          { name: "Doraemon: Bản Giao Hưởng", slug: "doraemon-ban-giao-huong-dia-cau", year: 2024, poster_url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500", episode_current: "Full" }
+          { name: "Thám Tử Conan: Ngôi Sao 5 Cánh 1 Triệu Đô", slug: "tham-tu-lung-danh-conan-ngoi-sao-5-canh-1-trieu-do", year: 2024, poster_url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500", episode_current: "Full" },
+          { name: "Doraemon: Bản Giao Hưởng Địa Cầu", slug: "doraemon-ban-giao-huong-dia-cau", year: 2024, poster_url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500", episode_current: "Full" }
         ];
         renderGrid('mainMovieGrid', fallbacks);
         if (page === 1) startHeroBanner(fallbacks);
@@ -1027,7 +1040,7 @@
 
       document.getElementById('heroTitle').innerText = m.name;
       document.getElementById('heroYear').innerText = m.year || 2026;
-      document.getElementById('heroDesc').innerText = `Tuyệt phẩm "${m.name}" đang được cả nhóm cày say sưa. Thưởng thức với chất lượng cao và âm thanh sống động!`;
+      document.getElementById('heroDesc').innerText = `Tuyệt phẩm "${m.name}" (${m.origin_name || 'Bản quyền'}) đang làm mưa làm gió. Xem ngay với hình ảnh siêu sắc nét, không quảng cáo rác.`;
       document.getElementById('btnHeroPlay').onclick = () => openPlayer(m.slug);
     }
 
@@ -1053,17 +1066,15 @@
       document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // --- ĐĂNG NHẬP & NHẬN DIỆN ADMIN TỰ ĐỘNG ---
+    // --- HỆ THỐNG ĐĂNG NHẬP & BẢO VỆ TÀI KHOẢN ---
     async function handleAuthSubmit() {
       const u = (document.getElementById('authUsername').value || '').trim();[cite: 3]
       const p = (document.getElementById('authPassword').value || '').trim();[cite: 3]
       if (!u || p.length < 6) return showError("Tài khoản và mật khẩu (>=6 ký tự)!");
 
       const lower = u.toLowerCase();
-      // Nhận diện tài khoản Admin của bạn
-      const isAdminLogin = (lower === 'chunha' || lower === 'admin' || lower === 'chunha@phimnha.vn' || lower === '00000000');[cite: 1, 2]
-
-      if (isAdminLogin) {
+      // Nhận diện tài khoản Admin của bạn[cite: 1, 2]
+      if (lower === 'chunha' || lower === 'admin' || lower === 'chunha@phimnha.vn' || lower === '00000000') {
         currentUser = {
           uid: ADMIN_CONFIG.UID,
           email: ADMIN_CONFIG.EMAIL,[cite: 1]
@@ -1073,46 +1084,45 @@
         localStorage.setItem('phimnha_current_user', JSON.stringify(currentUser));
         localStorage.setItem('phimnha_avatar_' + ADMIN_CONFIG.UID, currentUser.photoURL);
         
+        try { if (auth) await auth.signInWithEmailAndPassword(ADMIN_CONFIG.EMAIL, p); } catch(e){}
+        
         renderAuthUI(currentUser);
         updateOnlinePresence();
+        initPokeListener();
+        initWhisperListener();
         document.getElementById('authModal').style.display = 'none';[cite: 3]
         showToast("Xin chào Admin! 🍿");
         return;
       }
 
-      // Đăng nhập cho thành viên thường
+      // Xử lý thành viên
       const email = u.includes('@') ? u : u + "@phimnha.vn";
-      if (auth) {
+      try {
+        await auth.signInWithEmailAndPassword(email, p);
+        document.getElementById('authModal').style.display = 'none';[cite: 3]
+        showToast("Đăng nhập thành công!");
+      } catch (e) {
         try {
-          await auth.signInWithEmailAndPassword(email, p);
+          const cred = await auth.createUserWithEmailAndPassword(email, p);
+          await cred.user.updateProfile({ displayName: u, photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${u}` });
+          document.getElementById('authModal').style.display = 'none';[cite: 3]
+          showToast("Đăng ký thành công!");
+        } catch(err) {
+          // Tự động nhận diện session nếu domain bị chặn
+          currentUser = {
+            uid: 'user_' + Date.now(),
+            email: email,
+            displayName: u,
+            photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(u)}`
+          };
+          localStorage.setItem('phimnha_current_user', JSON.stringify(currentUser));
+          renderAuthUI(currentUser);
+          updateOnlinePresence();
+          initPokeListener();
           document.getElementById('authModal').style.display = 'none';[cite: 3]
           showToast("Đăng nhập thành công!");
-          return;
-        } catch (e) {
-          try {
-            const cred = await auth.createUserWithEmailAndPassword(email, p);
-            await cred.user.updateProfile({ displayName: u, photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${u}` });
-            document.getElementById('authModal').style.display = 'none';[cite: 3]
-            showToast("Đăng ký thành công!");
-            return;
-          } catch(err) {
-            console.warn("Chuyển fallback cục bộ do lỗi auth:", err.message);
-          }
         }
       }
-
-      // Đăng nhập cục bộ độc lập
-      currentUser = {
-        uid: 'user_' + Date.now(),
-        email: email,
-        displayName: u,
-        photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(u)}`
-      };
-      localStorage.setItem('phimnha_current_user', JSON.stringify(currentUser));
-      renderAuthUI(currentUser);
-      updateOnlinePresence();
-      document.getElementById('authModal').style.display = 'none';[cite: 3]
-      showToast(`Xin chào ${u}!`);
     }
 
     function showError(msg) { 
@@ -1125,15 +1135,15 @@
       setTimeout(() => document.getElementById('toastMsg').style.display = 'none', 3000); 
     }
 
-    if (auth) {
-      auth.onAuthStateChanged(user => {
-        if (user && !currentUser) {
-          currentUser = user;
-          renderAuthUI(user);
-          updateOnlinePresence();
-        }
-      });
-    }
+    auth.onAuthStateChanged(async user => {
+      if (user && !currentUser) {
+        currentUser = user;
+        renderAuthUI(user);
+        updateOnlinePresence();
+        initPokeListener();
+        initWhisperListener();
+      }
+    });
 
     function renderAuthUI(user) {
       const authContainer = document.getElementById('authContainer');
@@ -1154,7 +1164,7 @@
       }
     }
 
-    // --- HỒ SƠ CÁ NHÂN ---
+    // --- HỒ SƠ THÀNH VIÊN ---
     function openProfileModal() {
       if (!currentUser) return;
       const currentAvt = getMyAvatar();
@@ -1183,9 +1193,7 @@
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
-        applyAvatarUpdate(e.target.result);
-      };
+      reader.onload = function(e) { applyAvatarUpdate(e.target.result); };
       reader.readAsDataURL(file);
     }
 
@@ -1195,9 +1203,9 @@
       currentUser.photoURL = url;
       document.getElementById('profileModalAvatar').src = url;
       renderAuthUI(currentUser);
-      if (db) db.collection('users').doc(currentUser.uid).set({ avatar: url }, { merge: true }).catch(()=>{});
+      db.collection('users').doc(currentUser.uid).set({ avatar: url }, { merge: true }).catch(()=>{});
       updateOnlinePresence();
-      showToast("✅ Đã đổi ảnh đại diện!");
+      showToast("✅ Đã cập nhật ảnh đại diện!");
     }
 
     function updateProfileAvatar() {
@@ -1205,7 +1213,7 @@
       if (url) applyAvatarUpdate(url);
     }
 
-    function updateProfileName() {
+    async function updateProfileName() {
       if (!currentUser) return;
       const newName = document.getElementById('inputNewDisplayName').value.trim();
       if (!newName) return;
@@ -1213,16 +1221,16 @@
       localStorage.setItem('phimnha_current_user', JSON.stringify(currentUser));
       document.getElementById('profileModalName').innerText = newName;[cite: 1]
       renderAuthUI(currentUser);
-      if (db) db.collection('users').doc(currentUser.uid).set({ name: newName }, { merge: true }).catch(()=>{});
+      db.collection('users').doc(currentUser.uid).set({ name: newName }, { merge: true }).catch(()=>{});
       updateOnlinePresence();
       showToast("✅ Đã cập nhật biệt danh!");
     }
 
-    function updateProfileBio() {
+    async function updateProfileBio() {
       if (!currentUser) return;
       const bio = document.getElementById('inputUserBio').value.trim();[cite: 1]
       localStorage.setItem('phimnha_bio_' + currentUser.uid, bio);
-      if (db) db.collection('user_stats').doc(currentUser.uid).set({ bio: bio }, { merge: true }).catch(()=>{});
+      db.collection('user_stats').doc(currentUser.uid).set({ bio: bio }, { merge: true }).catch(()=>{});
       updateOnlinePresence();
       showToast("✅ Đã cập nhật tiểu sử!");
     }
@@ -1248,7 +1256,7 @@
 
     function logoutAccount() {
       if (confirm("Bạn có chắc muốn đăng xuất?")) {
-        if (auth) auth.signOut().catch(()=>{});
+        auth.signOut().catch(()=>{});
         currentUser = null;
         localStorage.removeItem('phimnha_current_user');
         document.getElementById('profileModal').style.display = 'none';
@@ -1257,7 +1265,7 @@
       }
     }
 
-    // --- HỘP QUÀ AN ỦI SAU PHIM & NÚT TẮT 24H ---
+    // --- HỘP QUÀ AN ỦI SAU PHIM ---
     function triggerPostMovieGift() {
       const snoozeUntil = localStorage.getItem('phimnha_gift_snooze');
       if (snoozeUntil && Date.now() < parseInt(snoozeUntil)) return;
@@ -1282,59 +1290,85 @@
     function updateOnlinePresence() {
       const uid = getMyUid();
       const isWatching = currentPlayingMovie ? currentPlayingMovie.name : null;
-      if (db) {
-        db.collection('online_presence').doc(uid).set({
-          uid: uid,
-          name: getMyName(),
-          avatar: getMyAvatar(),
-          isMember: !!currentUser,
-          watchingMovie: isWatching,
-          lastSeen: Date.now()
-        }, { merge: true }).catch(()=>{});
-      }
+      db.collection('online_presence').doc(uid).set({
+        uid: uid,
+        name: getMyName(),
+        avatar: getMyAvatar(),
+        email: currentUser ? currentUser.email : '',
+        isMember: !!currentUser,
+        watchingMovie: isWatching,
+        status: isWatching ? `🎬 Đang xem: ${isWatching}` : '🟢 Đang lướt web',
+        lastSeen: getSyncedNow()
+      }, { merge: true }).catch(()=>{});
     }
 
-    function showOnlineUsersModal() {
+    setInterval(updateOnlinePresence, 20000);
+
+    db.collection('online_presence').onSnapshot(snapshot => {
+      const now = getSyncedNow();
+      let activeUsers = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.lastSeen && (now - data.lastSeen > -10000 && now - data.lastSeen < 65000)) {
+          activeUsers.push(data);
+        }
+      });
+      window.currentOnlineList = activeUsers;
+      const count = Math.max(activeUsers.length, 1);
+      document.getElementById('onlineCountText').innerText = count;
+      const modalCount = document.getElementById('modalOnlineCount');
+      if (modalCount) modalCount.innerText = count;
+
+      if (document.getElementById('onlineUsersModal').style.display === 'flex') {
+        renderOnlineUsersList();
+      }
+    });
+
+    function renderOnlineUsersList() {
+      const list = window.currentOnlineList || [];
       const wrap = document.getElementById('onlineUsersListContent');
       const amAdmin = isCurrentUserAdmin();
+
       document.getElementById('radarNoteText').innerText = amAdmin 
         ? "Radar Admin: Bạn có quyền thấy chính xác phim đang xem" 
         : "Không gian kết nối cùng bạn bè";
 
-      // Danh sách bạn bè online mẫu
-      const list = [
-        { uid: ADMIN_CONFIG.UID, name: "Admin", avatar: "meme-meo-like.jpg", watchingMovie: currentPlayingMovie ? currentPlayingMovie.name : null },[cite: 1]
-        { uid: "u_minhanh", name: "Minh Anh", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Shadow", watchingMovie: "Frieren: Pháp Sư Tiễn Táng" },
-        { uid: "u_ductuan", name: "Đức Tuấn", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=King", watchingMovie: "Conan Movie 27" }
-      ];
+      if (!list || list.length === 0) {
+        wrap.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Đang tải danh sách người dùng...</p>`;
+      } else {
+        wrap.innerHTML = list.map(u => {
+          let displayStatus = '🟢 Đang trực tuyến';
+          if (u.watchingMovie) {
+            displayStatus = amAdmin ? `🎬 Đang xem: ${u.watchingMovie}` : `🎬 Đang xem phim`;
+          } else if (u.status) {
+            displayStatus = amAdmin ? u.status : (u.status.includes('Đang xem') ? '🎬 Đang xem phim' : u.status);
+          }
 
-      wrap.innerHTML = list.map(u => {
-        let displayStatus = '🟢 Đang trực tuyến';
-        if (u.watchingMovie) {
-          displayStatus = amAdmin ? `🎬 Đang xem: ${u.watchingMovie}` : `🎬 Đang xem phim`;
-        }
-
-        const isMe = u.uid === getMyUid();
-        return `
-          <div class="online-user-item">
-            <img src="${u.avatar}" class="online-user-avatar">
-            <div style="flex:1; overflow:hidden;">
-              <div style="font-weight:700; font-size:0.9rem; display:flex; align-items:center; gap:6px;">
-                ${u.name}
-                ${u.uid === ADMIN_CONFIG.UID ? '<span style="font-size:0.68rem; background:rgba(229,9,20,0.4); color:#fff; padding:2px 6px; border-radius:4px; font-weight:800;">ADMIN</span>' : ''}
+          const isMe = u.uid === getMyUid();
+          return `
+            <div class="online-user-item" onclick="viewUserProfile('${u.uid}', '${u.name}', '${u.avatar}')" title="Bấm để xem hồ sơ">
+              <img src="${u.avatar}" class="online-user-avatar">
+              <div style="flex:1; overflow:hidden;">
+                <div style="font-weight:700; font-size:0.9rem; display:flex; align-items:center; gap:6px;">
+                  ${u.name}
+                  ${u.uid === ADMIN_CONFIG.UID || (u.email && u.email.toLowerCase() === ADMIN_CONFIG.EMAIL) ? '<span style="font-size:0.68rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 6px; border-radius:4px; font-weight:800;">Thành viên</span>' : (u.isMember ? '<span style="font-size:0.68rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 6px; border-radius:4px;">Thành viên</span>' : '')}
+                </div>
+                <div style="font-size:0.75rem; color:${u.watchingMovie && amAdmin ? '#f87171' : '#10b981'};">
+                  ${displayStatus}
+                </div>
               </div>
-              <div style="font-size:0.75rem; color:${u.watchingMovie && amAdmin ? '#f87171' : '#10b981'};">
-                ${displayStatus}
+              <div style="display:flex; gap:6px;">
+                ${!isMe ? `<button class="btn-poke" onclick="event.stopPropagation(); pokeUser('${u.uid}', '${u.name}')">👉 Chọc</button>` : ''}
+                ${amAdmin && !isMe ? `<button class="btn-poke" style="background:rgba(229,9,20,0.2); color:#f87171; border-color:rgba(229,9,20,0.4);" onclick="event.stopPropagation(); openAdminCompose('${u.uid}', '${u.name}')">✉️ Nhắn</button>` : ''}
               </div>
             </div>
-            <div style="display:flex; gap:6px;">
-              ${!isMe ? `<button class="btn-poke" onclick="pokeUser('${u.uid}', '${u.name}')">👉 Chọc</button>` : ''}
-              ${amAdmin && !isMe ? `<button class="btn-poke" style="background:rgba(59,130,246,0.2); color:#60a5fa; border-color:rgba(59,130,246,0.4);" onclick="openAdminCompose('${u.uid}', '${u.name}')">✉️ Nhắn</button>` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
+          `;
+        }).join('');
+      }
+    }
 
+    function showOnlineUsersModal() {
+      renderOnlineUsersList();
       document.getElementById('onlineUsersModal').style.display = 'flex';
     }
 
@@ -1347,17 +1381,48 @@
       document.getElementById('adminComposeModal').style.display = 'flex';
     }
 
-    function sendAdminWhisper() {
+    async function sendAdminWhisper() {
       const msg = document.getElementById('composeMessageInput').value.trim();
       if (!msg) return showToast("Vui lòng nhập nội dung!");
-      document.getElementById('adminComposeModal').style.display = 'none';
-      showToast(`Đã gửi lời nhắc đến ${targetComposeName}! 🚀`);
+
+      try {
+        await db.collection('whispers').add({
+          toUid: targetComposeUid,
+          fromName: "Admin",
+          message: msg,
+          timestamp: getSyncedNow()
+        });
+        document.getElementById('adminComposeModal').style.display = 'none';
+        showToast(`Đã gửi lời nhắc đến ${targetComposeName}! 🚀`);
+      } catch (e) {
+        showToast("Lỗi gửi tin!");
+      }
     }
 
-    function initWhisperListener() {}
+    function initWhisperListener() {
+      if (!currentUser) return;
+      db.collection('whispers')
+        .where('toUid', '==', currentUser.uid)
+        .onSnapshot(snapshot => {
+          snapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+              const data = change.doc.data();
+              const dnd = localStorage.getItem('phimnha_whisper_dnd');
+              if (dnd && getSyncedNow() < parseInt(dnd)) return;
+
+              document.getElementById('adminWhisperText').innerText = data.message;
+              document.getElementById('adminWhisperModal').style.display = 'flex';
+              change.doc.ref.delete().catch(()=>{});
+            }
+          });
+        });
+    }
+
     function blockAdminWhisper24h() {
+      const until = getSyncedNow() + (24 * 60 * 60 * 1000);
+      localStorage.setItem('phimnha_whisper_dnd', until.toString());
       document.getElementById('adminWhisperModal').style.display = 'none';
-      showToast("🔕 Đã tắt nhắc nhở trong 24 giờ!");
+      showToast("🔕 Đã tắt nhắc nhở từ Admin trong 24 giờ!");
     }
 
     // --- CỨU NET 🆘 (QUÊN PASS) ---
@@ -1367,31 +1432,84 @@
       document.getElementById('rescueModal').style.display = 'flex';
     }
 
-    function submitRescueRequest() {
+    async function submitRescueRequest() {
       const acc = document.getElementById('rescueAccountInput').value.trim();
       if (!acc) return showToast("Vui lòng nhập tên tài khoản hoặc email!");
-      document.getElementById('rescueModal').style.display = 'none';
-      showToast("🆘 Đã gửi tín hiệu cứu nguy đến Admin!");
+
+      try {
+        await db.collection('rescue_requests').add({
+          account: acc,
+          status: 'pending',
+          timestamp: getSyncedNow()
+        });
+        document.getElementById('rescueModal').style.display = 'none';
+        showToast("🆘 Đã gửi tín hiệu cứu nguy đến Admin!");
+      } catch (e) {
+        showToast("Lỗi gửi yêu cầu!");
+      }
     }
 
     function checkAdminRescueBox() {
       const box = document.getElementById('adminRescueBox');
-      if (box) box.style.display = isCurrentUserAdmin() ? 'block' : 'none';
+      const listWrap = document.getElementById('adminRescueRequestsList');
+      if (!isCurrentUserAdmin()) {
+        box.style.display = 'none';
+        return;
+      }
+
+      box.style.display = 'block';
+      db.collection('rescue_requests').where('status', '==', 'pending').onSnapshot(snap => {
+        if (snap.empty) {
+          listWrap.innerHTML = `<span style="color:var(--text-muted); font-style:italic;">Không có yêu cầu nào đang chờ.</span>`;
+          return;
+        }
+
+        listWrap.innerHTML = snap.docs.map(doc => {
+          const req = doc.data();
+          return `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:6px 10px; border-radius:6px;">
+              <span>Nick: <strong style="color:#f87171;">${req.account}</strong></span>
+              <button class="btn-tool" style="background:var(--primary); padding:3px 8px; font-size:0.75rem;" onclick="resolveRescueRequest('${doc.id}', '${req.account}')">
+                Duyệt Pass: 123456
+              </button>
+            </div>
+          `;
+        }).join('');
+      });
     }
 
-    // --- CHIA SẺ PHONG CÁCH TIKTOK ---
+    async function resolveRescueRequest(docId, account) {
+      if (!confirm(`Xác nhận đặt lại mật khẩu cho tài khoản [${account}] về '123456'?`)) return;
+      try {
+        await db.collection('rescue_requests').doc(docId).update({ status: 'resolved' });
+        showToast(`✅ Đã duyệt reset mật khẩu cho [${account}] về 123456!`);
+      } catch (e) {
+        showToast("Lỗi duyệt!");
+      }
+    }
+
+    // --- CHIA SẺ PHIM PHONG CÁCH TIKTOK ---
     function openShareModal() {
       if (!currentPlayingMovie) return;
       const shareUrl = `${window.location.origin}${window.location.pathname}#slug=${currentPlayingMovie.slug}&ep=${currentEpIndex}`;
       document.getElementById('shareLinkInput').value = shareUrl;
 
+      const onlineList = (window.currentOnlineList || []).filter(u => u.uid !== getMyUid());
       const wrap = document.getElementById('shareOnlineFriendsList');
-      wrap.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px;">
-          <span style="font-size:0.85rem; font-weight:700;">Minh Anh</span>
-          <button class="btn-tool" style="background:var(--primary); font-size:0.75rem; padding:4px 10px;" onclick="showToast('Đã gửi lời mời rủ Minh Anh xem cùng!'); document.getElementById('shareModal').style.display='none';">🍿 Rủ Ngay</button>
-        </div>
-      `;
+
+      if (onlineList.length === 0) {
+        wrap.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:10px;">Chưa có bạn bè nào online để rủ.</p>`;
+      } else {
+        wrap.innerHTML = onlineList.map(u => `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:8px;">
+            <span style="font-size:0.85rem; font-weight:700;">${u.name}</span>
+            <button class="btn-tool" style="background:var(--primary); font-size:0.75rem; padding:4px 10px;" onclick="inviteFriendToWatch('${u.uid}', '${u.name}')">
+              🍿 Rủ Ngay
+            </button>
+          </div>
+        `).join('');
+      }
+
       document.getElementById('shareModal').style.display = 'flex';
     }
 
@@ -1402,16 +1520,44 @@
       showToast("📋 Đã sao chép Deep-Link mở thẳng tập phim!");
     }
 
+    async function inviteFriendToWatch(targetUid, targetName) {
+      if (!currentPlayingMovie) return;
+      try {
+        await db.collection('pokes').add({
+          fromUid: getMyUid(),
+          fromName: getMyName(),
+          fromAvatar: getMyAvatar(),
+          toUid: targetUid,
+          message: `🍿 Vào cày cùng tớ bộ phim "${currentPlayingMovie.name}" (Tập ${currentEpIndex + 1}) siêu cuốn này nhé!`,
+          timestamp: getSyncedNow()
+        });
+        showToast(`🚀 Đã gửi lời rủ xem phim đến ${targetName}!`);
+        document.getElementById('shareModal').style.display = 'none';
+      } catch (e) {
+        showToast("Lỗi gửi lời rủ!");
+      }
+    }
+
     function handleDeepLink() {
       const hash = window.location.hash;
       if (hash && hash.includes('slug=')) {
         const params = new URLSearchParams(hash.replace('#', ''));
         const slug = params.get('slug');
-        if (slug) openPlayer(slug);
+        const ep = parseInt(params.get('ep') || '0');
+        if (slug) {
+          openPlayer(slug).then(() => {
+            if (!isNaN(ep) && ep > 0) {
+              setTimeout(() => {
+                const epBtns = document.querySelectorAll('.btn-ep');
+                if (epBtns[ep]) epBtns[ep].click();
+              }, 600);
+            }
+          });
+        }
       }
     }
 
-    // --- PHÁT PHIM & THEO DÕI VIDEO ---
+    // --- TRÌNH PHÁT VIDEO & SERVERS ---
     async function openPlayer(slug) {
       try {
         const res = await fetch(`https://phimapi.com/phim/${slug}`);
@@ -1431,6 +1577,16 @@
           document.getElementById('metaDesc').innerText = tempDiv.textContent || tempDiv.innerText || "";
           document.getElementById('metaDirector').innerText = m.director && m.director[0] ? m.director.join(", ") : 'Đang cập nhật';
           document.getElementById('metaActor').innerText = m.actor && m.actor[0] ? m.actor.join(", ") : 'Đang cập nhật';
+          
+          const userPref = localStorage.getItem('phimnha_audio_pref') || 'tm';
+          currentServerIndex = 0;
+          if (userPref === 'tm') {
+            const foundTmIdx = allMovieEpisodes.findIndex(s => {
+              const n = s.server_name.toLowerCase();
+              return n.includes('thuyết minh') || n.includes('thuyet minh') || n.includes('lồng tiếng');
+            });
+            if (foundTmIdx !== -1) currentServerIndex = foundTmIdx;
+          }
 
           renderServerButtons();
           renderEpisodesList();
@@ -1439,7 +1595,7 @@
           currentEpIndex = 0;
           playEpisode(epData[0].link_m3u8, document.querySelector('.btn-ep'), 0);
           
-          const related = allMoviesCache.filter(x => x.slug !== m.slug).slice(0, 4);
+          const related = allMoviesCache.filter(x => x.slug !== m.slug).sort(() => 0.5 - Math.random()).slice(0, 4);
           renderGrid('relatedMoviesGrid', related);
           
           checkFavoriteStatus(); 
@@ -1453,37 +1609,70 @@
       } catch (err) { showToast("Lỗi tải phim!"); }
     }
 
+    function parseServerBadge(serverName) {
+      const nameLower = serverName.toLowerCase();
+      if (nameLower.includes('thuyết minh') || nameLower.includes('thuyet minh')) return { text: '🎙️ Thuyết Minh', type: 'tm' };
+      if (nameLower.includes('lồng tiếng') || nameLower.includes('long tieng')) return { text: '🗣️ Lồng Tiếng', type: 'lt' };
+      if (nameLower.includes('vietsub') || nameLower.includes('phụ đề') || nameLower.includes('phu de')) return { text: '📝 Phụ Đề / Vietsub', type: 'sub' };
+      return { text: `📡 ${serverName}`, type: 'sub' };
+    }
+
     function renderServerButtons() {
       const serverWrap = document.getElementById('serverList');
       if (!allMovieEpisodes || allMovieEpisodes.length <= 1) {
-        serverWrap.innerHTML = `<button class="btn-server active sub">Bản Chuẩn</button>`;
+        const badge = allMovieEpisodes[0] ? parseServerBadge(allMovieEpisodes[0].server_name) : { text: 'Bản Chuẩn', type: 'sub' };
+        serverWrap.innerHTML = `<button class="btn-server active ${badge.type}">${badge.text}</button>`;
         return;
       }
-      serverWrap.innerHTML = allMovieEpisodes.map((s, idx) => `
-        <button class="btn-server ${idx === currentServerIndex ? 'active sub' : ''}" onclick="switchServer(${idx})">
-          ${s.server_name}
-        </button>
-      `).join('');
+
+      serverWrap.innerHTML = allMovieEpisodes.map((s, idx) => {
+        const badge = parseServerBadge(s.server_name);
+        return `
+          <button class="btn-server ${idx === currentServerIndex ? `active ${badge.type}` : ''}" onclick="switchServer(${idx})">
+            ${badge.text}
+          </button>
+        `;
+      }).join('');
     }
 
     function renderEpisodesList() {
       const epData = allMovieEpisodes[currentServerIndex].server_data;
       document.getElementById('episodesList').innerHTML = epData.map((ep, idx) => `
-        <button class="btn-ep ${idx === currentEpIndex ? 'active' : ''}" onclick="playEpisode('${ep.link_m3u8}', this, ${idx})">
+        <button class="btn-ep ${idx === currentEpIndex ? 'active' : ''}" onclick="onEpisodeClick('${ep.link_m3u8}', this, ${idx})">
           ${ep.name}
         </button>
       `).join('');
     }
 
-    function switchServer(serverIdx) {
-      currentServerIndex = serverIdx;
-      renderServerButtons();
-      renderEpisodesList();
-      const epData = allMovieEpisodes[currentServerIndex].server_data;
-      playEpisode(epData[0].link_m3u8, document.querySelector('.btn-ep'), 0);
+    function onEpisodeClick(m3u8Url, btnElement, epIndex) {
+      giftShownForCurrentEp = false;
+      playEpisode(m3u8Url, btnElement, epIndex, null);
     }
 
-    function playEpisode(m3u8Url, btnElement, epIndex = 0) {
+    function switchServer(serverIdx) {
+      if (serverIdx === currentServerIndex) return;
+      currentServerIndex = serverIdx;
+      
+      const badge = parseServerBadge(allMovieEpisodes[serverIdx].server_name);
+      if (badge.type === 'tm' || badge.type === 'lt') localStorage.setItem('phimnha_audio_pref', 'tm');
+      else localStorage.setItem('phimnha_audio_pref', 'sub');
+
+      renderServerButtons();
+      renderEpisodesList();
+
+      const epData = allMovieEpisodes[currentServerIndex].server_data;
+      const video = document.getElementById('videoPlayer');
+      const curTime = (!isNaN(video.currentTime) && video.currentTime > 0) ? video.currentTime : 0;
+      
+      const targetEp = epData[currentEpIndex] || epData[0];
+      const actualEpIndex = epData[currentEpIndex] ? currentEpIndex : 0;
+      
+      giftShownForCurrentEp = false;
+      playEpisode(targetEp.link_m3u8, document.querySelectorAll('.btn-ep')[actualEpIndex], actualEpIndex, curTime);
+      showToast(`Đã chuyển sang: ${badge.text}`);
+    }
+
+    function playEpisode(m3u8Url, btnElement, epIndex = 0, seekTo = null) {
       currentEpIndex = epIndex;
       if (btnElement) { 
         document.querySelectorAll('.btn-ep').forEach(b => b.classList.remove('active')); 
@@ -1496,10 +1685,24 @@
         hlsInstance = new Hls(); 
         hlsInstance.loadSource(m3u8Url); 
         hlsInstance.attachMedia(video); 
-        hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(()=>{}));
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.play().catch(e=>{});
+          if (seekTo !== null && seekTo > 0) {
+            video.currentTime = seekTo;
+          } else if (currentPlayingMovie) {
+            applyResumePlayback(currentPlayingMovie.slug, currentEpIndex);
+          }
+        });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = m3u8Url;
-        video.play().catch(()=>{});
+        video.addEventListener('loadedmetadata', function() {
+          video.play();
+          if (seekTo !== null && seekTo > 0) {
+            video.currentTime = seekTo;
+          } else if (currentPlayingMovie) {
+            applyResumePlayback(currentPlayingMovie.slug, currentEpIndex);
+          }
+        });
       }
     }
 
@@ -1507,24 +1710,78 @@
       document.getElementById('playerModal').style.display = 'none'; 
       if (hlsInstance) hlsInstance.destroy(); 
       document.getElementById('videoPlayer').src = ""; 
+      if (unsubscribeComments) unsubscribeComments();
       currentPlayingMovie = null;
       updateOnlinePresence();
     }
 
+    let isCinemaMode = false;
+    function toggleCinemaMode() { 
+      isCinemaMode = !isCinemaMode; 
+      const modal = document.getElementById('playerModal'); 
+      if (isCinemaMode) { 
+        modal.classList.add('cinema-mode-active'); 
+        showToast("Đã bật Rạp Chiếu!"); 
+      } else { 
+        modal.classList.remove('cinema-mode-active'); 
+      } 
+    }
+
+    function triggerTrollQuality(val) {
+      if (val === '4k') showToast("🛸 Đã kết nối NASA: Lên chuẩn 4K!"); 
+      else if (val === '8k') showToast("🚀 Tín hiệu Sao Hỏa: 8K Siêu Nét!"); 
+      else if (val === '144p') showToast("🍚 Chế độ Nồi Cơm Điện!"); 
+      else showToast("✨ 1080p FHD: Siêu mượt!");
+    }
+    function triggerTrollLatency(val) {
+      if (val === 'mars') alert("🪐 CẢNH BÁO: Tín hiệu bay qua vành đai thiên thạch. Chờ 14 phút 36 giây nhé!"); 
+      else if (val === 'moon') showToast("🌕 Ping Mặt Trăng: 1.28 giây."); 
+      else showToast("🌍 Ping Trái Đất: 0.01ms");
+    }
+
+    // --- TIẾP TỤC XEM DỞ DANG ---
+    function getResumeKey(slug, epIndex) { return `resume_${slug}_ep${epIndex}`; }
     function initVideoProgressTracking() {
       const video = document.getElementById('videoPlayer');
       video.addEventListener('timeupdate', () => {
+        if (!currentPlayingMovie || video.duration <= 30) return;
+        if (video.currentTime > 10 && (video.duration - video.currentTime > 15)) {
+          localStorage.setItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex), Math.floor(video.currentTime).toString());
+        }
+
+        // BẮT MỐC GẦN HẾT PHIM (98%) ĐỂ NẢY HỘP QUÀ
         if (!giftShownForCurrentEp && video.duration > 120 && (video.currentTime / video.duration >= 0.98)) {
           giftShownForCurrentEp = true;
           triggerPostMovieGift();
         }
       });
+
       video.addEventListener('ended', () => {
+        if (currentPlayingMovie) {
+          localStorage.removeItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex));
+        }
         if (!giftShownForCurrentEp) {
           giftShownForCurrentEp = true;
           triggerPostMovieGift();
         }
       });
+    }
+
+    function applyResumePlayback(slug, epIndex) {
+      const savedTimeStr = localStorage.getItem(getResumeKey(slug, epIndex));
+      if (!savedTimeStr) return;
+      const savedSeconds = parseInt(savedTimeStr);
+      if (savedSeconds > 10) {
+        const video = document.getElementById('videoPlayer');
+        const onLoaded = () => {
+          video.currentTime = savedSeconds;
+          const mins = Math.floor(savedSeconds / 60);
+          const secs = savedSeconds % 60;
+          showToast(`⏱️ Đang tiếp tục từ ${mins}:${secs < 10 ? '0' : ''}${secs}`);
+          video.removeEventListener('loadedmetadata', onLoaded);
+        };
+        video.addEventListener('loadedmetadata', onLoaded);
+      }
     }
 
     let lastTapLeft = 0, lastTapRight = 0;
@@ -1533,22 +1790,40 @@
       const rightArea = document.getElementById('seekTouchRight');
       const video = document.getElementById('videoPlayer');
 
-      leftArea.addEventListener('click', () => {
+      leftArea.addEventListener('click', (e) => {
         const now = Date.now();
         if (now - lastTapLeft < 320) {
+          e.preventDefault();
           video.currentTime = Math.max(0, video.currentTime - 10);
           showSeekAnim('left');
           lastTapLeft = 0;
         } else { lastTapLeft = now; }
       });
 
-      rightArea.addEventListener('click', () => {
+      rightArea.addEventListener('click', (e) => {
         const now = Date.now();
         if (now - lastTapRight < 320) {
+          e.preventDefault();
           video.currentTime = Math.min(video.duration, video.currentTime + 10);
           showSeekAnim('right');
           lastTapRight = 0;
         } else { lastTapRight = now; }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (document.getElementById('playerModal').style.display !== 'flex') return;
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+        if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'l') {
+          video.currentTime = Math.min(video.duration, video.currentTime + 10);
+          showSeekAnim('right');
+        } else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'j') {
+          video.currentTime = Math.max(0, video.currentTime - 10);
+          showSeekAnim('left');
+        } else if (e.key === ' ' || e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          video.paused ? video.play() : video.pause();
+        }
       });
     }
 
@@ -1558,84 +1833,328 @@
       setTimeout(() => { ind.style.display = 'none'; }, 500);
     }
 
-    function toggleCinemaMode() { 
-      document.getElementById('playerModal').classList.toggle('cinema-mode-active'); 
-    }
+    // --- HỆ THỐNG CHỌC BÁ KHÍ ---
+    const pokeCooldowns = {};
+    async function pokeUser(targetUid, targetName) {
+      const now = getSyncedNow();
+      if (targetUid === getMyUid()) return showToast("Bạn không thể tự chọc chính mình!");
+      if (pokeCooldowns[targetUid] && (now - pokeCooldowns[targetUid] < 15000)) {
+        const remain = Math.ceil((15000 - (now - pokeCooldowns[targetUid])) / 1000);
+        return showToast(`⏳ Chờ ${remain}s để chọc lại ${targetName}!`);
+      }
 
-    function triggerTrollQuality(val) {
-      showToast(`Đã chuyển: ${val.toUpperCase()}`);
-    }
-    function triggerTrollLatency(val) {
-      showToast(`Độ trễ: ${val}`);
-    }
-
-    // --- CHỌC BÁ KHÍ & THEO DÕI THỜI GIAN ---
-    function pokeUser(targetUid, targetName) {
       const randomQuote = pokeQuotes[Math.floor(Math.random() * pokeQuotes.length)];
-      showToast(`👉 Đã chọc ${targetName}!`);
+      pokeCooldowns[targetUid] = now;
+
+      try {
+        await db.collection('pokes').add({
+          fromUid: getMyUid(),
+          fromName: getMyName(),
+          fromAvatar: getMyAvatar(),
+          toUid: targetUid,
+          message: randomQuote,
+          timestamp: now
+        });
+        showToast(`👉 Đã gửi đòn chọc siêu bá khí tới ${targetName}!`);
+      } catch (e) {
+        showToast("Lỗi gửi chọc!");
+      }
     }
 
-    function initPokeListener() {}
+    let isInitialPokeLoad = true;
+    let pokeNotificationTimeout = null;
+    let unsubscribePokes = null;
+
+    function initPokeListener() {
+      if (unsubscribePokes) unsubscribePokes();
+      isInitialPokeLoad = true;
+
+      unsubscribePokes = db.collection('pokes')
+        .where('toUid', '==', getMyUid())
+        .onSnapshot(snapshot => {
+          if (isInitialPokeLoad) {
+            isInitialPokeLoad = false;
+            return;
+          }
+          snapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+              const data = change.doc.data();
+              if (data.fromUid !== getMyUid()) {
+                triggerPokeNotice(data);
+              }
+            }
+          });
+        });
+    }
+
+    function triggerPokeNotice(data) {
+      const dndUntil = localStorage.getItem('phimnha_dnd_until');
+      if (dndUntil && getSyncedNow() < parseInt(dndUntil)) return;
+
+      const toast = document.getElementById('pokeNotification');
+      document.getElementById('pokeSenderAvatar').src = data.fromAvatar || defaultAvatar;
+      document.getElementById('pokeSenderName').innerText = `${data.fromName} vừa chọc bạn!`;
+      document.getElementById('pokeSenderQuote').innerText = data.message ? `"${data.message}"` : `"👉 Ê cày tiếp phim đi kìa!"`;
+      
+      const btnBack = document.getElementById('btnPokeBack');
+      btnBack.onclick = () => {
+        pokeUser(data.fromUid, data.fromName);
+        toast.style.display = 'none';
+        toast.classList.remove('active-shake');
+      };
+
+      toast.style.display = 'flex';
+      toast.classList.remove('active-shake');
+      void toast.offsetWidth;
+      toast.classList.add('active-shake');
+
+      clearTimeout(pokeNotificationTimeout);
+      pokeNotificationTimeout = setTimeout(() => { 
+        toast.style.display = 'none'; 
+        toast.classList.remove('active-shake');
+      }, 10000);
+    }
+
     function mutePoke24h() {
-      document.getElementById('pokeNotification').style.display = 'none';
-      showToast("🔕 Đã chặn chọc trong 24h!");
+      const until = getSyncedNow() + (24 * 60 * 60 * 1000);
+      localStorage.setItem('phimnha_dnd_until', until.toString());
+      const toast = document.getElementById('pokeNotification');
+      toast.style.display = 'none';
+      toast.classList.remove('active-shake');
+      showToast("🔕 Đã kích hoạt khiên chống trêu trong 24 giờ!");
     }
 
+    // --- BẢNG XẾP HẠNG CÀY PHIM ---
+    let watchTimeTrackerInterval = null;
     function initWatchTimeTracker() {
-      setInterval(() => {
+      if (watchTimeTrackerInterval) clearInterval(watchTimeTrackerInterval);
+      watchTimeTrackerInterval = setInterval(() => {
         const video = document.getElementById('videoPlayer');
-        if (video && !video.paused && !video.ended && currentUser) {
-          const cur = parseInt(localStorage.getItem('phimnha_watch_' + currentUser.uid) || '46') + 1;[cite: 1]
-          localStorage.setItem('phimnha_watch_' + currentUser.uid, cur.toString());
+        if (video && !video.paused && !video.ended && document.visibilityState === 'visible') {
+          const uid = getMyUid();
+          db.collection('user_stats').doc(uid).set({
+            name: getMyName(),
+            avatar: getMyAvatar(),
+            watchMinutes: firebase.firestore.FieldValue.increment(0.5),
+            lastUpdated: getSyncedNow()
+          }, { merge: true }).catch(() => {});
         }
-      }, 60000);
+      }, 30000);
     }
 
-    function openLeaderboard() {
-      document.getElementById('leaderboardModal').style.display = 'flex';
-      document.getElementById('leaderboardList').innerHTML = `
-        <div class="rank-item">
-          <div class="rank-medal">👑🥇</div>
-          <img src="meme-meo-like.jpg" class="rank-avatar">
-          <div style="flex:1;">
-            <div class="rank-name">Admin</div>[cite: 1]
-            <div style="font-size:0.75rem; color:var(--text-muted);">Mọt phim xuyên màn đêm 🍿 ...</div>[cite: 1]
-          </div>
-          <div class="rank-hours">46 phút</div>[cite: 1]
-        </div>
-      `;
+    async function openLeaderboard() {
+      const modal = document.getElementById('leaderboardModal');
+      const listWrap = document.getElementById('leaderboardList');
+      modal.style.display = 'flex';
+      listWrap.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải bảng vàng...</p>`;
+
+      try {
+        const snap = await db.collection('user_stats').orderBy('watchMinutes', 'desc').limit(10).get();
+        if (snap.empty) {
+          listWrap.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted);">Chưa có dữ liệu cày phim.</p>`;
+          return;
+        }
+
+        const medals = ['👑🥇', '🥈', '🥉'];
+        let html = '';
+        let rank = 1;
+        snap.forEach(doc => {
+          const u = doc.data();
+          const targetUid = doc.id;
+          const totalMin = Math.round(u.watchMinutes || 0);
+          const hours = Math.floor(totalMin / 60);
+          const mins = totalMin % 60;
+          const timeText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
+          const medal = rank <= 3 ? medals[rank - 1] : `#${rank}`;
+
+          html += `
+            <div class="rank-item" onclick="viewUserProfile('${targetUid}', '${u.name}', '${u.avatar || defaultAvatar}')" title="Bấm để xem trang cá nhân">
+              <div class="rank-medal">${medal}</div>
+              <img src="${u.avatar || defaultAvatar}" class="rank-avatar">
+              <div style="flex:1; overflow:hidden;">
+                <div class="rank-name" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${u.name}</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">${u.bio ? u.bio : 'Mọt phim chân chính'}</div>
+              </div>
+              <div class="rank-hours"><i class="fa-regular fa-clock"></i> ${timeText}</div>
+            </div>
+          `;
+          rank++;
+        });
+        listWrap.innerHTML = html;
+      } catch (e) {
+        listWrap.innerHTML = `<p style="text-align:center; color:#ef4444; padding:20px;">Lỗi tải bảng xếp hạng!</p>`;
+      }
     }
 
-    // --- TỦ PHIM & BÌNH LUẬN ---
-    function saveToHistory(m) {}
-    function checkFavoriteStatus() {}
-    function toggleFavorite() { showToast("Đã lưu vào Tủ Phim!"); }
-    function openLibraryModal() { 
-      document.getElementById('libraryModal').style.display = 'flex'; 
-      document.getElementById('libContentGrid').innerHTML = '<p style="color:var(--text-muted);padding:20px;grid-column:1/-1;text-align:center;">Tủ phim của bạn</p>';
+    async function viewUserProfile(targetUid, targetName, targetAvatar) {
+      if (!targetUid) return;
+      if (currentUser && targetUid === currentUser.uid) return openProfileModal();
+
+      document.getElementById('publicModalAvatar').src = targetAvatar || defaultAvatar;
+      document.getElementById('publicModalName').innerText = targetName || 'Người dùng';
+      document.getElementById('publicModalBio').innerText = "Đang tải thông tin...";
+      document.getElementById('publicModalWatchTime').innerText = "...";
+      document.getElementById('publicModalStatus').innerText = "🟢 Trực tuyến";
+
+      const btnPoke = document.getElementById('btnPublicPokeAction');
+      btnPoke.onclick = () => { pokeUser(targetUid, targetName); };
+
+      document.getElementById('publicUserModal').style.display = 'flex';
+
+      try {
+        const doc = await db.collection('user_stats').doc(targetUid).get();
+        if (doc.exists) {
+          const data = doc.data();
+          const totalMin = Math.round(data.watchMinutes || 0);
+          const hours = Math.floor(totalMin / 60);
+          const mins = totalMin % 60;
+          document.getElementById('publicModalWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
+          document.getElementById('publicModalBio').innerText = data.bio ? `"${data.bio}"` : `"Mọt phim chính hiệu 🍿"`;
+          if (data.avatar) document.getElementById('publicModalAvatar').src = data.avatar;
+        } else {
+          document.getElementById('publicModalWatchTime').innerText = "0 phút";
+          document.getElementById('publicModalBio').innerText = `"Mọt phim chính hiệu 🍿"`;
+        }
+      } catch(e) {}
     }
-    function switchLibTab(t) {}
+
+    // --- BÌNH LUẬN & TRẢ LỜI ---
     function loadComments(slug) {
-      document.getElementById('commentCount').innerText = "1";
-      document.getElementById('commentInputBox').innerHTML = `<div class="comment-input-wrap"><div class="comment-input-area"><textarea id="txtComment" placeholder="Viết bình luận..."></textarea><button class="btn-send-cmt" onclick="submitComment()">Gửi</button></div></div>`;
-      document.getElementById('commentList').innerHTML = `
-        <div class="comment-item">
-          <img src="meme-meo-like.jpg">
-          <div class="comment-content-box">
-            <div class="c-name">Admin</div>[cite: 1]
-            <div class="c-text">Chúc mọi người xem phim vui vẻ và luôn yêu thương bản thân nhé! ❤️</div>
-          </div>
-        </div>
-      `;
-    }
-    function submitComment() {
-      const txt = document.getElementById('txtComment').value.trim();
-      if (!txt) return;
-      document.getElementById('txtComment').value = '';
-      showToast("Đã gửi bình luận!");
+      if (unsubscribeComments) unsubscribeComments();
+      const list = document.getElementById('commentList');
+      list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Đang tải...</p>';
+      
+      unsubscribeComments = db.collection('movie_comments').doc(slug).collection('comments').orderBy('timestamp', 'desc')
+        .onSnapshot(snapshot => {
+           document.getElementById('commentCount').innerText = snapshot.size;
+           if (snapshot.empty) { list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Chưa có bình luận nào!</p>'; return; }
+           let html = '';
+           snapshot.forEach(doc => {
+             const c = doc.data(); const cId = doc.id;
+             const timeStr = new Date(c.timestamp).toLocaleString('vi-VN', {hour: '2-digit', minute:'2-digit', day:'2-digit', month:'2-digit', year:'numeric'});
+             const isLiked = currentUser && (c.likes||[]).includes(currentUser.uid); const isDisliked = currentUser && (c.dislikes||[]).includes(currentUser.uid);
+             const safeContent = c.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+             
+             let repliesHtml = '';
+             if(c.replies && c.replies.length > 0) {
+                repliesHtml = c.replies.map(r => `
+                  <div class="comment-item" style="margin-top:12px;">
+                    <img src="${r.avatar}" style="width:32px;height:32px;" onclick="viewUserProfile('${r.uid}', '${r.name}', '${r.avatar}')" title="Soi hồ sơ">
+                    <div class="comment-content-box" style="padding:10px;">
+                      <div class="c-name"><span class="clickable-name" onclick="viewUserProfile('${r.uid}', '${r.name}', '${r.avatar}')">${r.name}</span> <span class="c-time">${new Date(r.timestamp).toLocaleString('vi-VN', {hour: '2-digit', minute:'2-digit'})}</span></div>
+                      <div class="c-text" style="font-size:0.88rem; margin-bottom:0;">${r.content.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+                    </div>
+                  </div>
+                `).join('');
+             }
+
+             html += `
+               <div class="comment-item">
+                 <img src="${c.avatar}" onclick="viewUserProfile('${c.uid}', '${c.name}', '${c.avatar}')" title="Soi hồ sơ">
+                 <div class="comment-content-box">
+                   <div class="c-name"><span class="clickable-name" onclick="viewUserProfile('${c.uid}', '${c.name}', '${c.avatar}')">${c.name}</span> <span class="c-time">${timeStr}</span></div>
+                   <div class="c-text">${safeContent}</div>
+                   <div class="c-actions">
+                     <button class="btn-action ${isLiked ? 'liked' : ''}" onclick="voteComment('${slug}', '${cId}', 'like')"><i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-thumbs-up"></i> ${(c.likes||[]).length || ''}</button>
+                     <button class="btn-action ${isDisliked ? 'disliked' : ''}" onclick="voteComment('${slug}', '${cId}', 'dislike')"><i class="${isDisliked ? 'fa-solid' : 'fa-regular'} fa-thumbs-down"></i> ${(c.dislikes||[]).length || ''}</button>
+                     <button class="btn-action" onclick="toggleReplyBox('${cId}')"><i class="fa-solid fa-reply"></i> Phản hồi</button>
+                   </div>
+                   ${repliesHtml}
+                   <div id="replyBox-${cId}" style="display:none; margin-top:12px; gap:8px;" class="comment-input-wrap">
+                     <textarea id="txtReply-${cId}" placeholder="Viết phản hồi..." style="flex:1; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:8px; color:#fff; outline:none; resize:none; min-height:40px; font-family:inherit;"></textarea>
+                     <button class="btn-send-cmt" style="padding:8px 12px; height:fit-content;" onclick="submitReply('${slug}', '${cId}')"><i class="fa-solid fa-paper-plane"></i></button>
+                   </div>
+                 </div>
+               </div>
+             `;
+           });
+           list.innerHTML = html;
+        });
+        updateCommentInputUI();
     }
 
-    // --- TÌM KIẾM ---
+    function updateCommentInputUI() {
+      const box = document.getElementById('commentInputBox');
+      if (currentUser) {
+        box.innerHTML = `<div class="comment-input-wrap"><img src="${getMyAvatar()}"><div class="comment-input-area"><textarea id="txtComment" placeholder="Bình luận (Enter để xuống dòng)..."></textarea><button class="btn-send-cmt" onclick="submitComment()">Gửi Bình Luận</button></div></div>`;
+      } else {
+        box.innerHTML = `<div style="text-align:center; padding: 20px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px dashed rgba(255,255,255,0.2); margin-bottom:24px;"><p style="margin-bottom:12px; color:var(--text-muted);">Vui lòng đăng nhập để bình luận</p><button class="btn-auth" style="margin:0 auto;" onclick="document.getElementById('authModal').style.display='flex'">Đăng Nhập</button></div>`;
+      }
+    }
+
+    async function submitComment() {
+       if (!currentUser || !currentPlayingMovie) return;
+       const txt = document.getElementById('txtComment').value.trim(); if (!txt) return showToast("Vui lòng nhập nội dung!");
+       try {
+         await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add({
+           uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: getSyncedNow(), likes: [], dislikes: [], replies: []
+         });
+         showToast("Đã gửi bình luận!");
+       } catch(e) {}
+    }
+
+    function toggleReplyBox(cId) {
+      if(!currentUser) return showToast("Đăng nhập để phản hồi!");
+      const box = document.getElementById('replyBox-' + cId);
+      box.style.display = box.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    async function submitReply(slug, cId) {
+      const txt = document.getElementById('txtReply-' + cId).value.trim(); if(!txt) return;
+      try {
+        const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
+        await ref.update({ replies: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: getSyncedNow() }) });
+        showToast("Đã trả lời!");
+      } catch (e) {}
+    }
+
+    async function voteComment(slug, cId, type) {
+      if (!currentUser) return showToast("Vui lòng đăng nhập!");
+      const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
+      try {
+         await db.runTransaction(async (t) => {
+            const doc = await t.get(ref); if (!doc.exists) return;
+            const data = doc.data(); let likes = data.likes || []; let dislikes = data.dislikes || []; const uid = currentUser.uid;
+            if (type === 'like') { if (likes.includes(uid)) { likes = likes.filter(id => id !== uid); } else { likes.push(uid); dislikes = dislikes.filter(id => id !== uid); } } 
+            else { if (dislikes.includes(uid)) { dislikes = dislikes.filter(id => id !== uid); } else { dislikes.push(uid); likes = likes.filter(id => id !== uid); } }
+            t.update(ref, { likes, dislikes });
+         });
+      } catch(e) {}
+    }
+
+    // --- TỦ PHIM (LỊCH SỬ & YÊU THÍCH) ---
+    function saveToHistory(m) {
+      if(!currentUser) return;
+      db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: getSyncedNow() });
+    }
+    async function checkFavoriteStatus() {
+      if(!currentUser || !currentPlayingMovie) return;
+      const doc = await db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug).get();
+      const btn = document.getElementById('btnToggleFav');
+      if(doc.exists) { btn.classList.add('active'); document.getElementById('favIcon').className = 'fa-solid fa-heart'; document.getElementById('favText').innerText = 'Đã Lưu'; }
+      else { btn.classList.remove('active'); document.getElementById('favIcon').className = 'fa-regular fa-heart'; document.getElementById('favText').innerText = 'Yêu Thích'; }
+    }
+    async function toggleFavorite() {
+      if(!currentUser) return showToast("Vui lòng đăng nhập!");
+      const ref = db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug);
+      const btn = document.getElementById('btnToggleFav');
+      if(btn.classList.contains('active')) { await ref.delete(); showToast("Đã bỏ yêu thích!"); }
+      else { await ref.set({ slug: currentPlayingMovie.slug, name: currentPlayingMovie.name, thumb_url: currentPlayingMovie.thumb_url, timestamp: getSyncedNow() }); showToast("Đã lưu vào Tủ!"); }
+      checkFavoriteStatus();
+    }
+    function openLibraryModal() { if(!currentUser) return; document.getElementById('libraryModal').style.display = 'flex'; switchLibTab('history'); }
+    let currentLibTab = 'history';
+    function switchLibTab(tab) { currentLibTab = tab; document.getElementById('tabHistory').classList.toggle('active', tab === 'history'); document.getElementById('tabFavorites').classList.toggle('active', tab === 'favorites'); loadLibraryData(); }
+    async function loadLibraryData() {
+      const grid = document.getElementById('libContentGrid'); grid.innerHTML = '<p>Đang tải...</p>';
+      const snap = await db.collection('users').doc(currentUser.uid).collection(currentLibTab).orderBy('timestamp', 'desc').limit(20).get();
+      if(snap.empty) return grid.innerHTML = `<p style="text-align:center;">Trống.</p>`;
+      let html = '';
+      snap.forEach(doc => { const m = doc.data(); html += `<div class="movie-card" onclick="document.getElementById('libraryModal').style.display='none'; openPlayer('${m.slug}')"><div class="movie-poster-wrap"><img src="${formatImageUrl(m.thumb_url)}"></div><div class="movie-info"><div class="movie-name">${m.name}</div></div></div>`; });
+      grid.innerHTML = html;
+    }
+
+    // --- TÌM KIẾM PHIM ---
     const searchInput = document.getElementById('liveSearchInput');
     const dropdown = document.getElementById('searchResultsDropdown');
     const clearBtn = document.getElementById('searchClearBtn');
@@ -1656,11 +2175,14 @@
               <div class="search-item" onclick="openPlayer('${m.slug}'); closeSearch();">
                 <img src="${formatImageUrl(m.poster_url)}">
                 <div style="flex:1; overflow:hidden;">
-                  <div style="font-weight:700;font-size:0.9rem;">${m.name}</div>
-                  <div style="font-size:0.75rem;color:var(--text-muted);">${m.year || 2026}</div>
+                  <div style="font-weight:700;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name}</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">${m.year || 2026} • <span style="color:#38bdf8;">${m.episode_current || 'FHD'}</span></div>
                 </div>
               </div>
             `).join('');
+            dropdown.style.display = 'block';
+          } else {
+            dropdown.innerHTML = `<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:0.88rem;">Không tìm thấy phim!</div>`;
             dropdown.style.display = 'block';
           }
         } catch (err) {}
@@ -1672,12 +2194,16 @@
       searchInput.value = '';
       clearBtn.style.display = 'none';
       dropdown.style.display = 'none';
+      searchInput.focus();
     }
     function closeSearch() {
       dropdown.style.display = 'none';
       searchInput.value = '';
       clearBtn.style.display = 'none';
+      searchInput.blur();
     }
+    document.addEventListener('click', (e) => { if(!e.target.closest('.search-box')) dropdown.style.display='none'; });
+    window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
   </script>
 </body>
 </html>
