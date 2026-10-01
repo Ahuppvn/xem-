@@ -76,6 +76,32 @@
     .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 12px 26px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); transition: var(--transition); }
     .btn-hero-play:hover { background: var(--primary-hover); transform: scale(1.03); }
 
+    /* ========================================================
+       PHẦN RO-PHIM: "BẠN ĐANG QUAN TÂM GÌ?" (GRADIENT CARDS)
+    ======================================================== */
+    .category-section-wrap { max-width: 1400px; margin: 0 auto 28px; padding: 0 20px; }
+    .category-section-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+    .category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .category-card {
+      border-radius: 12px; padding: 14px; color: #fff; text-decoration: none;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      font-weight: 800; font-size: 0.92rem; cursor: pointer; transition: var(--transition);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1);
+      user-select: none; min-height: 54px;
+    }
+    .category-card:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.3); }
+    .category-card:active { transform: scale(0.96); }
+    .category-card.active { border: 2.5px solid #fff; box-shadow: 0 0 16px rgba(255,255,255,0.6); }
+
+    .grad-vientuong { background: linear-gradient(135deg, #e11d48, #be123c); }
+    .grad-chieurap  { background: linear-gradient(135deg, #7c3aed, #db2777); }
+    .grad-phimbo    { background: linear-gradient(135deg, #2563eb, #0284c7); }
+    .grad-phimle    { background: linear-gradient(135deg, #ea580c, #dc2626); }
+    .grad-anime     { background: linear-gradient(135deg, #9333ea, #db2777); }
+    .grad-kinhdi    { background: linear-gradient(135deg, #d97706, #b45309); }
+    .grad-cotrang   { background: linear-gradient(135deg, #e11d48, #f43f5e); }
+    .grad-hanquoc   { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+
     /* MOVIE GRID & PAGINATION */
     .section-wrap { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
     .section-title { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; scroll-margin-top: 80px;}
@@ -97,7 +123,7 @@
     .page-btn.active { background: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);}
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* PLAYER MODAL VÀ VÙNG CHẠM TUA NHANH */
+    /* PLAYER MODAL VÀ SỬA LỖI PHÓNG TO NATIVE TRÊN DI ĐỘNG */
     .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
     .cinema-mode-active .player-details-container { opacity: 0.08; filter: blur(3px); pointer-events: none; }
@@ -109,8 +135,8 @@
     .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
     .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; object-fit: contain; }
 
-    /* CỬ CHỈ GÕ ĐÚP TUA NHANH TRÊN MOBILE (ĐÃ CHỪA TRỐNG THANH ĐIỀU KHIỂN BÊN DƯỚI) */
-    .seek-touch-area { position: absolute; top: 0; bottom: 70px; width: 35%; z-index: 5; }
+    /* SỬA LỖI: VÙNG TUA ĐÃ ĐƯỢC THU GỌN ĐỂ KHÔNG CHE NÚT PHÓNG TO NATIVE Ở GÓC TRÊN VÀ THANH ĐIỀU KHIỂN Ở DƯỚI */
+    .seek-touch-area { position: absolute; top: 75px; bottom: 75px; width: 35%; z-index: 5; }
     .seek-touch-left { left: 0; }
     .seek-touch-right { right: 0; }
     .seek-indicator {
@@ -137,7 +163,7 @@
     .movie-cast-info { font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; line-height: 1.6;}
     .movie-cast-info span { color: #fff; }
     
-    /* GIAO DIỆN CHỌN BẢN DỊCH / THUYẾT MINH MỚI */
+    /* GIAO DIỆN CHỌN BẢN DỊCH / THUYẾT MINH */
     .server-choice-wrap { margin-top: 18px; margin-bottom: 14px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.12); }
     .server-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
     .btn-server {
@@ -303,6 +329,7 @@
 
       .hero-content { left: 16px; bottom: 20px; right: 16px; }
       .hero-title { font-size: 1.7rem; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
       .player-details-container { grid-template-columns: 1fr; }
       .movie-grid, .lib-content, .related-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .comment-input-wrap img { display: none; }
@@ -535,9 +562,29 @@
     </div>
   </div>
 
+  <!-- ==================== CỤM RO-PHIM: BẠN ĐANG QUAN TÂM GÌ? ==================== -->
+  <div class="category-section-wrap">
+    <div class="category-section-title">
+      <span><i class="fa-solid fa-fire" style="color:var(--primary); margin-right:6px;"></i> Bạn Đang Quan Tâm Gì?</span>
+      <button id="btnResetCategory" onclick="resetToHomeMovies()" style="display:none; background:none; border:none; color:#38bdf8; font-size:0.85rem; font-weight:700; cursor:pointer;">
+        <i class="fa-solid fa-rotate-left"></i> Xem Tất Cả Phim Mới
+      </button>
+    </div>
+    <div class="category-grid" id="categoryGrid">
+      <div class="category-card grad-vientuong" onclick="filterByCategory('the-loai', 'vien-tuong', 'Viễn Tưởng', this)">Viễn Tưởng</div>
+      <div class="category-card grad-chieurap" onclick="filterByCategory('the-loai', 'chieu-rap', 'Chiếu Rạp', this)">Chiếu Rạp</div>
+      <div class="category-card grad-phimbo" onclick="filterByCategory('danh-sach', 'phim-bo', 'Phim Bộ', this)">Phim Bộ</div>
+      <div class="category-card grad-phimle" onclick="filterByCategory('danh-sach', 'phim-le', 'Phim Lẻ', this)">Phim Lẻ</div>
+      <div class="category-card grad-kinhdi" onclick="filterByCategory('the-loai', 'kinh-di', 'Kinh Dị', this)">Kinh Dị</div>
+      <div class="category-card grad-cotrang" onclick="filterByCategory('the-loai', 'co-trang', 'Cổ Trang', this)">Cổ Trang</div>
+      <div class="category-card grad-anime" onclick="filterByCategory('danh-sach', 'hoat-hinh', 'Hoạt Hình / Anime', this)">Hoạt Hình</div>
+      <div class="category-card grad-hanquoc" onclick="filterByCategory('quoc-gia', 'han-quoc', 'Phim Hàn Quốc', this)">Hàn Quốc</div>
+    </div>
+  </div>
+
   <!-- LƯỚI PHIM & PHÂN TRANG -->
   <div class="section-wrap" id="moviesSection">
-    <div class="section-header"><h2 class="section-title">Danh Sách Phim Mới</h2></div>
+    <div class="section-header"><h2 class="section-title" id="mainSectionTitle">Danh Sách Phim Mới</h2></div>
     <div class="movie-grid" id="mainMovieGrid"></div>
     <div class="pagination-wrapper"><div class="pagination-bar" id="paginationBar"></div></div>
   </div>
@@ -555,8 +602,10 @@
         </div>
       </div>
 
+      <!-- VIDEO WRAPPER & THẺ VIDEO ĐẦY ĐỦ THUỘC TÍNH NATIVE DI ĐỘNG -->
       <div class="video-wrapper" id="videoWrapper">
         <video id="videoPlayer" controls playsinline webkit-playsinline x5-playsinline></video>
+        <!-- VÙNG CẢM ỨNG ĐÃ ĐƯỢC THU GỌN TOP/BOTTOM 75PX ĐỂ NÚT FULLSCREEN NATIVE KHÔNG BỊ CHẶN -->
         <div class="seek-touch-area seek-touch-left" id="seekTouchLeft"></div>
         <div class="seek-touch-area seek-touch-right" id="seekTouchRight"></div>
         <div class="seek-indicator left" id="seekIndicatorLeft"><i class="fa-solid fa-backward"></i> -10s</div>
@@ -673,6 +722,8 @@
     let allMoviesCache = []; 
     let currentPage = 1; 
     let totalPages = 50;
+    let currentFilterType = null;
+    let currentFilterSlug = null;
     const defaultAvatar = "https://api.dicebear.com/7.x/bottts/svg?seed=Felix";
 
     const presetAvatarsList = [
@@ -915,7 +966,7 @@
         showToast("✅ Đổi mật khẩu thành công!");
       } catch (err) {
         if (err.code === 'auth/requires-recent-login') {
-          showToast("⚠ Vui lòng đăng xuất và đăng nhập lại để đổi mật khẩu!");
+          showToast("⚠️ Vui lòng đăng xuất và đăng nhập lại để đổi mật khẩu!");
         } else {
           showToast("Lỗi: " + err.message);
         }
@@ -982,11 +1033,11 @@
           const hours = Math.floor(totalMin / 60);
           const mins = totalMin % 60;
           document.getElementById('publicModalWatchTime').innerText = hours > 0 ? `${hours}h ${mins}p` : `${mins} phút`;
-          document.getElementById('publicModalBio').innerText = data.bio ? `"${data.bio}"` : `"Mọt phim chân chính 🍿"`;
+          document.getElementById('publicModalBio').innerText = data.bio ? `"${data.bio}"` : `"Mọt phim chính hiệu 🍿"`;
           if (data.avatar) document.getElementById('publicModalAvatar').src = data.avatar;
         } else {
           document.getElementById('publicModalWatchTime').innerText = "0 phút";
-          document.getElementById('publicModalBio').innerText = `"Mọt phim chân chính 🍿"`;
+          document.getElementById('publicModalBio').innerText = `"Mọt phim chính hiệu 🍿"`;
         }
       } catch(e) {}
     }
@@ -1083,23 +1134,21 @@
       setTimeout(() => { ind.style.display = 'none'; }, 500);
     }
 
-    // HÀM ÉP PHÓNG TO MÀN HÌNH CHỦ ĐỘNG TRÊN DI ĐỘNG & PC
+    // NÚT PHÓNG TO HỖ TRỢ CẢ NATIVE IOS & ANDROID/PC
     function requestVideoFullscreen() {
       const video = document.getElementById('videoPlayer');
       const wrapper = document.getElementById('videoWrapper');
       
-      if (video.requestFullscreen) {
-        video.requestFullscreen();
-      } else if (video.webkitRequestFullscreen) { /* Safari / iOS */
-        video.webkitRequestFullscreen();
-      } else if (video.webkitEnterFullscreen) { /* iOS Safari old API */
+      if (video.webkitEnterFullscreen) {
         video.webkitEnterFullscreen();
+      } else if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
       } else if (wrapper.requestFullscreen) {
         wrapper.requestFullscreen();
-      } else if (wrapper.webkitRequestFullscreen) {
-        wrapper.webkitRequestFullscreen();
       } else {
-        showToast("Trình duyệt không hỗ trợ phóng to tự động.");
+        showToast("Vui lòng chạm nút phóng to trên thanh phát của video.");
       }
     }
 
@@ -1431,20 +1480,72 @@
     let heroInterval = null;
     let heroIndex = 0;
 
+    // ========================================================
+    // TÍNH NĂNG RO-PHIM: LỌC PHIM THEO DANH MỤC & THỂ LOẠI
+    // ========================================================
+    function filterByCategory(type, slug, title, element) {
+      document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+      if (element) element.classList.add('active');
+
+      currentFilterType = type;
+      currentFilterSlug = slug;
+      document.getElementById('btnResetCategory').style.display = 'block';
+      document.getElementById('mainSectionTitle').innerText = `Thể Loại: ${title}`;
+
+      fetchMovies(1);
+      document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetToHomeMovies() {
+      document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+      currentFilterType = null;
+      currentFilterSlug = null;
+      document.getElementById('btnResetCategory').style.display = 'none';
+      document.getElementById('mainSectionTitle').innerText = 'Danh Sách Phim Mới';
+
+      fetchMovies(1);
+    }
+
     async function fetchMovies(page = 1) {
       currentPage = page;
-      document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;">Đang tải danh sách phim...</p>`;
-      try {
-        const res = await fetch(`https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=${page}`);
-        const data = await res.json();
-        if (data && data.items && data.items.length > 0) {
-          if (data.pagination) totalPages = data.pagination.totalPages;
-          allMoviesCache = data.items;
-          renderGrid('mainMovieGrid', data.items);
-          renderPagination(currentPage, totalPages);
-          if (page === 1) startHeroBanner(data.items.slice(0, 6));
+      document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách phim...</p>`;
+      
+      let apiUrl = `https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=${page}`;
+      if (currentFilterType && currentFilterSlug) {
+        if (currentFilterType === 'the-loai') {
+          apiUrl = `https://phimapi.com/v1/api/the-loai/${currentFilterSlug}?page=${page}`;
+        } else if (currentFilterType === 'danh-sach') {
+          apiUrl = `https://phimapi.com/v1/api/danh-sach/${currentFilterSlug}?page=${page}`;
+        } else if (currentFilterType === 'quoc-gia') {
+          apiUrl = `https://phimapi.com/v1/api/quoc-gia/${currentFilterSlug}?page=${page}`;
         }
-      } catch (e) {}
+      }
+
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        let items = [];
+        if (data.data && data.data.items) {
+          items = data.data.items;
+          if (data.data.params && data.data.params.pagination) {
+            totalPages = Math.ceil(data.data.params.pagination.totalItems / data.data.params.pagination.totalItemsPerPage) || 50;
+          }
+        } else if (data.items) {
+          items = data.items;
+          if (data.pagination) totalPages = data.pagination.totalPages;
+        }
+
+        if (items && items.length > 0) {
+          allMoviesCache = items;
+          renderGrid('mainMovieGrid', items);
+          renderPagination(currentPage, totalPages);
+          if (page === 1 && !currentFilterType) startHeroBanner(items.slice(0, 6));
+        } else {
+          document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;color:var(--text-muted);">Đang cập nhật thêm phim cho thể loại này...</p>`;
+        }
+      } catch (e) {
+        document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;color:#ef4444;">Lỗi tải dữ liệu!</p>`;
+      }
     }
 
     function renderGrid(containerId, movies) {
@@ -1687,7 +1788,9 @@
       else showToast("🌍 Ping Trái Đất: 0.01ms");
     }
 
-    // BÌNH LUẬN & TRẢ LỜI
+    // ========================================================
+    // BÌNH LUẬN & TRẢ LỜI: ĐÃ FIX LỖI TỰ ĐỘNG XÓA CHỮ SAU KHI GỬI
+    // ========================================================
     function loadComments(slug) {
       if (unsubscribeComments) unsubscribeComments();
       const list = document.getElementById('commentList');
@@ -1753,11 +1856,15 @@
 
     async function submitComment() {
        if (!currentUser || !currentPlayingMovie) return;
-       const txt = document.getElementById('txtComment').value.trim(); if (!txt) return showToast("Vui lòng nhập nội dung!");
+       const txtInput = document.getElementById('txtComment');
+       const txt = txtInput.value.trim();
+       if (!txt) return showToast("Vui lòng nhập nội dung!");
+
        try {
          await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add({
            uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: getSyncedNow(), likes: [], dislikes: [], replies: []
          });
+         txtInput.value = ''; // SỬA LỖI: Tự động xóa trắng ô nhập chữ sau khi gửi
          showToast("Đã gửi bình luận!");
        } catch(e) {}
     }
@@ -1769,10 +1876,15 @@
     }
 
     async function submitReply(slug, cId) {
-      const txt = document.getElementById('txtReply-' + cId).value.trim(); if(!txt) return;
+      const txtInput = document.getElementById('txtReply-' + cId);
+      const txt = txtInput.value.trim(); 
+      if(!txt) return;
+
       try {
         const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
         await ref.update({ replies: firebase.firestore.FieldValue.arrayUnion({ uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: getSyncedNow() }) });
+        txtInput.value = ''; // SỬA LỖI: Tự động xóa trắng ô phản hồi sau khi gửi
+        toggleReplyBox(cId);
         showToast("Đã trả lời!");
       } catch (e) {}
     }
