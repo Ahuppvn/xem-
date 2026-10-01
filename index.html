@@ -360,7 +360,7 @@
     </div>
   </div>
 
-  <!-- HỘP QUÀ AN ỦI SAU PHIM (11 CÂU CHỮA LÀNH + EMOJI + NÚT TẮT 24H) -->
+  <!-- HỘP QUÀ AN ỦI SAU PHIM -->
   <div class="auth-modal" id="giftModal" style="z-index: 4500;">
     <div class="gift-card">
       <div class="gift-icon"><i class="fa-solid fa-gift"></i></div>
@@ -491,17 +491,17 @@
             <span id="profileModalName">Chunha</span>[cite: 1]
             <span id="profileModalRoleBadge" style="font-size:0.7rem; background:rgba(229,9,20,0.2); color:var(--primary); padding:2px 8px; border-radius:50px;">Thành viên</span>[cite: 1]
           </div>
-          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;" id="profileModalEmail">chunha@phimnha.vn</div>[cite: 1]
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;" id="profileModalEmail">user@phimnha.vn</div>[cite: 1]
         </div>
       </div>
 
       <div class="profile-stat-box">
         <div class="stat-pill">
-          <div class="num" id="statWatchTime">46 phút</div>[cite: 1]
+          <div class="num" id="statWatchTime">0h 0p</div>[cite: 1]
           <div class="lbl">Thời gian cày phim</div>[cite: 1]
         </div>
         <div class="stat-pill">
-          <div class="num" id="statFavoritesCount">1</div>[cite: 1]
+          <div class="num" id="statFavoritesCount">0</div>[cite: 1]
           <div class="lbl">Phim trong Tủ</div>[cite: 1]
         </div>
       </div>
@@ -773,7 +773,7 @@
     </div>
   </div>
 
-  <!-- MODAL TỦ PHIM & ĐĂNG NHẬP -->
+  <!-- MODAL TỦ PHIM -->
   <div class="library-modal" id="libraryModal">
     <div class="library-card">
       <div class="lib-header">
@@ -787,6 +787,7 @@
     </div>
   </div>
 
+  <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ[cite: 3] -->
   <div class="auth-modal" id="authModal">
     <div class="auth-card">
       <div class="form-group"><input type="text" id="authUsername" placeholder="Tên tài khoản hoặc Email"></div>
@@ -807,7 +808,7 @@
 
   <div class="toast-msg" id="toastMsg"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span id="toastContent"></span></div>
 
-  <!-- ==================== HỆ THỐNG JAVASCRIPT ĐÃ SẠCH LỖI ==================== -->
+  <!-- ==================== HỆ THỐNG JAVASCRIPT ==================== -->
   <script>
     const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     firebase.initializeApp(firebaseConfig);
@@ -1983,7 +1984,6 @@
           const m = data.movie;
           currentPlayingMovie = m;
           allMovieEpisodes = data.episodes || [];
-          giftShownForCurrentEp = false;
 
           document.getElementById('playerMovieTitle').innerText = m.name;
           document.getElementById('metaTitle').innerText = m.name;
@@ -2246,7 +2246,7 @@
             const doc = await t.get(ref); if (!doc.exists) return;
             const data = doc.data(); let likes = data.likes || []; let dislikes = data.dislikes || []; const uid = currentUser.uid;
             if (type === 'like') { if (likes.includes(uid)) { likes = likes.filter(id => id !== uid); } else { likes.push(uid); dislikes = dislikes.filter(id => id !== uid); } } 
-            else { if (dislikes.includes(uid)) { dislikes = dislikes.filter(id => id !== uid); } else { dislikes.push(uid); likes = likes.filter(id => id !== uid); } }
+            else { if (dislikes.includes(uid)) { dislikes = dislikes.filter(id => id !== uid); } else { likes.push(uid); dislikes = dislikes.filter(id => id !== uid); } }
             t.update(ref, { likes, dislikes });
          });
       } catch(e) {}
@@ -2284,14 +2284,11 @@
       grid.innerHTML = html;
     }
 
-    // --- KHỞI CHẠY KHÔNG CHẶN MẠNG (AN TOÀN TUYỆT ĐỐI) ---
+    // --- KHỞI CHẠY HỆ THỐNG AN TOÀN ---
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
     window.onload = () => {
-      // 1. Hiện Bảng Thông Báo Nội Quy ngay lập tức[cite: 6]
       checkDisclaimerNotice();
-      // 2. Tải danh sách phim
       fetchMovies(1);
-      // 3. Khởi chạy các module ngầm không đồng bộ
       updateOnlinePresence();
       initPokeListener();
       initWhisperListener();
