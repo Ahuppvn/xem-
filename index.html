@@ -388,6 +388,48 @@
       cursor: pointer; padding: 6px; transition: 0.2s;
     }
     .btn-gift-mute:hover { color: #fff; text-decoration: underline; }
+    /* ========================================================
+       GIAO DIỆN HÒM THƯ (INBOX TIKTOK STYLE) & CHIA SẺ PHIM
+    ======================================================== */
+    .inbox-badge-count {
+      background: var(--primary); color: #fff; font-size: 0.7rem; font-weight: 800;
+      padding: 1px 6px; border-radius: 50px; margin-left: 2px;
+      animation: pulse 1.5s infinite;
+    }
+    .inbox-item {
+      display: flex; gap: 12px; padding: 12px; background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px;
+      cursor: pointer; transition: var(--transition); position: relative;
+    }
+    .inbox-item:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(229, 9, 20, 0.4); }
+    .inbox-item.unread { border-left: 3.5px solid var(--primary); background: rgba(229, 9, 20, 0.06); }
+    .inbox-item-poster { width: 55px; height: 75px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+    .inbox-item-info { flex: 1; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+    .inbox-item-sender { font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    .inbox-item-movie { font-weight: 800; font-size: 0.95rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 2px 0; }
+    .inbox-admin-msg {
+      font-size: 0.82rem; color: #fde047; font-style: italic; background: rgba(245, 158, 11, 0.1);
+      border: 1px dashed rgba(245, 158, 11, 0.3); padding: 4px 8px; border-radius: 6px; margin: 4px 0;
+    }
+    .inbox-item-time { font-size: 0.72rem; color: var(--text-muted); }
+    .btn-share-target {
+      background: rgba(229, 9, 20, 0.15); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.4);
+      padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 700;
+      cursor: pointer; transition: 0.2s; white-space: nowrap;
+    }
+    .btn-share-target:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
+
+    /* Pop-up thông báo khi có bạn gửi phim đến */
+    .share-popup-notice {
+      position: fixed; top: 75px; right: 20px; z-index: 9999;
+      background: rgba(18, 21, 30, 0.96); border: 2px solid #38bdf8; border-radius: 16px;
+      padding: 14px 18px; display: none; align-items: center; gap: 14px;
+      box-shadow: 0 12px 40px rgba(56, 189, 248, 0.4); backdrop-filter: blur(12px); max-width: 380px;
+      animation: slideInRight 0.3s ease;
+    }
+    @media (max-width: 680px) {
+      .share-popup-notice { left: 14px; right: 14px; max-width: none; top: 68px; }
+    }
   </style>
 </head>
 <body>
@@ -603,13 +645,19 @@
       <div class="search-results-dropdown" id="searchResultsDropdown"></div>
     </div>
     
-    <div class="header-actions">
+   <div class="header-actions">
       <button class="btn-action-top" onclick="openLeaderboard()" title="Bảng xếp hạng cày phim">
         <i class="fa-solid fa-trophy" style="color:#eab308;"></i> <span>BXH</span>
       </button>
 
       <button class="btn-action-top" id="btnLibrary" onclick="openLibraryModal()" style="display:none;">
         <i class="fa-solid fa-bookmark"></i> <span>Tủ Phim</span>
+      </button>
+
+      <!-- NÚT HÒM THƯ (CÓ CHẤM ĐỎ BÁO TIN MỚI) -->
+      <button class="btn-action-top" id="btnInbox" onclick="openInboxModal()" title="Hòm Thư Chia Sẻ">
+        <i class="fa-solid fa-envelope"></i> <span>Hòm Thư</span>
+        <span class="inbox-badge-count" id="inboxBadge" style="display:none;">0</span>
       </button>
       
       <div class="online-badge" onclick="showOnlineUsersModal()" title="Bấm để xem ai đang online">
@@ -754,6 +802,9 @@
             <div class="movie-metadata-header">
               <h2 class="movie-metadata-title" id="metaTitle">Tên Phim</h2>
               <button class="btn-fav" id="btnToggleFav" onclick="toggleFavorite()"><i class="fa-regular fa-heart" id="favIcon"></i> <span id="favText">Yêu Thích</span></button>
+<button class="btn-fav" style="background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); margin-left:8px;" onclick="openShareModal()">
+  <i class="fa-solid fa-paper-plane"></i> Gửi Bạn
+</button>
             </div>
             <div>
               <span class="meta-tag" style="background:var(--primary);" id="metaYear">2026</span>
@@ -791,6 +842,56 @@
     </div>
   </div>
 
+  <!-- POP-UP THÔNG BÁO BẠN VỪA GỬI PHIM -->
+  <div class="share-popup-notice" id="shareNotification">
+    <img src="" id="shareNoticeAvatar" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:2px solid #38bdf8; flex-shrink:0;">
+    <div style="flex:1; overflow:hidden;">
+      <div style="font-weight:800; font-size:0.88rem; color:#fff;" id="shareNoticeTitle">Bạn bè đã chia sẻ 1 bộ phim!</div>
+      <div style="font-size:0.78rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="shareNoticeMovie">🎬 Tên phim</div>
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <button class="btn-poke-back" id="btnOpenFromNotice" style="background:#0284c7;">Xem ngay 🎬</button>
+        <button class="btn-poke-mute" onclick="muteShare24h()">🔕 Chặn 24h</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 1: CHỌN BẠN BÈ ĐỂ GỬI PHIM -->
+  <div class="auth-modal" id="shareModal">
+    <div class="auth-card" style="max-width: 460px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="font-weight: 800; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; color:#38bdf8;">
+          <i class="fa-solid fa-paper-plane"></i> Chia Sẻ Tới Bạn Bè
+        </h3>
+        <button class="btn-tool" onclick="document.getElementById('shareModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Khung nhắn tin: Chỉ hiện riêng cho Admin chunha@phimnha.vn -->
+      <div id="adminMsgBox" style="display:none; margin-bottom:14px;">
+        <label style="font-size:0.82rem; font-weight:700; color:#f59e0b; display:block; margin-bottom:4px;">
+          👑 Lời nhắn từ Admin (Tùy chọn):
+        </label>
+        <input type="text" id="adminCustomMsg" placeholder="Ví dụ: Phim này cuốn lắm, cày ngay nha bạn hiền..." maxlength="100" style="width:100%; background:#090a0f; border:1px solid rgba(245,158,11,0.4); padding:9px 12px; border-radius:8px; color:#fff; outline:none; font-size:0.85rem;">
+      </div>
+
+      <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Chọn người nhận đang online:</div>
+      <div id="shareUsersList" style="max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;"></div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: HÒM THƯ (INBOX TIKTOK STYLE) -->
+  <div class="auth-modal" id="inboxModal">
+    <div class="auth-card" style="max-width: 480px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="font-weight: 800; display: flex; align-items: center; gap: 8px; font-size: 1.15rem;">
+          <i class="fa-solid fa-envelope" style="color:var(--primary);"></i> Hòm Thư Của Bạn
+        </h3>
+        <button class="btn-tool" onclick="document.getElementById('inboxModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="inboxListContent" style="max-height: 380px; overflow-y: auto; display: flex; flex-direction: column;">
+        <p style="text-align:center; padding:20px; color:var(--text-muted);">Đang tải hòm thư...</p>
+      </div>
+    </div>
+  </div>
   <!-- TROLL MODAL -->
   <div class="troll-modal" id="trollModal">
     <div class="troll-card">
@@ -2331,12 +2432,189 @@
     }
 
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
+    // ========================================================
+    // HỆ THỐNG HÒM THƯ CHIA SẺ PHIM (TIKTOK STYLE)
+    // ========================================================
+    function isWebAdmin() {
+      return currentUser && currentUser.email === 'chunha@phimnha.vn';
+    }
+
+    function openShareModal() {
+      if (!currentPlayingMovie) return showToast("Vui lòng mở phim để chia sẻ!");
+
+      const adminBox = document.getElementById('adminMsgBox');
+      if (adminBox) adminBox.style.display = isWebAdmin() ? 'block' : 'none';
+
+      const wrap = document.getElementById('shareUsersList');
+      const users = (window.currentOnlineList || []).filter(u => u.uid !== getMyUid());
+
+      if (users.length === 0) {
+        wrap.innerHTML = `<p style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.85rem;">Hiện chưa có bạn bè nào online để gửi!</p>`;
+      } else {
+        wrap.innerHTML = users.map(u => `
+          <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:10px; border:1px solid var(--border);">
+            <div style="display:flex; align-items:center; gap:10px; overflow:hidden;">
+              <img src="${u.avatar}" style="width:34px; height:34px; border-radius:50%; object-fit:cover;">
+              <div style="font-weight:700; font-size:0.86rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${u.name}</div>
+            </div>
+            <button class="btn-share-target" onclick="sendMovieToTarget('${u.uid}', '${u.name}')">Gửi 🎬</button>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('shareModal').style.display = 'flex';
+    }
+
+    async function sendMovieToTarget(targetUid, targetName) {
+      if (!currentPlayingMovie) return;
+      const now = getSyncedNow();
+
+      let adminMsg = null;
+      if (isWebAdmin()) {
+        const inputEl = document.getElementById('adminCustomMsg');
+        if (inputEl && inputEl.value.trim()) {
+          adminMsg = inputEl.value.trim();
+        }
+      }
+
+      const payload = {
+        fromUid: getMyUid(),
+        fromName: getMyName(),
+        fromAvatar: getMyAvatar(),
+        toUid: targetUid,
+        movieSlug: currentPlayingMovie.slug,
+        movieName: currentPlayingMovie.name,
+        moviePoster: formatImageUrl(currentPlayingMovie.poster_url || currentPlayingMovie.thumb_url),
+        message: adminMsg,
+        timestamp: now,
+        read: false
+      };
+
+      try {
+        await db.collection('inbox_messages').add(payload);
+        document.getElementById('shareModal').style.display = 'none';
+        if (isWebAdmin() && document.getElementById('adminCustomMsg')) {
+          document.getElementById('adminCustomMsg').value = '';
+        }
+        showToast(`✅ Đã gửi phim "${currentPlayingMovie.name}" tới ${targetName}!`);
+      } catch (e) {
+        showToast("Lỗi gửi phim!");
+      }
+    }
+
+    let isInitialInboxLoad = true;
+    let unsubscribeInbox = null;
+    let currentInboxList = [];
+
+    function initInboxListener() {
+      if (unsubscribeInbox) unsubscribeInbox();
+      isInitialInboxLoad = true;
+
+      unsubscribeInbox = db.collection('inbox_messages')
+        .where('toUid', '==', getMyUid())
+        .onSnapshot(snapshot => {
+          let list = [];
+          snapshot.forEach(doc => {
+            list.push({ id: doc.id, ...doc.data() });
+          });
+          list.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+          currentInboxList = list;
+
+          const unreadCount = list.filter(m => !m.read).length;
+          const badgeEl = document.getElementById('inboxBadge');
+          if (badgeEl) {
+            badgeEl.innerText = unreadCount;
+            badgeEl.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+          }
+
+          if (isInitialInboxLoad) {
+            isInitialInboxLoad = false;
+            return;
+          }
+
+          snapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+              const data = change.doc.data();
+              if (data.fromUid !== getMyUid() && !data.read) {
+                triggerShareNotice(data, change.doc.id);
+              }
+            }
+          });
+
+          if (document.getElementById('inboxModal').style.display === 'flex') {
+            renderInboxContent();
+          }
+        }, err => console.warn(err));
+    }
+
+    function triggerShareNotice(data, docId) {
+      const muteUntil = localStorage.getItem('phimnha_share_mute_until');
+      if (muteUntil && getSyncedNow() < parseInt(muteUntil)) return;
+
+      playSoftChime();
+      const toast = document.getElementById('shareNotification');
+      document.getElementById('shareNoticeAvatar').src = data.fromAvatar || defaultAvatar;
+      document.getElementById('shareNoticeTitle').innerText = `${data.fromName} đã chia sẻ 1 bộ phim!`;
+      document.getElementById('shareNoticeMovie').innerText = `🎬 ${data.movieName}`;
+
+      const btnOpen = document.getElementById('btnOpenFromNotice');
+      btnOpen.onclick = () => {
+        openMovieFromInbox(docId, data.movieSlug);
+        toast.style.display = 'none';
+      };
+
+      toast.style.display = 'flex';
+      setTimeout(() => { toast.style.display = 'none'; }, 9000);
+    }
+
+    function muteShare24h() {
+      const until = getSyncedNow() + (24 * 60 * 60 * 1000);
+      localStorage.setItem('phimnha_share_mute_until', until.toString());
+      document.getElementById('shareNotification').style.display = 'none';
+      showToast("🔕 Đã chặn thông báo chia sẻ trong 24 giờ!");
+    }
+
+    function openInboxModal() {
+      renderInboxContent();
+      document.getElementById('inboxModal').style.display = 'flex';
+    }
+
+    function renderInboxContent() {
+      const wrap = document.getElementById('inboxListContent');
+      if (!currentInboxList || currentInboxList.length === 0) {
+        wrap.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted);"><i class="fa-regular fa-envelope-open" style="font-size:2rem; margin-bottom:8px; display:block;"></i>Hòm thư trống. Chưa có ai chia sẻ phim cho bạn!</div>`;
+        return;
+      }
+
+      wrap.innerHTML = currentInboxList.map(item => `
+        <div class="inbox-item ${!item.read ? 'unread' : ''}" onclick="openMovieFromInbox('${item.id}', '${item.movieSlug}')">
+          <img src="${item.moviePoster}" class="inbox-item-poster">
+          <div class="inbox-item-info">
+            <div>
+              <div class="inbox-item-sender">
+                <img src="${item.fromAvatar}" style="width:18px;height:18px;border-radius:50%;">
+                <span>${item.fromName} đã chia sẻ:</span>
+              </div>
+              <div class="inbox-item-movie">🎬 ${item.movieName}</div>
+              ${item.message ? `<div class="inbox-admin-msg">💬 "${item.message}"</div>` : ''}
+            </div>
+            <div class="inbox-item-time">${formatTimeAgo(item.timestamp)} • Chạm để xem từ đầu 👉</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function openMovieFromInbox(docId, movieSlug) {
+      document.getElementById('inboxModal').style.display = 'none';
+      db.collection('inbox_messages').doc(docId).update({ read: true }).catch(() => {});
+      openPlayer(movieSlug);
+    }
 
     window.onload = async () => {
       await syncGlobalClock();
       checkDisclaimerNotice();
       updateOnlinePresence();
-      initPokeListener();
+      initPokeListener();initInboxListener();
       initWatchTimeTracker();
       initVideoProgressTracking();
       initDoubleTapAndShortcuts();
