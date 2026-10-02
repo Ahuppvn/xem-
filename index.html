@@ -1996,7 +1996,7 @@
     // ========================================================
     // QUẢN LÝ TÀI KHOẢN & ĐĂNG NHẬP
     // ========================================================
-    auth.onAuthStateChanged(async user => {
+ auth.onAuthStateChanged(async user => {
       currentUser = user;
       if (user) {
         const localAvt = localStorage.getItem('phimnha_avatar_' + user.uid);
@@ -2012,6 +2012,7 @@
       renderAuthUI(user);
       updateOnlinePresence();
       initPokeListener();
+      initInboxListener(); // <--- KÍCH HOẠT ĐỒNG BỘ HÒM THƯ CHO TÀI KHOẢN ĐĂNG NHẬP
       if (document.getElementById('playerModal').style.display === 'flex') updateCommentInputUI();
     });
 
