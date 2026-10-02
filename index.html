@@ -1299,7 +1299,7 @@
     }
     // ================================================
 
-    let lastTapLeft = 0;
+    
 
     function applyResumePlayback(slug, epIndex) {
       const savedTimeStr = localStorage.getItem(getResumeKey(slug, epIndex));
@@ -2287,7 +2287,7 @@
     }
 
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
-    window.onload = async () => {
+   window.onload = async () => {
       await syncGlobalClock();
       checkDisclaimerNotice();
       updateOnlinePresence();
@@ -2296,6 +2296,7 @@
       initVideoProgressTracking();
       initDoubleTapAndShortcuts();
       fetchMovies(1);
+    };
 
       // ==========================================
     // HỆ THỐNG 11 CÂU QUOTE & HỘP QUÀ KHI HẾT PHIM
