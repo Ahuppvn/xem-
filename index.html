@@ -2159,7 +2159,7 @@
       } catch (e) {}
     }
 
-  let currentActiveTopic = null; // Lưu thể loại đang chọn để chuyển trang
+ let currentActiveTopic = null; // Lưu thể loại đang chọn để chuyển trang
 
     async function filterByTopic(topicSlug, topicTitle, page = 1) {
       currentActiveTopic = { slug: topicSlug, title: topicTitle };
@@ -2193,13 +2193,12 @@
         const data = await res.json();
         const items = (data.data && data.data.items) ? data.data.items : (data.items || []);
 
-        // Lấy tổng số trang từ API trả về
         const pag = (data.data && data.data.params && data.data.params.pagination) || data.pagination || {};
         totalPages = pag.totalPages || Math.ceil((pag.totalItems || 24) / 24) || 1;
 
         if (items.length > 0) {
           renderGrid('mainMovieGrid', items);
-          renderPagination(currentPage, totalPages); // Tạo lại thanh phân trang đầy đủ số
+          renderPagination(currentPage, totalPages);
           showToast(`Đã lọc: ${topicTitle}!`);
         } else {
           document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;">Chưa có dữ liệu cho mục này!</p>`;
@@ -2210,18 +2209,174 @@
       }
     }
 
+    function renderCommunityWidgets(movies) {
+      if (!movies || movies.length === 0) return;
+
+      const hotWrap = document.getElementById('hotMoviesList');
+      const favWrap = document.getElementById('favMoviesList');
+
+      if (hotWrap) {
+        hotWrap.innerHTML = movies.slice(0, 5).map((m, idx) => `
+          <div class="comm-list-item" onclick="openPlayer('${m.slug}')">
+            <span class="comm-rank-num ${idx === 0 ? 'top1' : ''}">${idx + 1}</span>
+            <img src="${formatImageUrl(m.thumb_url || m.poster_url)}" style="width:28px;height:38px;border-radius:4px;object-fit:cover;">
+            <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name}</span>
+          </div>
+        `).join('');
+      }
+
+      if (favWrap) {
+        favWrap.innerHTML = movies.slice(5, 10).map((m, idx) => `
+          <div class="comm-list-item" onclick="openPlayer('${m.slug}')">
+            <span class="comm-rank-num ${idx === 0 ? 'top1' : ''}">${idx + 1}</span>
+            <img src="${formatImageUrl(m.thumb_url || m.poster_url)}" style="width:28px;height:38px;border-radius:4px;object-fit:cover;">
+            <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name}</span>
+          </div>
+        `).join('');
+      }
+
+      loadRealCommunityComments();
+    }
+
+    function loadRealCommunityComments() {
+      const topRow = document.getElementById('topCommentsRow');
+      const recentWrap = document.getElementById('recentCommunityComments');
+
+      if (unsubscribeCommunityComments) unsubscribeCommunityComments();
+
+      unsubscribeCommunityComments = db.collection('recent_comments')
+        .orderBy('timestamp', 'desc')
+        .limit(20)
+        .onSnapshot(snap => {
+          if (snap.empty) {
+            if (topRow) topRow.innerHTML = `
+              <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 22px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--border);">
+                <i class="fa-regular fa-comment-dots" style="font-size: 1.5rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
+                Chưa có bình luận nào! Hãy vào xem phim và để lại bình luận đầu tiên nhé.
+              </div>`;
+            if (recentWrap) recentWrap.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); padding:8px;">Chưa có bình luận mới.</p>`;
+            return;
+          }
+
+          let allComments = [];
+          snap.forEach(doc => {
+            allComments.push({ id: doc.id, ...doc.data() });
+          });
+
+          const topLiked = [...allComments].sort((a, b) => {
+            const diffLikes = (b.likes || []).length - (a.likes || []).length;
+            if (diffLikes !== 0) return diffLikes;
+            const diffTime = (b.timestamp || 0) - (a.timestamp || 0);
+            if (diffTime !== 0) return diffTime;
+            return b.id.localeCompare(a.id);
+          }).slice(0, 4);
+
+          if (topRow) {
+            topRow.innerHTML = topLiked.map(c => {
+              const likeCount = (c.likes || []).length;
+              const timeAgo = formatTimeAgo(c.timestamp);
+              const movieBadge = c.movieName ? `<div style="font-size:0.7rem; color:var(--primary); font-weight:700; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🎬 ${escapeHtml(c.movieName)}</div>` : '';
+              const clickEvt = c.movieSlug ? `onclick="openPlayer('${c.movieSlug}')"` : '';
+
+              return `
+                <div class="top-cmt-card" ${clickEvt} title="Bấm để xem phim này">
+                  <img src="${c.avatar || defaultAvatar}" class="top-cmt-avatar">
+                  <div class="top-cmt-body">
+                    ${movieBadge}
+                    <div class="top-cmt-user">${escapeHtml(c.name || 'Thành viên')}</div>
+                    <div class="top-cmt-text">${escapeHtml(c.content || '')}</div>
+                    <div class="top-cmt-footer">
+                      <span>${timeAgo}</span>
+                      <span><i class="fa-solid fa-thumbs-up" style="color:#38bdf8;"></i> ${likeCount}</span>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          }
+
+          const latest = allComments.slice(0, 5);
+          if (recentWrap) {
+            recentWrap.innerHTML = latest.map(c => {
+              const timeAgo = formatTimeAgo(c.timestamp);
+              const clickEvt = c.movieSlug ? `onclick="openPlayer('${c.movieSlug}')"` : '';
+
+              return `
+                <div class="comm-list-item" ${clickEvt} style="gap:10px;" title="Bấm để xem phim">
+                  <img src="${c.avatar || defaultAvatar}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+                  <div style="overflow:hidden;flex:1;">
+                    <div style="font-weight:700;font-size:0.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                      ${escapeHtml(c.name || 'Thành viên')} 
+                      <span style="font-size:0.68rem;color:var(--text-muted);font-weight:normal;">• ${timeAgo}</span>
+                    </div>
+                    <div style="font-size:0.76rem;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                      ${escapeHtml(c.content || '')}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          }
+
+        }, err => {
+          console.warn("Lỗi realtime comments:", err);
+        });
+    }
+
+    function renderGrid(containerId, movies) {
+      const wrap = document.getElementById(containerId);
+      if (!wrap) return;
+      wrap.innerHTML = movies.map(m => `
+        <div class="movie-card" onclick="openPlayer('${m.slug}')">
+          <div class="movie-poster-wrap"><img src="${formatImageUrl(m.poster_url)}" loading="lazy"><span class="badge-episode">${m.episode_current || 'FHD'}</span></div>
+          <div class="movie-info"><div class="movie-name">${m.name}</div><div class="movie-meta"><span>${m.year||2026}</span></div></div>
+        </div>`).join('');
+    }
+
+    function startHeroBanner(movies) {
+      if (!movies || movies.length === 0) return;
+      if (heroInterval) clearInterval(heroInterval);
+      heroIndex = 0;
+      updateHeroView(movies[0]);
+      heroInterval = setInterval(() => {
+        heroIndex = (heroIndex + 1) % movies.length;
+        updateHeroView(movies[heroIndex]);
+      }, 5000);
+    }
+
+    function updateHeroView(m) {
+      if (!m) return;
+      const backdrop = document.getElementById('heroBackdrop');
+      if (backdrop) {
+        const img = formatImageUrl(m.thumb_url || m.poster_url);
+        backdrop.style.opacity = '0.3';
+        setTimeout(() => {
+          backdrop.style.backgroundImage = `url('${img}')`;
+          backdrop.style.opacity = '1';
+        }, 200);
+      }
+
+      const elTitle = document.getElementById('heroTitle');
+      if (elTitle) elTitle.innerText = m.name;
+      const elYear = document.getElementById('heroYear');
+      if (elYear) elYear.innerText = m.year || 2026;
+      const elDesc = document.getElementById('heroDesc');
+      if (elDesc) elDesc.innerText = `Tuyệt phẩm "${m.name}" (${m.origin_name || 'Bản quyền'}) đang làm mưa làm gió. Xem ngay với hình ảnh siêu sắc nét, không quảng cáo rác.`;
+      const btnPlay = document.getElementById('btnHeroPlay');
+      if (btnPlay) btnPlay.onclick = () => openPlayer(m.slug);
+    }
+
     function renderPagination(current, total) {
       const bar = document.getElementById('paginationBar');
       if (!bar) return;
 
-      // Nếu không có trang hoặc chỉ có 1 trang -> Ẩn tiệt luôn cái viên thuốc rỗng!
       if (total <= 1) { 
         bar.innerHTML = ''; 
         bar.style.display = 'none';
         return; 
       }
 
-      bar.style.display = 'flex'; // Hiện lại thanh khi có nhiều trang
+      bar.style.display = 'flex';
       const delta = window.innerWidth <= 680 ? 1 : 2;
       let html = `<button class="page-btn" ${current === 1 ? 'disabled' : ''} onclick="goToPage(${current - 1})"><i class="fa-solid fa-chevron-left"></i></button>`;
       html += `<button class="page-btn ${current === 1 ? 'active' : ''}" onclick="goToPage(1)">1</button>`;
@@ -2239,7 +2394,6 @@
 
     function goToPage(page) {
       if (page < 1 || page > totalPages || page === currentPage) return;
-      // Nếu đang xem thể loại (Hoạt hình, Chiếu rạp...) thì lật trang thể loại đó, ngược lại lật trang chủ
       if (currentActiveTopic) {
         filterByTopic(currentActiveTopic.slug, currentActiveTopic.title, page);
       } else {
@@ -2247,7 +2401,6 @@
       }
       document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
     }
-
     // ========================================================
     // TRÌNH PHÁT VIDEO & SERVERS
     // ========================================================
