@@ -76,9 +76,7 @@
     .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 12px 26px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); transition: var(--transition); }
     .btn-hero-play:hover { background: var(--primary-hover); transform: scale(1.03); }
 
-    /* ========================================================
-       PHẦN 1: BẠN ĐANG QUAN TÂM GÌ? (CHUẨN FORM ROPHIM)
-    ======================================================== */
+    /* BẠN ĐANG QUAN TÂM GÌ? */
     .topics-section { max-width: 1400px; margin: 0 auto 32px; padding: 0 20px; }
     .topics-header { font-size: 1.25rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
     .topics-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
@@ -103,9 +101,7 @@
     .bg-hor { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
     .bg-us { background: linear-gradient(135deg, #dc2626, #991b1b); }
 
-    /* ========================================================
-       PHẦN 2: TOP BÌNH LUẬN & SÔI NỔI (CHUẨN FORM ROPHIM)
-    ======================================================== */
+    /* TOP BÌNH LUẬN & SÔI NỔI (ROPHIM STYLE) */
     .community-feed-section { max-width: 1400px; margin: 0 auto 36px; padding: 0 20px; }
     .comm-top-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 20px; }
     .top-cmt-card {
@@ -565,9 +561,7 @@
     </div>
   </div>
 
-  <!-- ========================================================
-       PHẦN 1: BẠN ĐANG QUAN TÂM GÌ? (KHÔNG QUẢNG CÁO)
-  ======================================================== -->
+  <!-- PHẦN 1: BẠN ĐANG QUAN TÂM GÌ? -->
   <div class="topics-section">
     <h3 class="topics-header">Bạn đang quan tâm gì?</h3>
     <div class="topics-scroll">
@@ -623,49 +617,18 @@
     </div>
   </div>
 
-  <!-- ========================================================
-       PHẦN 2: KHU VỰC TOP BÌNH LUẬN & SÔI NỔI (ROPHIM STYLE)
-  ======================================================== -->
+  <!-- PHẦN 2: BÌNH LUẬN THẬT TỪ FIREBASE -->
   <div class="community-feed-section">
     <h3 class="topics-header" style="color: #f59e0b;"><i class="fa-solid fa-comments"></i> TOP BÌNH LUẬN</h3>
     
-    <!-- 4 THẺ BÌNH LUẬN NỔI BẬT HÀNG TRÊN -->
+    <!-- 4 THẺ BÌNH LUẬN NHIỀU LIKE NHẤT (REAL DATA) -->
     <div class="comm-top-row" id="topCommentsRow">
-      <div class="top-cmt-card">
-        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Hvyv" class="top-cmt-avatar">
-        <div class="top-cmt-body">
-          <div class="top-cmt-user">Hvyv</div>
-          <div class="top-cmt-text">Bộ phim đỉnh thật sự, diễn xuất quá cuốn luôn ad ơi!</div>
-          <div class="top-cmt-footer"><span>Vừa xong</span><span><i class="fa-solid fa-thumbs-up"></i> 12</span></div>
-        </div>
-      </div>
-      <div class="top-cmt-card">
-        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=HuongAnh" class="top-cmt-avatar">
-        <div class="top-cmt-body">
-          <div class="top-cmt-user">Hương Anh</div>
-          <div class="top-cmt-text">Xem mà không rời mắt được phút nào, web load siêu mượt.</div>
-          <div class="top-cmt-footer"><span>5 phút trước</span><span><i class="fa-solid fa-thumbs-up"></i> 8</span></div>
-        </div>
-      </div>
-      <div class="top-cmt-card">
-        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=huey" class="top-cmt-avatar">
-        <div class="top-cmt-body">
-          <div class="top-cmt-user">huey</div>
-          <div class="top-cmt-text">Ai biết lịch ra tập tiếp theo không nhỉ, hóng quá trời!</div>
-          <div class="top-cmt-footer"><span>15 phút trước</span><span><i class="fa-solid fa-thumbs-up"></i> 5</span></div>
-        </div>
-      </div>
-      <div class="top-cmt-card">
-        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Julie" class="top-cmt-avatar">
-        <div class="top-cmt-body">
-          <div class="top-cmt-user">Julie</div>
-          <div class="top-cmt-text">Bản thuyết minh nghe truyền cảm lắm ad, 10 điểm!</div>
-          <div class="top-cmt-footer"><span>30 phút trước</span><span><i class="fa-solid fa-thumbs-up"></i> 9</span></div>
-        </div>
+      <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 18px;">
+        <i class="fa-solid fa-spinner fa-spin"></i> Đang tải bình luận thật...
       </div>
     </div>
 
-    <!-- 3 CỘT PHÂN LOẠI PHÍA DƯỚI: SÔI NỔI NHẤT | YÊU THÍCH NHẤT | BÌNH LUẬN MỚI -->
+    <!-- 3 CỘT: SÔI NỔI | YÊU THÍCH | BÌNH LUẬN MỚI THẬT TỪ FIREBASE -->
     <div class="comm-columns-wrap">
       <div class="comm-col">
         <div class="comm-col-title hot"><i class="fa-solid fa-fire"></i> SÔI NỔI NHẤT</div>
@@ -679,7 +642,9 @@
 
       <div class="comm-col">
         <div class="comm-col-title new"><i class="fa-solid fa-bolt"></i> BÌNH LUẬN MỚI</div>
-        <div class="comm-list-items" id="recentCommunityComments"></div>
+        <div class="comm-list-items" id="recentCommunityComments">
+          <p style="font-size:0.8rem; color:var(--text-muted); padding:8px;">Đang nạp dữ liệu...</p>
+        </div>
       </div>
     </div>
   </div>
@@ -863,6 +828,23 @@
       } catch (e) {}
     }
     function getSyncedNow() { return Date.now() + serverTimeOffset; }
+
+    function formatTimeAgo(ts) {
+      if (!ts) return "Vừa xong";
+      const diff = Math.max(0, getSyncedNow() - ts);
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) return "Vừa xong";
+      if (mins < 60) return `${mins} phút trước`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours} giờ trước`;
+      const days = Math.floor(hours / 24);
+      return `${days} ngày trước`;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
 
     function checkDisclaimerNotice() {
       try {
@@ -1168,7 +1150,7 @@
           video.currentTime = savedSeconds;
           const mins = Math.floor(savedSeconds / 60);
           const secs = savedSeconds % 60;
-          showToast(`⏱️️ Đang tiếp tục từ ${mins}:${secs < 10 ? '0' : ''}${secs}`);
+          showToast(`⏱ Đang tiếp tục từ ${mins}:${secs < 10 ? '0' : ''}${secs}`);
           video.removeEventListener('loadedmetadata', onLoaded);
         };
         video.addEventListener('loadedmetadata', onLoaded);
@@ -1577,7 +1559,6 @@
       } catch (e) {}
     }
 
-    // --- HÀM LỌC THEO THẺ "BẠN ĐANG QUAN TÂM GÌ?" ---
     async function filterByTopic(topicSlug, topicTitle) {
       document.getElementById('sectionMainTitle').innerText = topicTitle;
       document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Đang lọc danh sách ${topicTitle}...</p>`;
@@ -1604,15 +1585,13 @@
       }
     }
 
-    // --- RENDER DỮ LIỆU CỘT SÔI NỔI & YÊU THÍCH & BÌNH LUẬN MỚI ---
+    // --- RENDER DỮ LIỆU CỘT SÔI NỔI & YÊU THÍCH ---
     function renderCommunityWidgets(movies) {
       if (!movies || movies.length === 0) return;
 
       const hotWrap = document.getElementById('hotMoviesList');
       const favWrap = document.getElementById('favMoviesList');
-      const newCmtWrap = document.getElementById('recentCommunityComments');
 
-      // Top 5 Sôi nổi
       hotWrap.innerHTML = movies.slice(0, 5).map((m, idx) => `
         <div class="comm-list-item" onclick="openPlayer('${m.slug}')">
           <span class="comm-rank-num ${idx === 0 ? 'top1' : ''}">${idx + 1}</span>
@@ -1621,7 +1600,6 @@
         </div>
       `).join('');
 
-      // Top 5 Yêu thích
       favWrap.innerHTML = movies.slice(5, 10).map((m, idx) => `
         <div class="comm-list-item" onclick="openPlayer('${m.slug}')">
           <span class="comm-rank-num ${idx === 0 ? 'top1' : ''}">${idx + 1}</span>
@@ -1630,30 +1608,98 @@
         </div>
       `).join('');
 
-      // Danh sách bình luận mới nhất
-      newCmtWrap.innerHTML = `
-        <div class="comm-list-item" style="gap:10px;">
-          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=trungg" style="width:30px;height:30px;border-radius:50%;">
-          <div>
-            <div style="font-weight:700;font-size:0.8rem;">trungg <span style="font-size:0.7rem;color:var(--text-muted);font-weight:normal;">• Vừa xong</span></div>
-            <div style="font-size:0.76rem;color:#cbd5e1;">Phim mượt không giật lag tí nào!</div>
-          </div>
-        </div>
-        <div class="comm-list-item" style="gap:10px;">
-          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=admin" style="width:30px;height:30px;border-radius:50%;">
-          <div>
-            <div style="font-weight:700;font-size:0.8rem;color:var(--primary);">Admin <span style="font-size:0.7rem;color:var(--text-muted);font-weight:normal;">• 2 phút trước</span></div>
-            <div style="font-size:0.76rem;color:#cbd5e1;">Chúc anh em xem phim vui vẻ nhé!</div>
-          </div>
-        </div>
-        <div class="comm-list-item" style="gap:10px;">
-          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=tuat" style="width:30px;height:30px;border-radius:50%;">
-          <div>
-            <div style="font-weight:700;font-size:0.8rem;">tuất <span style="font-size:0.7rem;color:var(--text-muted);font-weight:normal;">• 10 phút trước</span></div>
-            <div style="font-size:0.76rem;color:#cbd5e1;">Hóng mãi tập mới, cảm ơn rạp!</div>
-          </div>
-        </div>
-      `;
+      // GỌI HÀM LẤY BÌNH LUẬN THẬT 100% TỪ FIREBASE
+      loadRealCommunityComments();
+    }
+
+    // --- HÀM LẤY BÌNH LUẬN THẬT TỪ DATABASE FIREBASE ---
+    async function loadRealCommunityComments() {
+      const topRow = document.getElementById('topCommentsRow');
+      const recentWrap = document.getElementById('recentCommunityComments');
+
+      try {
+        const snap = await db.collectionGroup('comments').orderBy('timestamp', 'desc').limit(25).get();
+        if (snap.empty) {
+          topRow.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 24px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--border);">
+              <i class="fa-regular fa-comment-dots" style="font-size: 1.5rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
+              Chưa có bình luận nào! Hãy vào xem phim và là người đầu tiên để lại bình luận nhé.
+            </div>`;
+          recentWrap.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); padding:8px;">Chưa có bình luận nào.</p>`;
+          return;
+        }
+
+        let allComments = [];
+        snap.forEach(doc => {
+          const data = doc.data();
+          const parentSlug = (doc.ref.parent && doc.ref.parent.parent) ? doc.ref.parent.parent.id : '';
+          allComments.push({
+            id: doc.id,
+            ...data,
+            slug: data.movieSlug || parentSlug
+          });
+        });
+
+        // 1. TOP BÌNH LUẬN: Lấy 4 bình luận nhiều like nhất thật
+        const topLiked = [...allComments].sort((a, b) => {
+          const likesA = (a.likes || []).length;
+          const likesB = (b.likes || []).length;
+          if (likesB !== likesA) return likesB - likesA;
+          return b.timestamp - a.timestamp;
+        }).slice(0, 4);
+
+        topRow.innerHTML = topLiked.map(c => {
+          const likeCount = (c.likes || []).length;
+          const timeAgo = formatTimeAgo(c.timestamp);
+          const movieBadge = c.movieName ? `<div style="font-size:0.7rem; color:var(--primary); font-weight:700; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🎬 ${escapeHtml(c.movieName)}</div>` : '';
+          const clickEvt = c.slug ? `onclick="openPlayer('${c.slug}')"` : '';
+
+          return `
+            <div class="top-cmt-card" ${clickEvt} title="Bấm để xem phim này">
+              <img src="${c.avatar || defaultAvatar}" class="top-cmt-avatar">
+              <div class="top-cmt-body">
+                ${movieBadge}
+                <div class="top-cmt-user">${escapeHtml(c.name || 'Thành viên')}</div>
+                <div class="top-cmt-text">${escapeHtml(c.content || '')}</div>
+                <div class="top-cmt-footer">
+                  <span>${timeAgo}</span>
+                  <span><i class="fa-solid fa-thumbs-up" style="color:#38bdf8;"></i> ${likeCount}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // 2. BÌNH LUẬN MỚI: 5 bình luận mới gửi nhất thật
+        const latest = allComments.slice(0, 5);
+        recentWrap.innerHTML = latest.map(c => {
+          const timeAgo = formatTimeAgo(c.timestamp);
+          const clickEvt = c.slug ? `onclick="openPlayer('${c.slug}')"` : '';
+
+          return `
+            <div class="comm-list-item" ${clickEvt} style="gap:10px;" title="Bấm để xem phim">
+              <img src="${c.avatar || defaultAvatar}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+              <div style="overflow:hidden;flex:1;">
+                <div style="font-weight:700;font-size:0.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                  ${escapeHtml(c.name || 'Thành viên')} 
+                  <span style="font-size:0.68rem;color:var(--text-muted);font-weight:normal;">• ${timeAgo}</span>
+                </div>
+                <div style="font-size:0.76rem;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                  ${escapeHtml(c.content || '')}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        console.warn("Lỗi đọc collectionGroup comments:", err);
+        topRow.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 18px;">
+            Bình luận sẽ hiển thị tại đây khi mọi người bắt đầu bình luận phim.
+          </div>`;
+        recentWrap.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); padding:8px;">Chưa có bình luận mới.</p>`;
+      }
     }
 
     function renderGrid(containerId, movies) {
@@ -1965,10 +2011,23 @@
        const txt = document.getElementById('txtComment').value.trim(); if (!txt) return showToast("Vui lòng nhập nội dung!");
        try {
          await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add({
-           uid: currentUser.uid, name: currentUser.displayName || currentUser.email.split('@')[0], avatar: getMyAvatar(), content: txt, timestamp: getSyncedNow(), likes: [], dislikes: [], replies: []
+           uid: currentUser.uid, 
+           name: currentUser.displayName || currentUser.email.split('@')[0], 
+           avatar: getMyAvatar(), 
+           content: txt, 
+           timestamp: getSyncedNow(), 
+           likes: [], 
+           dislikes: [], 
+           replies: [],
+           movieSlug: currentPlayingMovie.slug,
+           movieName: currentPlayingMovie.name
          });
+         document.getElementById('txtComment').value = '';
          showToast("Đã gửi bình luận!");
-       } catch(e) {}
+         loadRealCommunityComments();
+       } catch(e) {
+         showToast("Lỗi gửi bình luận!");
+       }
     }
 
     function toggleReplyBox(cId) {
@@ -1997,6 +2056,7 @@
             else { if (dislikes.includes(uid)) { dislikes = dislikes.filter(id => id !== uid); } else { dislikes.push(uid); likes = likes.filter(id => id !== uid); } }
             t.update(ref, { likes, dislikes });
          });
+         loadRealCommunityComments();
       } catch(e) {}
     }
 
@@ -2042,6 +2102,7 @@
       initVideoProgressTracking();
       initDoubleTapAndShortcuts();
       fetchMovies(1);
+      loadRealCommunityComments();
     };
   </script>
 </body>
