@@ -334,6 +334,28 @@
       .pagination-bar { padding: 4px; } .page-btn { min-width: 34px; height: 34px; font-size: 0.82rem; }
       .poke-notification { left: 14px; right: 14px; max-width: none; top: 68px; }
       .comm-columns-wrap { grid-template-columns: 1fr; }
+      /* TỐI ƯU KHUNG PHÂN LOẠI CHO ĐIỆN THOẠI */
+      .topics-section { padding: 0 14px; margin-bottom: 24px; }
+      .topics-scroll {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        overflow: visible;
+        padding-bottom: 0;
+      }
+      .topic-card {
+        min-width: unset;
+        height: 52px;
+        padding: 8px 12px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        border-radius: 10px;
+      }
+      .topic-card i.topic-icon { font-size: 1.15rem; }
+      .topic-card .topic-name { font-size: 0.84rem; font-weight: 800; white-space: nowrap; }
+      .topic-card .topic-cta { display: none; } /* Ẩn chữ 'XEM NGAY >' trên điện thoại cho thoáng */
     }
     /* ========================================================
        MODAL HỘP QUÀ CHỮA LÀNH (11 CÂU QUOTE)
@@ -2137,15 +2159,31 @@
       } catch (e) {}
     }
 
-    async function filterByTopic(topicSlug, topicTitle) {
+   async function filterByTopic(topicSlug, topicTitle) {
       document.getElementById('sectionMainTitle').innerText = topicTitle;
-      document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Đang lọc danh sách ${topicTitle}...</p>`;
+      document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải ${topicTitle}...</p>`;
       document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
 
       try {
-        let url = `https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(topicTitle)}&limit=18`;
-        if (topicSlug === 'chieu-rap') url = `https://phimapi.com/v1/api/danh-sach/phim-le?page=1`;
-        if (topicSlug === 'hoat-hinh') url = `https://phimapi.com/v1/api/danh-sach/hoat-hinh?page=1`;
+        let url = '';
+        // Định tuyến chuẩn xác từng thể loại và quốc gia từ API
+        if (topicSlug === 'hoat-hinh') {
+          url = `https://phimapi.com/v1/api/the-loai/hoat-hinh?page=1&limit=24`;
+        } else if (topicSlug === 'co-trang') {
+          url = `https://phimapi.com/v1/api/the-loai/co-trang?page=1&limit=24`;
+        } else if (topicSlug === 'kinh-di') {
+          url = `https://phimapi.com/v1/api/the-loai/kinh-di?page=1&limit=24`;
+        } else if (topicSlug === 'han-quoc') {
+          url = `https://phimapi.com/v1/api/quoc-gia/han-quoc?page=1&limit=24`;
+        } else if (topicSlug === 'au-my') {
+          url = `https://phimapi.com/v1/api/quoc-gia/au-my?page=1&limit=24`;
+        } else if (topicSlug === 'chieu-rap') {
+          url = `https://phimapi.com/v1/api/danh-sach/phim-le?page=1`;
+        } else if (topicSlug === '4k') {
+          url = `https://phimapi.com/v1/api/tim-kiem?keyword=4k&limit=24`;
+        } else {
+          url = `https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(topicTitle)}&limit=24`;
+        }
 
         const res = await fetch(url);
         const data = await res.json();
@@ -2153,13 +2191,13 @@
 
         if (items.length > 0) {
           renderGrid('mainMovieGrid', items);
-          document.getElementById('paginationBar').innerHTML = '';
+          document.getElementById('paginationBar').innerHTML = ''; // Ẩn phân trang khi lọc thể loại
           showToast(`Đã lọc: ${topicTitle}!`);
         } else {
-          document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;">Chưa có phim trong mục này!</p>`;
+          document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;">Chưa có dữ liệu cho mục này!</p>`;
         }
       } catch (e) {
-        showToast("Lỗi lọc danh mục!", true);
+        showToast("Lỗi tải danh mục phim!", true);
       }
     }
 
