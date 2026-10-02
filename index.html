@@ -76,7 +76,7 @@
     .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 12px 26px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); transition: var(--transition); }
     .btn-hero-play:hover { background: var(--primary-hover); transform: scale(1.03); }
 
-    /* BẠN ĐANG QUAN TÂM GÌ? */
+    /* PHẦN 1: BẠN ĐANG QUAN TÂM GÌ? */
     .topics-section { max-width: 1400px; margin: 0 auto 32px; padding: 0 20px; }
     .topics-header { font-size: 1.25rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
     .topics-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
@@ -783,6 +783,7 @@
     let currentEpIndex = 0; 
     let hlsInstance = null; 
     let unsubscribeComments = null;
+    let unsubscribeCommunityComments = null;
     let allMoviesCache = []; 
     let currentPage = 1; 
     let totalPages = 50;
@@ -1585,7 +1586,6 @@
       }
     }
 
-    // --- RENDER DỮ LIỆU CỘT SÔI NỔI & YÊU THÍCH ---
     function renderCommunityWidgets(movies) {
       if (!movies || movies.length === 0) return;
 
@@ -1608,98 +1608,112 @@
         </div>
       `).join('');
 
-      // GỌI HÀM LẤY BÌNH LUẬN THẬT 100% TỪ FIREBASE
       loadRealCommunityComments();
     }
 
-    // --- HÀM LẤY BÌNH LUẬN THẬT TỪ DATABASE FIREBASE ---
-    async function loadRealCommunityComments() {
+    // --- HÀM ĐỌC VÀ LẮNG NGHE BÌNH LUẬN THẬT TỪ FIREBASE (REALTIME 100%) ---
+    function loadRealCommunityComments() {
       const topRow = document.getElementById('topCommentsRow');
       const recentWrap = document.getElementById('recentCommunityComments');
 
-      try {
-        const snap = await db.collectionGroup('comments').orderBy('timestamp', 'desc').limit(25).get();
-        if (snap.empty) {
-          topRow.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 24px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--border);">
-              <i class="fa-regular fa-comment-dots" style="font-size: 1.5rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
-              Chưa có bình luận nào! Hãy vào xem phim và là người đầu tiên để lại bình luận nhé.
-            </div>`;
-          recentWrap.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); padding:8px;">Chưa có bình luận nào.</p>`;
-          return;
-        }
+      if (unsubscribeCommunityComments) unsubscribeCommunityComments();
 
-        let allComments = [];
-        snap.forEach(doc => {
-          const data = doc.data();
-          const parentSlug = (doc.ref.parent && doc.ref.parent.parent) ? doc.ref.parent.parent.id : '';
-          allComments.push({
-            id: doc.id,
-            ...data,
-            slug: data.movieSlug || parentSlug
+      unsubscribeCommunityComments = db.collection('recent_comments')
+        .orderBy('timestamp', 'desc')
+        .limit(30)
+        .onSnapshot(async snap => {
+          if (snap.empty) {
+            // Tự động gom các bình luận cũ từ các phim trên trang 1 (nếu có)
+            if (allMoviesCache && allMoviesCache.length > 0) {
+              let foundAny = false;
+              for (let i = 0; i < Math.min(allMoviesCache.length, 8); i++) {
+                const m = allMoviesCache[i];
+                try {
+                  const cSnap = await db.collection('movie_comments').doc(m.slug).collection('comments').limit(5).get();
+                  cSnap.forEach(cDoc => {
+                    foundAny = true;
+                    const cData = cDoc.data();
+                    db.collection('recent_comments').doc(cDoc.id).set({
+                      ...cData,
+                      commentId: cDoc.id,
+                      movieSlug: m.slug,
+                      movieName: m.name
+                    }).catch(()=>{});
+                  });
+                } catch(e) {}
+              }
+              if (foundAny) return;
+            }
+
+            topRow.innerHTML = `
+              <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 22px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--border);">
+                <i class="fa-regular fa-comment-dots" style="font-size: 1.5rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
+                Chưa có bình luận nào! Hãy vào xem phim và để lại bình luận đầu tiên nhé.
+              </div>`;
+            recentWrap.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); padding:8px;">Chưa có bình luận mới.</p>`;
+            return;
+          }
+
+          let allComments = [];
+          snap.forEach(doc => {
+            allComments.push({ id: doc.id, ...doc.data() });
           });
+
+          // 1. TOP BÌNH LUẬN: 4 bình luận nhiều Like nhất
+          const topLiked = [...allComments].sort((a, b) => {
+            const likesA = (a.likes || []).length;
+            const likesB = (b.likes || []).length;
+            if (likesB !== likesA) return likesB - likesA;
+            return (b.timestamp || 0) - (a.timestamp || 0);
+          }).slice(0, 4);
+
+          topRow.innerHTML = topLiked.map(c => {
+            const likeCount = (c.likes || []).length;
+            const timeAgo = formatTimeAgo(c.timestamp);
+            const movieBadge = c.movieName ? `<div style="font-size:0.7rem; color:var(--primary); font-weight:700; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🎬 ${escapeHtml(c.movieName)}</div>` : '';
+            const clickEvt = c.movieSlug ? `onclick="openPlayer('${c.movieSlug}')"` : '';
+
+            return `
+              <div class="top-cmt-card" ${clickEvt} title="Bấm để xem phim này">
+                <img src="${c.avatar || defaultAvatar}" class="top-cmt-avatar">
+                <div class="top-cmt-body">
+                  ${movieBadge}
+                  <div class="top-cmt-user">${escapeHtml(c.name || 'Thành viên')}</div>
+                  <div class="top-cmt-text">${escapeHtml(c.content || '')}</div>
+                  <div class="top-cmt-footer">
+                    <span>${timeAgo}</span>
+                    <span><i class="fa-solid fa-thumbs-up" style="color:#38bdf8;"></i> ${likeCount}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          // 2. BÌNH LUẬN MỚI: 5 bình luận vừa mới gửi
+          const latest = allComments.slice(0, 5);
+          recentWrap.innerHTML = latest.map(c => {
+            const timeAgo = formatTimeAgo(c.timestamp);
+            const clickEvt = c.movieSlug ? `onclick="openPlayer('${c.movieSlug}')"` : '';
+
+            return `
+              <div class="comm-list-item" ${clickEvt} style="gap:10px;" title="Bấm để xem phim">
+                <img src="${c.avatar || defaultAvatar}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+                <div style="overflow:hidden;flex:1;">
+                  <div style="font-weight:700;font-size:0.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    ${escapeHtml(c.name || 'Thành viên')} 
+                    <span style="font-size:0.68rem;color:var(--text-muted);font-weight:normal;">• ${timeAgo}</span>
+                  </div>
+                  <div style="font-size:0.76rem;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    ${escapeHtml(c.content || '')}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+        }, err => {
+          console.warn("Lỗi realtime comments:", err);
         });
-
-        // 1. TOP BÌNH LUẬN: Lấy 4 bình luận nhiều like nhất thật
-        const topLiked = [...allComments].sort((a, b) => {
-          const likesA = (a.likes || []).length;
-          const likesB = (b.likes || []).length;
-          if (likesB !== likesA) return likesB - likesA;
-          return b.timestamp - a.timestamp;
-        }).slice(0, 4);
-
-        topRow.innerHTML = topLiked.map(c => {
-          const likeCount = (c.likes || []).length;
-          const timeAgo = formatTimeAgo(c.timestamp);
-          const movieBadge = c.movieName ? `<div style="font-size:0.7rem; color:var(--primary); font-weight:700; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🎬 ${escapeHtml(c.movieName)}</div>` : '';
-          const clickEvt = c.slug ? `onclick="openPlayer('${c.slug}')"` : '';
-
-          return `
-            <div class="top-cmt-card" ${clickEvt} title="Bấm để xem phim này">
-              <img src="${c.avatar || defaultAvatar}" class="top-cmt-avatar">
-              <div class="top-cmt-body">
-                ${movieBadge}
-                <div class="top-cmt-user">${escapeHtml(c.name || 'Thành viên')}</div>
-                <div class="top-cmt-text">${escapeHtml(c.content || '')}</div>
-                <div class="top-cmt-footer">
-                  <span>${timeAgo}</span>
-                  <span><i class="fa-solid fa-thumbs-up" style="color:#38bdf8;"></i> ${likeCount}</span>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-
-        // 2. BÌNH LUẬN MỚI: 5 bình luận mới gửi nhất thật
-        const latest = allComments.slice(0, 5);
-        recentWrap.innerHTML = latest.map(c => {
-          const timeAgo = formatTimeAgo(c.timestamp);
-          const clickEvt = c.slug ? `onclick="openPlayer('${c.slug}')"` : '';
-
-          return `
-            <div class="comm-list-item" ${clickEvt} style="gap:10px;" title="Bấm để xem phim">
-              <img src="${c.avatar || defaultAvatar}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;">
-              <div style="overflow:hidden;flex:1;">
-                <div style="font-weight:700;font-size:0.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                  ${escapeHtml(c.name || 'Thành viên')} 
-                  <span style="font-size:0.68rem;color:var(--text-muted);font-weight:normal;">• ${timeAgo}</span>
-                </div>
-                <div style="font-size:0.76rem;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                  ${escapeHtml(c.content || '')}
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-
-      } catch (err) {
-        console.warn("Lỗi đọc collectionGroup comments:", err);
-        topRow.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 18px;">
-            Bình luận sẽ hiển thị tại đây khi mọi người bắt đầu bình luận phim.
-          </div>`;
-        recentWrap.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); padding:8px;">Chưa có bình luận mới.</p>`;
-      }
     }
 
     function renderGrid(containerId, movies) {
@@ -2006,25 +2020,38 @@
       }
     }
 
+    // --- LƯU BÌNH LUẬN ĐỒNG THỜI VÀO PHIM & FEED TRANG CHỦ ---
     async function submitComment() {
        if (!currentUser || !currentPlayingMovie) return;
-       const txt = document.getElementById('txtComment').value.trim(); if (!txt) return showToast("Vui lòng nhập nội dung!");
+       const txt = document.getElementById('txtComment').value.trim(); 
+       if (!txt) return showToast("Vui lòng nhập nội dung!");
+
+       const now = getSyncedNow();
+       const commentData = {
+         uid: currentUser.uid, 
+         name: currentUser.displayName || currentUser.email.split('@')[0], 
+         avatar: getMyAvatar(), 
+         content: txt, 
+         timestamp: now, 
+         likes: [], 
+         dislikes: [], 
+         replies: [],
+         movieSlug: currentPlayingMovie.slug,
+         movieName: currentPlayingMovie.name
+       };
+
        try {
-         await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add({
-           uid: currentUser.uid, 
-           name: currentUser.displayName || currentUser.email.split('@')[0], 
-           avatar: getMyAvatar(), 
-           content: txt, 
-           timestamp: getSyncedNow(), 
-           likes: [], 
-           dislikes: [], 
-           replies: [],
-           movieSlug: currentPlayingMovie.slug,
-           movieName: currentPlayingMovie.name
-         });
+         // 1. Lưu vào subcollection của phim
+         const docRef = await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add(commentData);
+         
+         // 2. Lưu vào bảng phẳng recent_comments để trang chủ tự nhảy lập tức
+         db.collection('recent_comments').doc(docRef.id).set({
+           ...commentData,
+           commentId: docRef.id
+         }).catch(()=>{});
+
          document.getElementById('txtComment').value = '';
          showToast("Đã gửi bình luận!");
-         loadRealCommunityComments();
        } catch(e) {
          showToast("Lỗi gửi bình luận!");
        }
@@ -2045,18 +2072,22 @@
       } catch (e) {}
     }
 
+    // --- VOTE LIKE / DISLIKE ĐỒNG BỘ CẢ TRANG CHỦ ---
     async function voteComment(slug, cId, type) {
       if (!currentUser) return showToast("Vui lòng đăng nhập!");
       const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
+      const recentRef = db.collection('recent_comments').doc(cId);
+
       try {
          await db.runTransaction(async (t) => {
             const doc = await t.get(ref); if (!doc.exists) return;
             const data = doc.data(); let likes = data.likes || []; let dislikes = data.dislikes || []; const uid = currentUser.uid;
             if (type === 'like') { if (likes.includes(uid)) { likes = likes.filter(id => id !== uid); } else { likes.push(uid); dislikes = dislikes.filter(id => id !== uid); } } 
             else { if (dislikes.includes(uid)) { dislikes = dislikes.filter(id => id !== uid); } else { dislikes.push(uid); likes = likes.filter(id => id !== uid); } }
+            
             t.update(ref, { likes, dislikes });
+            t.set(recentRef, { likes, dislikes }, { merge: true });
          });
-         loadRealCommunityComments();
       } catch(e) {}
     }
 
@@ -2102,7 +2133,6 @@
       initVideoProgressTracking();
       initDoubleTapAndShortcuts();
       fetchMovies(1);
-      loadRealCommunityComments();
     };
   </script>
 </body>
