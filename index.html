@@ -573,18 +573,18 @@
     </div>
   </div>
 
-  <!-- MODAL HỘP QUÀ THÔNG ĐIỆP KHI HẾT PHIM -->
+<!-- MODAL HỘP QUÀ THÔNG ĐIỆP KHI HẾT PHIM -->
   <div class="gift-modal" id="giftBoxModal">
     <div class="gift-card">
       <div class="gift-icon-wrap"><i class="fa-solid fa-gift"></i></div>
-      <h3 class="gift-title">HỘP QUÀ TẶNG BẠN</h3>
-      <p class="gift-subtitle">Tập phim vừa kết thúc, gửi tặng bạn một thông điệp nhỏ:</p>
+      <h3 class="gift-title" id="giftTitle">HỘP QUÀ TẶNG BẠN</h3>
+      <p class="gift-subtitle" id="giftStepBadge">Tập phim vừa kết thúc, gửi tặng bạn một thông điệp nhỏ:</p>
       
       <div class="gift-quote-box" id="giftQuoteText">"Đang mở quà..."</div>
       
       <div class="gift-actions">
-        <button class="btn-gift-close" onclick="closeGiftBox()">
-          <i class="fa-solid fa-heart"></i> Cảm Ơn & Tiếp Tục
+        <button class="btn-gift-close" id="btnGiftNext" onclick="nextGiftQuote()">
+          Tiếp Tục 👉
         </button>
         <button class="btn-gift-mute" onclick="muteGiftBox24h()">
           🔕 Không hiện hộp quà trong 24 giờ tới
@@ -1197,38 +1197,93 @@
 
     function getResumeKey(slug, epIndex) { return `resume_${slug}_ep${epIndex}`; }
 
+   // ========================================================
+    // 2 BỘ HỘP QUÀ THÔNG ĐIỆP (LẬT TỪNG CÂU & LỜI CHÚC CUỐI)
     // ========================================================
-    // HỘP QUÀ 11 CÂU QUOTE CHỮA LÀNH (KÍCH HOẠT MỐC 80%)
-    // ========================================================
-    const healingQuotes = [
-      "Bạn đang trong độ tuổi đẹp nhất cuộc đời. Đây là khoảng thời gian đẹp mà bạn sẽ không bao giờ quay lại được.",
-      "Vậy nên hãy làm những điều khiến trái tim mình vui, trước khi mọi thứ trở thành ký ức.",
-      "Rồi bạn sẽ nhận ra điều đáng tiếc nhất không phải là đã sai, mà là chưa từng dám sống.",
-      "Vì thế, hãy cứ sống, cứ trải nghiệm và chọn những điều khiến mình hạnh phúc.",
-      "Hãy đi những nơi muốn đi, làm những điều muốn làm và sống một cuộc đời khiến mình tự hào.",
-      "Bạn sẽ không bao giờ quay lại độ tuổi này nữa, nên hãy làm những điều khiến bản thân mình hạnh phúc.",
-      "Hãy hạnh phúc. Vì cuộc đời này ngắn lắm, đừng để những chuyện không đáng lấy mất niềm vui.",
-      "Hãy khỏe mạnh. Vì còn rất nhiều điều đẹp đẽ đang chờ bạn ở phía trước.",
-      "Hãy tự tin. Chính vì bạn là điều đặc biệt nhất.",
-      "Hãy là phiên bản tốt nhất. Vì bạn chỉ có một cuộc đời.",
-      "Hãy hạnh phúc, hãy khỏe mạnh, hãy tự tin, hãy là phiên bản tốt nhất và hãy tự hào về chính mình."
+    const giftPacks = [
+      // HỘP QUÀ 1 (7 câu tuần tự)
+      [
+        "Bạn đang trong độ tuổi đẹp nhất cuộc đời. Đây là khoảng thời gian đẹp mà bạn sẽ không bao giờ quay lại được.",
+        "Vậy nên hãy làm những điều khiến trái tim mình vui, trước khi mọi thứ trở thành ký ức.",
+        "Rồi bạn sẽ nhận ra điều đáng tiếc nhất không phải là đã sai, mà là chưa từng dám sống.",
+        "Vì thế, hãy cứ sống, cứ trải nghiệm và chọn những điều khiến mình hạnh phúc.",
+        "Hãy đi những nơi muốn đi, làm những điều muốn làm và sống một cuộc đời khiến mình tự hào.",
+        "Bạn sẽ không bao giờ quay lại độ tuổi này nữa, nên hãy làm những điều khiến bản thân mình hạnh phúc.",
+        "Chúc bạn một ngày tốt lành, hi vọng cuộc sống sau này sẽ tốt hơn."
+      ],
+      // HỘP QUÀ 2 (6 câu tuần tự)
+      [
+        "Hãy hạnh phúc. Vì cuộc đời này ngắn lắm, đừng để những chuyện không đáng lấy mất niềm vui.",
+        "Hãy khỏe mạnh. Vì còn rất nhiều điều đẹp đẽ đang chờ bạn ở phía trước.",
+        "Hãy tự tin. Chính vì bạn là điều đặc biệt nhất.",
+        "Hãy là phiên bản tốt nhất. Vì bạn chỉ có một cuộc đời.",
+        "Hãy hạnh phúc, hãy khỏe mạnh, hãy tự tin, hãy là phiên bản tốt nhất và hãy tự hào về chính mình.",
+        "Chúc bạn một ngày tốt lành, hi vọng cuộc sống sau này sẽ tốt hơn."
+      ]
     ];
 
+    let currentGiftPack = [];
+    let currentGiftIndex = 0;
     let hasShownGiftForThisEp = false;
+
+    function renderGiftQuote() {
+      const txtEl = document.getElementById('giftQuoteText');
+      const btnNext = document.getElementById('btnGiftNext');
+      const stepBadge = document.getElementById('giftStepBadge');
+
+      if (!txtEl || !btnNext) return;
+
+      // Hiển thị câu hiện tại
+      txtEl.innerText = `"${currentGiftPack[currentGiftIndex]}"`;
+      
+      // Hiển thị số bước (Ví dụ: Thông điệp 1/7)
+      if (stepBadge) {
+        stepBadge.innerText = `Thông điệp (${currentGiftIndex + 1}/${currentGiftPack.length}):`;
+      }
+
+      // Nếu đang ở câu cuối cùng (câu chúc): đổi nút thành "Hoàn Tất"
+      if (currentGiftIndex === currentGiftPack.length - 1) {
+        btnNext.innerHTML = `<i class="fa-solid fa-heart"></i> Cảm Ơn & Hoàn Tất`;
+      } else {
+        btnNext.innerHTML = `Tiếp Tục 👉 (${currentGiftIndex + 1}/${currentGiftPack.length})`;
+      }
+    }
 
     function checkAndShowGiftBox() {
       const modal = document.getElementById('giftBoxModal');
       if (!modal) return;
 
+      // 1. Kiểm tra nếu người dùng đã bật tắt 24h
       const muteUntil = localStorage.getItem('phimnha_gift_mute_until');
       if (muteUntil && Date.now() < parseInt(muteUntil)) return;
 
-      const randomQuote = healingQuotes[Math.floor(Math.random() * healingQuotes.length)];
-      const txtEl = document.getElementById('giftQuoteText');
-      if (txtEl) txtEl.innerText = `"${randomQuote}"`;
+      // 2. Bốc ngẫu nhiên Hộp Quà 1 hoặc Hộp Quà 2
+      const randomPackIndex = Math.floor(Math.random() * giftPacks.length);
+      currentGiftPack = giftPacks[randomPackIndex];
+      currentGiftIndex = 0;
+
+      // Cập nhật tên tiêu đề hộp quà
+      const titleEl = document.getElementById('giftTitle');
+      if (titleEl) {
+        titleEl.innerText = randomPackIndex === 0 ? "HỘP QUÀ THANH XUÂN" : "HỘP QUÀ BÌNH YÊN";
+      }
+
+      // 3. Hiển thị câu đầu tiên
+      renderGiftQuote();
 
       playSoftChime();
       modal.style.display = 'flex';
+    }
+
+    function nextGiftQuote() {
+      // Nếu chưa hết câu thì nhảy sang câu tiếp theo
+      if (currentGiftIndex < currentGiftPack.length - 1) {
+        currentGiftIndex++;
+        renderGiftQuote();
+      } else {
+        // Đã xem xong câu chúc cuối cùng -> Đóng hộp quà
+        closeGiftBox();
+      }
     }
 
     function closeGiftBox() {
@@ -1236,6 +1291,13 @@
       if (modal) modal.style.display = 'none';
     }
 
+    function muteGiftBox24h() {
+      const until = Date.now() + (24 * 60 * 60 * 1000);
+      localStorage.setItem('phimnha_gift_mute_until', until.toString());
+      const modal = document.getElementById('giftBoxModal');
+      if (modal) modal.style.display = 'none';
+      showToast("🔕 Đã tắt thông điệp hộp quà trong 24 giờ!");
+    }
     function muteGiftBox24h() {
       const until = Date.now() + (24 * 60 * 60 * 1000);
       localStorage.setItem('phimnha_gift_mute_until', until.toString());
