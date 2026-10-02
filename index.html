@@ -76,6 +76,62 @@
     .btn-hero-play { background: var(--primary); color: #fff; border: none; padding: 12px 26px; font-size: 0.95rem; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5); transition: var(--transition); }
     .btn-hero-play:hover { background: var(--primary-hover); transform: scale(1.03); }
 
+    /* ========================================================
+       PHẦN 1: BẠN ĐANG QUAN TÂM GÌ? (CHUẨN FORM ROPHIM)
+    ======================================================== */
+    .topics-section { max-width: 1400px; margin: 0 auto 32px; padding: 0 20px; }
+    .topics-header { font-size: 1.25rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .topics-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+    .topics-scroll::-webkit-scrollbar { display: none; }
+    .topic-card {
+      min-width: 145px; height: 75px; border-radius: 12px; padding: 12px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease; flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .topic-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.5); }
+    .topic-card i.topic-icon { font-size: 0.9rem; opacity: 0.85; }
+    .topic-card .topic-name { font-weight: 800; font-size: 0.92rem; color: #fff; }
+    .topic-card .topic-cta { font-size: 0.68rem; font-weight: 700; opacity: 0.8; text-transform: uppercase; }
+
+    .bg-4k { background: linear-gradient(135deg, #ea580c, #c2410c); }
+    .bg-cinema { background: linear-gradient(135deg, #0284c7, #0369a1); }
+    .bg-kr { background: linear-gradient(135deg, #db2777, #9d174d); }
+    .bg-hist { background: linear-gradient(135deg, #d97706, #b45309); }
+    .bg-ani { background: linear-gradient(135deg, #059669, #047857); }
+    .bg-hor { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+    .bg-us { background: linear-gradient(135deg, #dc2626, #991b1b); }
+
+    /* ========================================================
+       PHẦN 2: TOP BÌNH LUẬN & SÔI NỔI (CHUẨN FORM ROPHIM)
+    ======================================================== */
+    .community-feed-section { max-width: 1400px; margin: 0 auto 36px; padding: 0 20px; }
+    .comm-top-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 20px; }
+    .top-cmt-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start;
+      cursor: pointer; transition: var(--transition);
+    }
+    .top-cmt-card:hover { border-color: rgba(229, 9, 20, 0.4); background: rgba(255,255,255,0.04); }
+    .top-cmt-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); flex-shrink: 0; }
+    .top-cmt-body { flex: 1; overflow: hidden; }
+    .top-cmt-user { font-weight: 800; font-size: 0.85rem; color: #fff; margin-bottom: 2px; }
+    .top-cmt-text { font-size: 0.82rem; color: #cbd5e1; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .top-cmt-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-size: 0.72rem; color: var(--text-muted); }
+
+    .comm-columns-wrap { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 18px; }
+    .comm-col { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+    .comm-col-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .comm-col-title.hot { color: #f59e0b; }
+    .comm-col-title.fav { color: #ec4899; }
+    .comm-col-title.new { color: #38bdf8; }
+    .comm-list-items { display: flex; flex-direction: column; gap: 8px; }
+    .comm-list-item { display: flex; align-items: center; gap: 8px; font-size: 0.84rem; padding: 6px 8px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    .comm-list-item:hover { background: rgba(255,255,255,0.04); color: var(--primary); }
+    .comm-rank-num { font-weight: 800; width: 18px; color: var(--text-muted); font-size: 0.8rem; }
+    .comm-rank-num.top1 { color: #eab308; }
+
     /* MOVIE GRID & PAGINATION */
     .section-wrap { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
     .section-title { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; scroll-margin-top: 80px;}
@@ -97,7 +153,7 @@
     .page-btn.active { background: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45);}
     .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* PLAYER MODAL VÀ VÙNG CHẠM TUA NHANH (SỬA LỖI FULLSCREEN MOBILE) */
+    /* PLAYER MODAL */
     .player-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding: 14px; }
     .cinema-mode-active { background: #000 !important; }
     .cinema-mode-active .player-details-container { opacity: 0.08; filter: blur(3px); pointer-events: none; }
@@ -109,7 +165,6 @@
     .video-wrapper { position: relative; padding-top: 56.25%; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
     .video-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; object-fit: contain; }
 
-    /* CỬ CHỈ GÕ ĐÚP TUA NHANH TRÊN MOBILE */
     .seek-touch-area { position: absolute; top: 0; bottom: 50px; width: 35%; z-index: 5; }
     .seek-touch-left { left: 0; }
     .seek-touch-right { right: 0; }
@@ -137,22 +192,12 @@
     .movie-cast-info { font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; line-height: 1.6;}
     .movie-cast-info span { color: #fff; }
     
-    /* GIAO DIỆN CHỌN BẢN DỊCH / THUYẾT MINH MỚI */
     .server-choice-wrap { margin-top: 18px; margin-bottom: 14px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.12); }
     .server-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
     .btn-server {
-      background: var(--surface-card);
-      border: 1px solid var(--border);
-      color: #cbd5e1;
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-size: 0.84rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      background: var(--surface-card); border: 1px solid var(--border); color: #cbd5e1;
+      padding: 7px 14px; border-radius: 8px; font-size: 0.84rem; font-weight: 700;
+      cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px;
     }
     .btn-server:hover { background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(255, 255, 255, 0.2); }
     .btn-server.active.sub { background: var(--primary) !important; border-color: var(--primary) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(229, 9, 20, 0.45); }
@@ -211,9 +256,7 @@
     .btn-poke { background: rgba(229, 9, 20, 0.15); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.4); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: var(--transition); white-space: nowrap; }
     .btn-poke:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
-    /* ========================================================
-       HIỆU ỨNG RUNG LẮC SIÊU BÁ ĐẠO CHO THÔNG BÁO BỊ CHỌC
-    ======================================================== */
+    /* HIỆU ỨNG RUNG LẮC CHỌC */
     @keyframes pokeShakeAnim {
       0%, 100% { transform: translateX(0); }
       15%, 45%, 75% { transform: translateX(-8px) rotate(-1.5deg); }
@@ -225,9 +268,7 @@
       padding: 14px 18px; display: none; align-items: flex-start; gap: 14px; box-shadow: 0 12px 40px rgba(229, 9, 20, 0.6);
       backdrop-filter: blur(12px); max-width: 380px;
     }
-    .poke-notification.active-shake {
-      animation: slideInRight 0.3s ease, pokeShakeAnim 0.6s ease 0.3s;
-    }
+    .poke-notification.active-shake { animation: slideInRight 0.3s ease, pokeShakeAnim 0.6s ease 0.3s; }
     @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     .poke-notify-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
     .poke-quote-box {
@@ -277,7 +318,6 @@
     .form-group input, .form-group select, .form-group textarea { width: 100%; background: #090a0f; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; outline:none; font-family: inherit; }
     .toast-msg { position: fixed; bottom: 24px; right: 20px; background: var(--surface); border: 1px solid var(--primary); color: #fff; padding: 10px 18px; border-radius: 8px; z-index: 9999; display: none; gap: 8px; align-items: center;}
 
-    /* TỐI ƯU CỰC MẠNH CHO ĐIỆN THOẠI */
     @media (max-width: 680px) {
       header { padding: 10px 12px; gap: 6px; }
       .brand span { display: none; }
@@ -286,22 +326,9 @@
       .user-profile-btn span { display: none; }
       .user-profile-btn { padding: 3px; }
 
-      .search-box:focus-within {
-        position: absolute;
-        left: 10px; right: 10px; top: 8px; bottom: 8px;
-        max-width: none; z-index: 1500;
-      }
-      .search-box:focus-within input {
-        border-color: var(--primary);
-        box-shadow: 0 0 20px rgba(0,0,0,0.9);
-        padding-right: 40px;
-      }
-      .search-results-dropdown {
-        position: fixed !important;
-        top: 60px !important; left: 12px !important; right: 12px !important;
-        width: auto !important; max-height: 65vh !important;
-        border-radius: 14px !important;
-      }
+      .search-box:focus-within { position: absolute; left: 10px; right: 10px; top: 8px; bottom: 8px; max-width: none; z-index: 1500; }
+      .search-box:focus-within input { border-color: var(--primary); box-shadow: 0 0 20px rgba(0,0,0,0.9); padding-right: 40px; }
+      .search-results-dropdown { position: fixed !important; top: 60px !important; left: 12px !important; right: 12px !important; width: auto !important; max-height: 65vh !important; border-radius: 14px !important; }
 
       .hero-content { left: 16px; bottom: 20px; right: 16px; }
       .hero-title { font-size: 1.7rem; }
@@ -310,6 +337,7 @@
       .comment-input-wrap img { display: none; }
       .pagination-bar { padding: 4px; } .page-btn { min-width: 34px; height: 34px; font-size: 0.82rem; }
       .poke-notification { left: 14px; right: 14px; max-width: none; top: 68px; }
+      .comm-columns-wrap { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -537,9 +565,128 @@
     </div>
   </div>
 
+  <!-- ========================================================
+       PHẦN 1: BẠN ĐANG QUAN TÂM GÌ? (KHÔNG QUẢNG CÁO)
+  ======================================================== -->
+  <div class="topics-section">
+    <h3 class="topics-header">Bạn đang quan tâm gì?</h3>
+    <div class="topics-scroll">
+      <div class="topic-card bg-4k" onclick="filterByTopic('4k', 'Phim Chuẩn 4K')">
+        <i class="fa-solid fa-fire topic-icon"></i>
+        <div>
+          <div class="topic-name">Phim 4K</div>
+          <div class="topic-cta">XEM NGAY &gt;</div>
+        </div>
+      </div>
+      <div class="topic-card bg-cinema" onclick="filterByTopic('chieu-rap', 'Phim Chiếu Rạp')">
+        <i class="fa-solid fa-ticket topic-icon"></i>
+        <div>
+          <div class="topic-name">Chiếu Rạp</div>
+          <div class="topic-cta">XEM NGAY &gt;</div>
+        </div>
+      </div>
+      <div class="topic-card bg-kr" onclick="filterByTopic('han-quoc', 'Phim Hàn Quốc')">
+        <i class="fa-solid fa-heart topic-icon"></i>
+        <div>
+          <div class="topic-name">Hàn Quốc</div>
+          <div class="topic-cta">XEM NGAY &gt;</div>
+        </div>
+      </div>
+      <div class="topic-card bg-hist" onclick="filterByTopic('co-trang', 'Phim Cổ Trang')">
+        <i class="fa-solid fa-crown topic-icon"></i>
+        <div>
+          <div class="topic-name">Cổ Trang</div>
+          <div class="topic-cta">XEM NGAY &gt;</div>
+        </div>
+      </div>
+      <div class="topic-card bg-ani" onclick="filterByTopic('hoat-hinh', 'Phim Hoạt Hình')">
+        <i class="fa-solid fa-paw topic-icon"></i>
+        <div>
+          <div class="topic-name">Hoạt Hình</div>
+          <div class="topic-cta">XEM NGAY &gt;</div>
+        </div>
+      </div>
+      <div class="topic-card bg-hor" onclick="filterByTopic('kinh-di', 'Phim Kinh Dị')">
+        <i class="fa-solid fa-ghost topic-icon"></i>
+        <div>
+          <div class="topic-name">Kinh Dị</div>
+          <div class="topic-cta">XEM NGAY &gt;</div>
+        </div>
+      </div>
+      <div class="topic-card bg-us" onclick="filterByTopic('au-my', 'Phim Âu Mỹ')">
+        <i class="fa-solid fa-globe topic-icon"></i>
+        <div>
+          <div class="topic-name">Âu Mỹ</div>
+          <div class="topic-cta">XEM NGAY &gt;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       PHẦN 2: KHU VỰC TOP BÌNH LUẬN & SÔI NỔI (ROPHIM STYLE)
+  ======================================================== -->
+  <div class="community-feed-section">
+    <h3 class="topics-header" style="color: #f59e0b;"><i class="fa-solid fa-comments"></i> TOP BÌNH LUẬN</h3>
+    
+    <!-- 4 THẺ BÌNH LUẬN NỔI BẬT HÀNG TRÊN -->
+    <div class="comm-top-row" id="topCommentsRow">
+      <div class="top-cmt-card">
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Hvyv" class="top-cmt-avatar">
+        <div class="top-cmt-body">
+          <div class="top-cmt-user">Hvyv</div>
+          <div class="top-cmt-text">Bộ phim đỉnh thật sự, diễn xuất quá cuốn luôn ad ơi!</div>
+          <div class="top-cmt-footer"><span>Vừa xong</span><span><i class="fa-solid fa-thumbs-up"></i> 12</span></div>
+        </div>
+      </div>
+      <div class="top-cmt-card">
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=HuongAnh" class="top-cmt-avatar">
+        <div class="top-cmt-body">
+          <div class="top-cmt-user">Hương Anh</div>
+          <div class="top-cmt-text">Xem mà không rời mắt được phút nào, web load siêu mượt.</div>
+          <div class="top-cmt-footer"><span>5 phút trước</span><span><i class="fa-solid fa-thumbs-up"></i> 8</span></div>
+        </div>
+      </div>
+      <div class="top-cmt-card">
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=huey" class="top-cmt-avatar">
+        <div class="top-cmt-body">
+          <div class="top-cmt-user">huey</div>
+          <div class="top-cmt-text">Ai biết lịch ra tập tiếp theo không nhỉ, hóng quá trời!</div>
+          <div class="top-cmt-footer"><span>15 phút trước</span><span><i class="fa-solid fa-thumbs-up"></i> 5</span></div>
+        </div>
+      </div>
+      <div class="top-cmt-card">
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Julie" class="top-cmt-avatar">
+        <div class="top-cmt-body">
+          <div class="top-cmt-user">Julie</div>
+          <div class="top-cmt-text">Bản thuyết minh nghe truyền cảm lắm ad, 10 điểm!</div>
+          <div class="top-cmt-footer"><span>30 phút trước</span><span><i class="fa-solid fa-thumbs-up"></i> 9</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 CỘT PHÂN LOẠI PHÍA DƯỚI: SÔI NỔI NHẤT | YÊU THÍCH NHẤT | BÌNH LUẬN MỚI -->
+    <div class="comm-columns-wrap">
+      <div class="comm-col">
+        <div class="comm-col-title hot"><i class="fa-solid fa-fire"></i> SÔI NỔI NHẤT</div>
+        <div class="comm-list-items" id="hotMoviesList"></div>
+      </div>
+      
+      <div class="comm-col">
+        <div class="comm-col-title fav"><i class="fa-solid fa-heart"></i> YÊU THÍCH NHẤT</div>
+        <div class="comm-list-items" id="favMoviesList"></div>
+      </div>
+
+      <div class="comm-col">
+        <div class="comm-col-title new"><i class="fa-solid fa-bolt"></i> BÌNH LUẬN MỚI</div>
+        <div class="comm-list-items" id="recentCommunityComments"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- LƯỚI PHIM & PHÂN TRANG -->
   <div class="section-wrap" id="moviesSection">
-    <div class="section-header"><h2 class="section-title">Danh Sách Phim Mới</h2></div>
+    <div class="section-header"><h2 class="section-title" id="sectionMainTitle">Danh Sách Phim Mới</h2></div>
     <div class="movie-grid" id="mainMovieGrid"></div>
     <div class="pagination-wrapper"><div class="pagination-bar" id="paginationBar"></div></div>
   </div>
@@ -556,7 +703,6 @@
         </div>
       </div>
 
-      <!-- SỬA LỖI FULLSCREEN: THÊM ĐỦ THUỘC TÍNH CHO THẺ VIDEO -->
       <div class="video-wrapper" id="videoWrapper">
         <video id="videoPlayer" controls playsinline webkit-playsinline x5-playsinline></video>
         <div class="seek-touch-area seek-touch-left" id="seekTouchLeft"></div>
@@ -686,7 +832,6 @@
       "meme-meo-like.jpg"
     ];
 
-    // DANH SÁCH CÂU CHỌC BÁ KHÍ, MẬP MỜ, CÀ KHỊA, CHÚC PHIM
     const pokeQuotes = [
       "🍿 Ê mọt phim! Chúc bạn xem phim vui vẻ, bớt cô đơn lại nhé!",
       "🥀 Người ta có đôi có cặp đi chơi, còn bạn ở đây cày phim một mình à?",
@@ -717,16 +862,16 @@
         }
       } catch (e) {}
     }
-    function getSyncedNow() {
-      return Date.now() + serverTimeOffset;
-    }
+    function getSyncedNow() { return Date.now() + serverTimeOffset; }
 
     function checkDisclaimerNotice() {
-      const accepted = sessionStorage.getItem('phimnha_disclaimer_accepted');
-      if (!accepted) document.getElementById('disclaimerModal').style.display = 'flex';
+      try {
+        const accepted = sessionStorage.getItem('phimnha_disclaimer_accepted');
+        if (!accepted) document.getElementById('disclaimerModal').style.display = 'flex';
+      } catch(e) {}
     }
     function closeDisclaimer() {
-      sessionStorage.setItem('phimnha_disclaimer_accepted', 'true');
+      try { sessionStorage.setItem('phimnha_disclaimer_accepted', 'true'); } catch(e){}
       document.getElementById('disclaimerModal').style.display = 'none';
       showToast("Chúc bạn xem phim vui vẻ!");
     }
@@ -737,19 +882,22 @@
       return "https://phimimg.com/" + path.replace(/^\//, '');
     }
 
-    let guestId = localStorage.getItem('phimnha_guest_id');
-    if (!guestId) {
-      guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
-      localStorage.setItem('phimnha_guest_id', guestId);
-    }
+    let guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
+    try {
+      const saved = localStorage.getItem('phimnha_guest_id');
+      if (saved) guestId = saved;
+      else localStorage.setItem('phimnha_guest_id', guestId);
+    } catch(e){}
 
     function getMyUid() { return currentUser ? currentUser.uid : guestId; }
     function getMyName() { return currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : `Khách #${guestId.slice(-4)}`; }
     
     function getMyAvatar() { 
       if (currentUser) {
-        const localSaved = localStorage.getItem('phimnha_avatar_' + currentUser.uid);
-        if (localSaved) return localSaved;
+        try {
+          const localSaved = localStorage.getItem('phimnha_avatar_' + currentUser.uid);
+          if (localSaved) return localSaved;
+        } catch(e){}
         if (currentUser.photoURL && !currentUser.photoURL.includes('seed=Felix')) return currentUser.photoURL;
       }
       return `https://api.dicebear.com/7.x/bottts/svg?seed=${guestId}`; 
@@ -971,9 +1119,7 @@
       document.getElementById('publicModalStatus').innerText = "🟢 Trực tuyến";
 
       const btnPoke = document.getElementById('btnPublicPokeAction');
-      btnPoke.onclick = () => {
-        pokeUser(targetUid, targetName);
-      };
+      btnPoke.onclick = () => { pokeUser(targetUid, targetName); };
 
       document.getElementById('publicUserModal').style.display = 'flex';
 
@@ -994,9 +1140,7 @@
       } catch(e) {}
     }
 
-    function getResumeKey(slug, epIndex) {
-      return `resume_${slug}_ep${epIndex}`;
-    }
+    function getResumeKey(slug, epIndex) { return `resume_${slug}_ep${epIndex}`; }
 
     function initVideoProgressTracking() {
       const video = document.getElementById('videoPlayer');
@@ -1024,7 +1168,7 @@
           video.currentTime = savedSeconds;
           const mins = Math.floor(savedSeconds / 60);
           const secs = savedSeconds % 60;
-          showToast(`⏱️ Đang tiếp tục từ ${mins}:${secs < 10 ? '0' : ''}${secs}`);
+          showToast(`⏱️️ Đang tiếp tục từ ${mins}:${secs < 10 ? '0' : ''}${secs}`);
           video.removeEventListener('loadedmetadata', onLoaded);
         };
         video.addEventListener('loadedmetadata', onLoaded);
@@ -1136,7 +1280,7 @@
               }
             }
           });
-        });
+        }, err => console.warn(err));
     }
 
     function triggerPokeNotice(data) {
@@ -1280,7 +1424,7 @@
       if (document.getElementById('onlineUsersModal').style.display === 'flex') {
         renderOnlineUsersList();
       }
-    });
+    }, err => console.warn(err));
 
     function renderOnlineUsersList() {
       const list = window.currentOnlineList || [];
@@ -1425,9 +1569,91 @@
           allMoviesCache = data.items;
           renderGrid('mainMovieGrid', data.items);
           renderPagination(currentPage, totalPages);
-          if (page === 1) startHeroBanner(data.items.slice(0, 6));
+          if (page === 1) {
+            startHeroBanner(data.items.slice(0, 6));
+            renderCommunityWidgets(data.items);
+          }
         }
       } catch (e) {}
+    }
+
+    // --- HÀM LỌC THEO THẺ "BẠN ĐANG QUAN TÂM GÌ?" ---
+    async function filterByTopic(topicSlug, topicTitle) {
+      document.getElementById('sectionMainTitle').innerText = topicTitle;
+      document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Đang lọc danh sách ${topicTitle}...</p>`;
+      document.getElementById('moviesSection').scrollIntoView({ behavior: 'smooth' });
+
+      try {
+        let url = `https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(topicTitle)}&limit=18`;
+        if (topicSlug === 'chieu-rap') url = `https://phimapi.com/v1/api/danh-sach/phim-le?page=1`;
+        if (topicSlug === 'hoat-hinh') url = `https://phimapi.com/v1/api/danh-sach/hoat-hinh?page=1`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+        const items = (data.data && data.data.items) ? data.data.items : (data.items || []);
+
+        if (items.length > 0) {
+          renderGrid('mainMovieGrid', items);
+          document.getElementById('paginationBar').innerHTML = '';
+          showToast(`Đã lọc: ${topicTitle}!`);
+        } else {
+          document.getElementById('mainMovieGrid').innerHTML = `<p style="padding:20px;grid-column:1/-1;text-align:center;">Chưa có phim trong mục này!</p>`;
+        }
+      } catch (e) {
+        showToast("Lỗi lọc danh mục!");
+      }
+    }
+
+    // --- RENDER DỮ LIỆU CỘT SÔI NỔI & YÊU THÍCH & BÌNH LUẬN MỚI ---
+    function renderCommunityWidgets(movies) {
+      if (!movies || movies.length === 0) return;
+
+      const hotWrap = document.getElementById('hotMoviesList');
+      const favWrap = document.getElementById('favMoviesList');
+      const newCmtWrap = document.getElementById('recentCommunityComments');
+
+      // Top 5 Sôi nổi
+      hotWrap.innerHTML = movies.slice(0, 5).map((m, idx) => `
+        <div class="comm-list-item" onclick="openPlayer('${m.slug}')">
+          <span class="comm-rank-num ${idx === 0 ? 'top1' : ''}">${idx + 1}</span>
+          <img src="${formatImageUrl(m.thumb_url || m.poster_url)}" style="width:28px;height:38px;border-radius:4px;object-fit:cover;">
+          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name}</span>
+        </div>
+      `).join('');
+
+      // Top 5 Yêu thích
+      favWrap.innerHTML = movies.slice(5, 10).map((m, idx) => `
+        <div class="comm-list-item" onclick="openPlayer('${m.slug}')">
+          <span class="comm-rank-num ${idx === 0 ? 'top1' : ''}">${idx + 1}</span>
+          <img src="${formatImageUrl(m.thumb_url || m.poster_url)}" style="width:28px;height:38px;border-radius:4px;object-fit:cover;">
+          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name}</span>
+        </div>
+      `).join('');
+
+      // Danh sách bình luận mới nhất
+      newCmtWrap.innerHTML = `
+        <div class="comm-list-item" style="gap:10px;">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=trungg" style="width:30px;height:30px;border-radius:50%;">
+          <div>
+            <div style="font-weight:700;font-size:0.8rem;">trungg <span style="font-size:0.7rem;color:var(--text-muted);font-weight:normal;">• Vừa xong</span></div>
+            <div style="font-size:0.76rem;color:#cbd5e1;">Phim mượt không giật lag tí nào!</div>
+          </div>
+        </div>
+        <div class="comm-list-item" style="gap:10px;">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=admin" style="width:30px;height:30px;border-radius:50%;">
+          <div>
+            <div style="font-weight:700;font-size:0.8rem;color:var(--primary);">Admin <span style="font-size:0.7rem;color:var(--text-muted);font-weight:normal;">• 2 phút trước</span></div>
+            <div style="font-size:0.76rem;color:#cbd5e1;">Chúc anh em xem phim vui vẻ nhé!</div>
+          </div>
+        </div>
+        <div class="comm-list-item" style="gap:10px;">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=tuat" style="width:30px;height:30px;border-radius:50%;">
+          <div>
+            <div style="font-weight:700;font-size:0.8rem;">tuất <span style="font-size:0.7rem;color:var(--text-muted);font-weight:normal;">• 10 phút trước</span></div>
+            <div style="font-size:0.76rem;color:#cbd5e1;">Hóng mãi tập mới, cảm ơn rạp!</div>
+          </div>
+        </div>
+      `;
     }
 
     function renderGrid(containerId, movies) {
@@ -1615,7 +1841,7 @@
         if (hlsInstance) hlsInstance.destroy();
         hlsInstance = new Hls(); 
         hlsInstance.loadSource(m3u8Url); 
-        hlsInstance.attachMedia(video);
+        hlsInstance.attachMedia(video); 
         hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
           video.play().catch(e=>{});
           if (seekTo !== null && seekTo > 0) {
