@@ -842,7 +842,7 @@
 
   <div class="toast-msg" id="toastMsg"><i class="fa-solid fa-circle-check" style="color: #10b981;"></i><span id="toastContent"></span></div>
 
-  <!-- ==================== HỆ THỐNG JAVASCRIPT ==================== -->
+ <!-- ==================== HỆ THỐNG JAVASCRIPT ==================== -->
   <script>
     const firebaseConfig = { apiKey: "AIzaSyCnOlja6uMcv5N93bT2soO3fnjZscSlVh8", authDomain: "web-phim-chill.firebaseapp.com", projectId: "web-phim-chill" };
     firebase.initializeApp(firebaseConfig);
@@ -902,9 +902,8 @@
     }
     function getSyncedNow() { return Date.now() + serverTimeOffset; }
 
-   function formatTimeAgo(ts) {
+    function formatTimeAgo(ts) {
       if (!ts) return "Vừa xong";
-      // Dùng trực tiếp Date.now() để mốc thời gian không bị trồi sụt khi đồng bộ mạng
       const diff = Math.max(0, Date.now() - ts);
       const mins = Math.floor(diff / 60000);
       if (mins < 1) return "Vừa xong";
@@ -1196,9 +1195,9 @@
       } catch(e) {}
     }
 
-  function getResumeKey(slug, epIndex) { return `resume_${slug}_ep${epIndex}`; }
+    function getResumeKey(slug, epIndex) { return `resume_${slug}_ep${epIndex}`; }
 
-  // ========================================================
+    // ========================================================
     // HỘP QUÀ 11 CÂU QUOTE CHỮA LÀNH (KÍCH HOẠT MỐC 80%)
     // ========================================================
     const healingQuotes = [
@@ -1221,11 +1220,9 @@
       const modal = document.getElementById('giftBoxModal');
       if (!modal) return;
 
-      // 1. Kiểm tra nếu người dùng đã bật tắt 24h
       const muteUntil = localStorage.getItem('phimnha_gift_mute_until');
       if (muteUntil && Date.now() < parseInt(muteUntil)) return;
 
-      // 2. Bốc ngẫu nhiên 1 trong 11 câu quote
       const randomQuote = healingQuotes[Math.floor(Math.random() * healingQuotes.length)];
       const txtEl = document.getElementById('giftQuoteText');
       if (txtEl) txtEl.innerText = `"${randomQuote}"`;
@@ -1257,12 +1254,10 @@
       video.addEventListener('timeupdate', () => {
         if (!currentPlayingMovie || !video.duration || video.duration <= 30) return;
 
-        // Lưu mốc để xem tiếp
         if (video.currentTime > 10 && (video.duration - video.currentTime > 15)) {
           localStorage.setItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex), Math.floor(video.currentTime).toString());
         }
 
-        // ĐẠT 80% THỜI LƯỢNG: Hiện luôn nếu người xem đang xem ở chế độ thường
         const progress = video.currentTime / video.duration;
         if (!hasShownGiftForThisEp && progress >= 0.8) {
           const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
@@ -1273,7 +1268,6 @@
         }
       });
 
-      // KHI NGƯỜI XEM THOÁT TOÀN MÀN HÌNH (Bấm Esc hoặc thu nhỏ màn hình sau khi xem xong đoạn phim >= 80%)
       const onFullscreenExit = () => {
         const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
         if (!isFullscreen && !hasShownGiftForThisEp && video.duration > 30) {
@@ -1286,7 +1280,6 @@
       document.addEventListener('fullscreenchange', onFullscreenExit);
       document.addEventListener('webkitfullscreenchange', onFullscreenExit);
 
-      // Dự phòng khi xem hết 100%
       video.addEventListener('ended', () => {
         if (currentPlayingMovie) {
           localStorage.removeItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex));
@@ -1297,9 +1290,6 @@
         }
       });
     }
-    // ================================================
-
-    
 
     function applyResumePlayback(slug, epIndex) {
       const savedTimeStr = localStorage.getItem(getResumeKey(slug, epIndex));
@@ -1771,8 +1761,6 @@
       loadRealCommunityComments();
     }
 
-    // --- HÀM ĐỌC VÀ LẮNG NGHE BÌNH LUẬN THẬT TỪ FIREBASE (REALTIME 100%) ---
-  // --- HÀM ĐỌC VÀ LẮNG NGHE BÌNH LUẬN THẬT TỪ FIREBASE (REALTIME 100%) ---
     function loadRealCommunityComments() {
       const topRow = document.getElementById('topCommentsRow');
       const recentWrap = document.getElementById('recentCommunityComments');
@@ -1798,7 +1786,6 @@
             allComments.push({ id: doc.id, ...doc.data() });
           });
 
-          // Sắp xếp cố định: Nhiều like nhất -> Mới nhất -> Theo ID (không bao giờ bị đảo vị trí lung tung)
           const topLiked = [...allComments].sort((a, b) => {
             const diffLikes = (b.likes || []).length - (a.likes || []).length;
             if (diffLikes !== 0) return diffLikes;
@@ -1829,7 +1816,6 @@
             `;
           }).join('');
 
-          // Cột bình luận mới nhất
           const latest = allComments.slice(0, 5);
           recentWrap.innerHTML = latest.map(c => {
             const timeAgo = formatTimeAgo(c.timestamp);
@@ -2096,7 +2082,6 @@
       else showToast("🌍 Ping Trái Đất: 0.01ms");
     }
 
-    // BÌNH LUẬN & TRẢ LỜI
     function loadComments(slug) {
       if (unsubscribeComments) unsubscribeComments();
       const list = document.getElementById('commentList');
@@ -2160,8 +2145,7 @@
       }
     }
 
-    // --- LƯU BÌNH LUẬN ĐỒNG THỜI VÀO PHIM & FEED TRANG CHỦ ---
-   async function submitComment() {
+    async function submitComment() {
        if (!currentUser || !currentPlayingMovie) return;
        const txt = document.getElementById('txtComment').value.trim(); 
        if (!txt) return showToast("Vui lòng nhập nội dung!");
@@ -2181,10 +2165,8 @@
        };
 
        try {
-         // 1. Lưu vào subcollection của phim
          const docRef = await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add(commentData);
          
-         // 2. Lưu đồng bộ ra bảng trang chủ
          await db.collection('recent_comments').doc(docRef.id).set({
            ...commentData,
            commentId: docRef.id
@@ -2197,6 +2179,7 @@
          showToast("Lỗi gửi bình luận!");
        }
     }
+
     function toggleReplyBox(cId) {
       if(!currentUser) return showToast("Đăng nhập để phản hồi!");
       const box = document.getElementById('replyBox-' + cId);
@@ -2212,7 +2195,6 @@
       } catch (e) {}
     }
 
-   // --- VOTE LIKE / DISLIKE TRONG PLAYER (ĐỘC LẬP & AN TOÀN) ---
     async function voteComment(slug, cId, type) {
       if (!currentUser) return showToast("Vui lòng đăng nhập để thích!");
       const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
@@ -2242,10 +2224,7 @@
           }
         }
 
-        // 1. Cập nhật trực tiếp trong phim (luôn thành công ngay lập tức)
         await ref.update({ likes: likes, dislikes: dislikes });
-
-        // 2. Cập nhật kèm ra bảng recent_comments ngoài trang chủ nếu có bản ghi
         db.collection('recent_comments').doc(cId).update({ likes: likes, dislikes: dislikes }).catch(() => {});
 
       } catch (err) {
@@ -2254,11 +2233,11 @@
       }
     }
 
-    // TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
     function saveToHistory(m) {
       if(!currentUser) return;
       db.collection('users').doc(currentUser.uid).collection('history').doc(m.slug).set({ slug: m.slug, name: m.name, thumb_url: m.thumb_url, timestamp: getSyncedNow() });
     }
+
     async function checkFavoriteStatus() {
       if(!currentUser || !currentPlayingMovie) return;
       const doc = await db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug).get();
@@ -2266,6 +2245,7 @@
       if(doc.exists) { btn.classList.add('active'); document.getElementById('favIcon').className = 'fa-solid fa-heart'; document.getElementById('favText').innerText = 'Đã Lưu'; }
       else { btn.classList.remove('active'); document.getElementById('favIcon').className = 'fa-regular fa-heart'; document.getElementById('favText').innerText = 'Yêu Thích'; }
     }
+
     async function toggleFavorite() {
       if(!currentUser) return showToast("Vui lòng đăng nhập!");
       const ref = db.collection('users').doc(currentUser.uid).collection('favorites').doc(currentPlayingMovie.slug);
@@ -2274,9 +2254,11 @@
       else { await ref.set({ slug: currentPlayingMovie.slug, name: currentPlayingMovie.name, thumb_url: currentPlayingMovie.thumb_url, timestamp: getSyncedNow() }); showToast("Đã lưu vào Tủ!"); }
       checkFavoriteStatus();
     }
+
     function openLibraryModal() { if(!currentUser) return; document.getElementById('libraryModal').style.display = 'flex'; switchLibTab('history'); }
     let currentLibTab = 'history';
     function switchLibTab(tab) { currentLibTab = tab; document.getElementById('tabHistory').classList.toggle('active', tab === 'history'); document.getElementById('tabFavorites').classList.toggle('active', tab === 'favorites'); loadLibraryData(); }
+    
     async function loadLibraryData() {
       const grid = document.getElementById('libContentGrid'); grid.innerHTML = '<p>Đang tải...</p>';
       const snap = await db.collection('users').doc(currentUser.uid).collection(currentLibTab).orderBy('timestamp', 'desc').limit(20).get();
@@ -2287,7 +2269,8 @@
     }
 
     window.addEventListener('resize', () => renderPagination(currentPage, totalPages));
-   window.onload = async () => {
+
+    window.onload = async () => {
       await syncGlobalClock();
       checkDisclaimerNotice();
       updateOnlinePresence();
@@ -2296,49 +2279,6 @@
       initVideoProgressTracking();
       initDoubleTapAndShortcuts();
       fetchMovies(1);
-    };
-
-      // ==========================================
-    // HỆ THỐNG 11 CÂU QUOTE & HỘP QUÀ KHI HẾT PHIM
-    // ==========================================
-    const healingQuotes = [
-      "Bạn đang trong độ tuổi đẹp nhất cuộc đời. Đây là khoảng thời gian đẹp mà bạn sẽ không bao giờ quay lại được.",
-      "Vậy nên hãy làm những điều khiến trái tim mình vui, trước khi mọi thứ trở thành ký ức.",
-      "Rồi bạn sẽ nhận ra điều đáng tiếc nhất không phải là đã sai, mà là chưa từng dám sống.",
-      "Vì thế, hãy cứ sống, cứ trải nghiệm và chọn những điều khiến mình hạnh phúc.",
-      "Hãy đi những nơi muốn đi, làm những điều muốn làm và sống một cuộc đời khiến mình tự hào.",
-      "Bạn sẽ không bao giờ quay lại độ tuổi này nữa, nên hãy làm những điều khiến bản thân mình hạnh phúc.",
-      "Hãy hạnh phúc. Vì cuộc đời này ngắn lắm, đừng để những chuyện không đáng lấy mất niềm vui.",
-      "Hãy khỏe mạnh. Vì còn rất nhiều điều đẹp đẽ đang chờ bạn ở phía trước.",
-      "Hãy tự tin. Chính vì bạn là điều đặc biệt nhất.",
-      "Hãy là phiên bản tốt nhất. Vì bạn chỉ có một cuộc đời.",
-      "Hãy hạnh phúc, hãy khỏe mạnh, hãy tự tin, hãy là phiên bản tốt nhất và hãy tự hào về chính mình."
-    ];
-
-    function checkAndShowGiftBox() {
-      // 1. Kiểm tra nếu người dùng đã bật tắt trong 24h
-      const muteUntil = localStorage.getItem('phimnha_gift_mute_until');
-      if (muteUntil && Date.now() < parseInt(muteUntil)) return;
-
-      // 2. Bốc ngẫu nhiên 1 trong 11 câu
-      const randomQuote = healingQuotes[Math.floor(Math.random() * healingQuotes.length)];
-      document.getElementById('giftQuoteText').innerText = `"${randomQuote}"`;
-
-      // 3. Bật modal hộp quà
-      playSoftChime();
-      document.getElementById('giftBoxModal').style.display = 'flex';
-    }
-
-    function closeGiftBox() {
-      document.getElementById('giftBoxModal').style.display = 'none';
-    }
-
-    function muteGiftBox24h() {
-      const until = Date.now() + (24 * 60 * 60 * 1000);
-      localStorage.setItem('phimnha_gift_mute_until', until.toString());
-      document.getElementById('giftBoxModal').style.display = 'none';
-      showToast("🔕 Đã tắt thông điệp hộp quà trong 24 giờ!");
-    }
     };
   </script>
 </body>
