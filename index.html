@@ -1196,25 +1196,110 @@
       } catch(e) {}
     }
 
-    function getResumeKey(slug, epIndex) { return `resume_${slug}_ep${epIndex}`; }
+  function getResumeKey(slug, epIndex) { return `resume_${slug}_ep${epIndex}`; }
 
-  function initVideoProgressTracking() {
+  // ========================================================
+    // HỘP QUÀ 11 CÂU QUOTE CHỮA LÀNH (KÍCH HOẠT MỐC 80%)
+    // ========================================================
+    const healingQuotes = [
+      "Bạn đang trong độ tuổi đẹp nhất cuộc đời. Đây là khoảng thời gian đẹp mà bạn sẽ không bao giờ quay lại được.",
+      "Vậy nên hãy làm những điều khiến trái tim mình vui, trước khi mọi thứ trở thành ký ức.",
+      "Rồi bạn sẽ nhận ra điều đáng tiếc nhất không phải là đã sai, mà là chưa từng dám sống.",
+      "Vì thế, hãy cứ sống, cứ trải nghiệm và chọn những điều khiến mình hạnh phúc.",
+      "Hãy đi những nơi muốn đi, làm những điều muốn làm và sống một cuộc đời khiến mình tự hào.",
+      "Bạn sẽ không bao giờ quay lại độ tuổi này nữa, nên hãy làm những điều khiến bản thân mình hạnh phúc.",
+      "Hãy hạnh phúc. Vì cuộc đời này ngắn lắm, đừng để những chuyện không đáng lấy mất niềm vui.",
+      "Hãy khỏe mạnh. Vì còn rất nhiều điều đẹp đẽ đang chờ bạn ở phía trước.",
+      "Hãy tự tin. Chính vì bạn là điều đặc biệt nhất.",
+      "Hãy là phiên bản tốt nhất. Vì bạn chỉ có một cuộc đời.",
+      "Hãy hạnh phúc, hãy khỏe mạnh, hãy tự tin, hãy là phiên bản tốt nhất và hãy tự hào về chính mình."
+    ];
+
+    let hasShownGiftForThisEp = false;
+
+    function checkAndShowGiftBox() {
+      const modal = document.getElementById('giftBoxModal');
+      if (!modal) return;
+
+      // 1. Kiểm tra nếu người dùng đã bật tắt 24h
+      const muteUntil = localStorage.getItem('phimnha_gift_mute_until');
+      if (muteUntil && Date.now() < parseInt(muteUntil)) return;
+
+      // 2. Bốc ngẫu nhiên 1 trong 11 câu quote
+      const randomQuote = healingQuotes[Math.floor(Math.random() * healingQuotes.length)];
+      const txtEl = document.getElementById('giftQuoteText');
+      if (txtEl) txtEl.innerText = `"${randomQuote}"`;
+
+      playSoftChime();
+      modal.style.display = 'flex';
+    }
+
+    function closeGiftBox() {
+      const modal = document.getElementById('giftBoxModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function muteGiftBox24h() {
+      const until = Date.now() + (24 * 60 * 60 * 1000);
+      localStorage.setItem('phimnha_gift_mute_until', until.toString());
+      const modal = document.getElementById('giftBoxModal');
+      if (modal) modal.style.display = 'none';
+      showToast("🔕 Đã tắt thông điệp hộp quà trong 24 giờ!");
+    }
+
+    function initVideoProgressTracking() {
       const video = document.getElementById('videoPlayer');
+
+      video.addEventListener('loadedmetadata', () => {
+        hasShownGiftForThisEp = false;
+      });
+
       video.addEventListener('timeupdate', () => {
-        if (!currentPlayingMovie || video.duration <= 30) return;
+        if (!currentPlayingMovie || !video.duration || video.duration <= 30) return;
+
+        // Lưu mốc để xem tiếp
         if (video.currentTime > 10 && (video.duration - video.currentTime > 15)) {
           localStorage.setItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex), Math.floor(video.currentTime).toString());
         }
+
+        // ĐẠT 80% THỜI LƯỢNG: Hiện luôn nếu người xem đang xem ở chế độ thường
+        const progress = video.currentTime / video.duration;
+        if (!hasShownGiftForThisEp && progress >= 0.8) {
+          const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+          if (!isFullscreen) {
+            hasShownGiftForThisEp = true;
+            checkAndShowGiftBox();
+          }
+        }
       });
 
+      // KHI NGƯỜI XEM THOÁT TOÀN MÀN HÌNH (Bấm Esc hoặc thu nhỏ màn hình sau khi xem xong đoạn phim >= 80%)
+      const onFullscreenExit = () => {
+        const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+        if (!isFullscreen && !hasShownGiftForThisEp && video.duration > 30) {
+          if ((video.currentTime / video.duration) >= 0.8) {
+            hasShownGiftForThisEp = true;
+            checkAndShowGiftBox();
+          }
+        }
+      };
+      document.addEventListener('fullscreenchange', onFullscreenExit);
+      document.addEventListener('webkitfullscreenchange', onFullscreenExit);
+
+      // Dự phòng khi xem hết 100%
       video.addEventListener('ended', () => {
         if (currentPlayingMovie) {
           localStorage.removeItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex));
         }
-        // Tự động bật Hộp Quà 11 câu quote khi hết phim
-        checkAndShowGiftBox();
+        if (!hasShownGiftForThisEp) {
+          hasShownGiftForThisEp = true;
+          checkAndShowGiftBox();
+        }
       });
     }
+    // ================================================
+
+    let lastTapLeft = 0;
 
     function applyResumePlayback(slug, epIndex) {
       const savedTimeStr = localStorage.getItem(getResumeKey(slug, epIndex));
