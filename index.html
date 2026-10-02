@@ -830,9 +830,10 @@
     }
     function getSyncedNow() { return Date.now() + serverTimeOffset; }
 
-    function formatTimeAgo(ts) {
+   function formatTimeAgo(ts) {
       if (!ts) return "Vừa xong";
-      const diff = Math.max(0, getSyncedNow() - ts);
+      // Dùng trực tiếp Date.now() để mốc thời gian không bị trồi sụt khi đồng bộ mạng
+      const diff = Math.max(0, Date.now() - ts);
       const mins = Math.floor(diff / 60000);
       if (mins < 1) return "Vừa xong";
       if (mins < 60) return `${mins} phút trước`;
@@ -1612,6 +1613,7 @@
     }
 
     // --- HÀM ĐỌC VÀ LẮNG NGHE BÌNH LUẬN THẬT TỪ FIREBASE (REALTIME 100%) ---
+  // --- HÀM ĐỌC VÀ LẮNG NGHE BÌNH LUẬN THẬT TỪ FIREBASE (REALTIME 100%) ---
     function loadRealCommunityComments() {
       const topRow = document.getElementById('topCommentsRow');
       const recentWrap = document.getElementById('recentCommunityComments');
@@ -1620,31 +1622,9 @@
 
       unsubscribeCommunityComments = db.collection('recent_comments')
         .orderBy('timestamp', 'desc')
-        .limit(30)
-        .onSnapshot(async snap => {
+        .limit(20)
+        .onSnapshot(snap => {
           if (snap.empty) {
-            // Tự động gom các bình luận cũ từ các phim trên trang 1 (nếu có)
-            if (allMoviesCache && allMoviesCache.length > 0) {
-              let foundAny = false;
-              for (let i = 0; i < Math.min(allMoviesCache.length, 8); i++) {
-                const m = allMoviesCache[i];
-                try {
-                  const cSnap = await db.collection('movie_comments').doc(m.slug).collection('comments').limit(5).get();
-                  cSnap.forEach(cDoc => {
-                    foundAny = true;
-                    const cData = cDoc.data();
-                    db.collection('recent_comments').doc(cDoc.id).set({
-                      ...cData,
-                      commentId: cDoc.id,
-                      movieSlug: m.slug,
-                      movieName: m.name
-                    }).catch(()=>{});
-                  });
-                } catch(e) {}
-              }
-              if (foundAny) return;
-            }
-
             topRow.innerHTML = `
               <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 22px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--border);">
                 <i class="fa-regular fa-comment-dots" style="font-size: 1.5rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
@@ -1659,12 +1639,13 @@
             allComments.push({ id: doc.id, ...doc.data() });
           });
 
-          // 1. TOP BÌNH LUẬN: 4 bình luận nhiều Like nhất
+          // Sắp xếp cố định: Nhiều like nhất -> Mới nhất -> Theo ID (không bao giờ bị đảo vị trí lung tung)
           const topLiked = [...allComments].sort((a, b) => {
-            const likesA = (a.likes || []).length;
-            const likesB = (b.likes || []).length;
-            if (likesB !== likesA) return likesB - likesA;
-            return (b.timestamp || 0) - (a.timestamp || 0);
+            const diffLikes = (b.likes || []).length - (a.likes || []).length;
+            if (diffLikes !== 0) return diffLikes;
+            const diffTime = (b.timestamp || 0) - (a.timestamp || 0);
+            if (diffTime !== 0) return diffTime;
+            return b.id.localeCompare(a.id);
           }).slice(0, 4);
 
           topRow.innerHTML = topLiked.map(c => {
@@ -1689,7 +1670,7 @@
             `;
           }).join('');
 
-          // 2. BÌNH LUẬN MỚI: 5 bình luận vừa mới gửi
+          // Cột bình luận mới nhất
           const latest = allComments.slice(0, 5);
           recentWrap.innerHTML = latest.map(c => {
             const timeAgo = formatTimeAgo(c.timestamp);
@@ -2072,23 +2053,46 @@
       } catch (e) {}
     }
 
-    // --- VOTE LIKE / DISLIKE ĐỒNG BỘ CẢ TRANG CHỦ ---
+   // --- VOTE LIKE / DISLIKE TRONG PLAYER (ĐỘC LẬP & AN TOÀN) ---
     async function voteComment(slug, cId, type) {
-      if (!currentUser) return showToast("Vui lòng đăng nhập!");
+      if (!currentUser) return showToast("Vui lòng đăng nhập để thích!");
       const ref = db.collection('movie_comments').doc(slug).collection('comments').doc(cId);
-      const recentRef = db.collection('recent_comments').doc(cId);
+      const uid = currentUser.uid;
 
       try {
-         await db.runTransaction(async (t) => {
-            const doc = await t.get(ref); if (!doc.exists) return;
-            const data = doc.data(); let likes = data.likes || []; let dislikes = data.dislikes || []; const uid = currentUser.uid;
-            if (type === 'like') { if (likes.includes(uid)) { likes = likes.filter(id => id !== uid); } else { likes.push(uid); dislikes = dislikes.filter(id => id !== uid); } } 
-            else { if (dislikes.includes(uid)) { dislikes = dislikes.filter(id => id !== uid); } else { dislikes.push(uid); likes = likes.filter(id => id !== uid); } }
-            
-            t.update(ref, { likes, dislikes });
-            t.set(recentRef, { likes, dislikes }, { merge: true });
-         });
-      } catch(e) {}
+        const doc = await ref.get();
+        if (!doc.exists) return;
+
+        const data = doc.data();
+        let likes = Array.isArray(data.likes) ? [...data.likes] : [];
+        let dislikes = Array.isArray(data.dislikes) ? [...data.dislikes] : [];
+
+        if (type === 'like') {
+          if (likes.includes(uid)) {
+            likes = likes.filter(id => id !== uid);
+          } else {
+            likes.push(uid);
+            dislikes = dislikes.filter(id => id !== uid);
+          }
+        } else {
+          if (dislikes.includes(uid)) {
+            dislikes = dislikes.filter(id => id !== uid);
+          } else {
+            dislikes.push(uid);
+            likes = likes.filter(id => id !== uid);
+          }
+        }
+
+        // 1. Cập nhật trực tiếp trong phim (luôn thành công ngay lập tức)
+        await ref.update({ likes: likes, dislikes: dislikes });
+
+        // 2. Cập nhật kèm ra bảng recent_comments ngoài trang chủ nếu có bản ghi
+        db.collection('recent_comments').doc(cId).update({ likes: likes, dislikes: dislikes }).catch(() => {});
+
+      } catch (err) {
+        console.error("Lỗi vote comment:", err);
+        showToast("Không thể thực hiện đánh giá!");
+      }
     }
 
     // TỦ PHIM (LỊCH SỬ & YÊU THÍCH)
