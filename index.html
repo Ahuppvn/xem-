@@ -2002,7 +2002,7 @@
     }
 
     // --- LƯU BÌNH LUẬN ĐỒNG THỜI VÀO PHIM & FEED TRANG CHỦ ---
-    async function submitComment() {
+   async function submitComment() {
        if (!currentUser || !currentPlayingMovie) return;
        const txt = document.getElementById('txtComment').value.trim(); 
        if (!txt) return showToast("Vui lòng nhập nội dung!");
@@ -2025,19 +2025,19 @@
          // 1. Lưu vào subcollection của phim
          const docRef = await db.collection('movie_comments').doc(currentPlayingMovie.slug).collection('comments').add(commentData);
          
-         // 2. Lưu vào bảng phẳng recent_comments để trang chủ tự nhảy lập tức
-         db.collection('recent_comments').doc(docRef.id).set({
+         // 2. Lưu đồng bộ ra bảng trang chủ
+         await db.collection('recent_comments').doc(docRef.id).set({
            ...commentData,
            commentId: docRef.id
-         }).catch(()=>{});
+         });
 
          document.getElementById('txtComment').value = '';
          showToast("Đã gửi bình luận!");
        } catch(e) {
+         console.error("Lỗi gửi bình luận:", e);
          showToast("Lỗi gửi bình luận!");
        }
     }
-
     function toggleReplyBox(cId) {
       if(!currentUser) return showToast("Đăng nhập để phản hồi!");
       const box = document.getElementById('replyBox-' + cId);
