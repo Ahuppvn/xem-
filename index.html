@@ -335,6 +335,59 @@
       .poke-notification { left: 14px; right: 14px; max-width: none; top: 68px; }
       .comm-columns-wrap { grid-template-columns: 1fr; }
     }
+    /* ========================================================
+       MODAL HỘP QUÀ CHỮA LÀNH (11 CÂU QUOTE)
+    ======================================================== */
+    .gift-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(12px); z-index: 6000; display: none;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .gift-card {
+      background: linear-gradient(145deg, #181c28, #11141e);
+      border: 1.5px solid rgba(245, 158, 11, 0.4);
+      width: 100%; max-width: 480px; border-radius: 20px; padding: 30px 24px;
+      text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.95);
+      animation: popGift 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+    @keyframes popGift {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .gift-icon-wrap {
+      width: 72px; height: 72px; margin: 0 auto 16px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(229, 9, 20, 0.2));
+      border: 2px solid #f59e0b; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: #f59e0b;
+      animation: giftBounce 2s infinite ease-in-out;
+    }
+    @keyframes giftBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .gift-title { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .gift-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; }
+    .gift-quote-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px dashed rgba(245, 158, 11, 0.35);
+      border-radius: 14px; padding: 18px 16px; margin-bottom: 24px;
+      font-size: 0.95rem; font-style: italic; line-height: 1.65;
+      color: #fef08a; text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .gift-actions { display: flex; flex-direction: column; gap: 10px; }
+    .btn-gift-close {
+      width: 100%; background: var(--primary); color: #fff; border: none;
+      padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.92rem;
+      cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-gift-close:hover { background: var(--primary-hover); }
+    .btn-gift-mute {
+      background: none; border: none; color: var(--text-muted); font-size: 0.78rem;
+      cursor: pointer; padding: 6px; transition: 0.2s;
+    }
+    .btn-gift-mute:hover { color: #fff; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -520,6 +573,25 @@
     </div>
   </div>
 
+  <!-- MODAL HỘP QUÀ THÔNG ĐIỆP KHI HẾT PHIM -->
+  <div class="gift-modal" id="giftBoxModal">
+    <div class="gift-card">
+      <div class="gift-icon-wrap"><i class="fa-solid fa-gift"></i></div>
+      <h3 class="gift-title">HỘP QUÀ TẶNG BẠN</h3>
+      <p class="gift-subtitle">Tập phim vừa kết thúc, gửi tặng bạn một thông điệp nhỏ:</p>
+      
+      <div class="gift-quote-box" id="giftQuoteText">"Đang mở quà..."</div>
+      
+      <div class="gift-actions">
+        <button class="btn-gift-close" onclick="closeGiftBox()">
+          <i class="fa-solid fa-heart"></i> Cảm Ơn & Tiếp Tục
+        </button>
+        <button class="btn-gift-mute" onclick="muteGiftBox24h()">
+          🔕 Không hiện hộp quà trong 24 giờ tới
+        </button>
+      </div>
+    </div>
+  </div>
   <!-- HEADER -->
   <header>
     <a href="#" class="brand" onclick="location.reload()"><i class="fa-solid fa-play"></i> <span>PHIM NHÀ</span></a>
@@ -1126,7 +1198,7 @@
 
     function getResumeKey(slug, epIndex) { return `resume_${slug}_ep${epIndex}`; }
 
-    function initVideoProgressTracking() {
+  function initVideoProgressTracking() {
       const video = document.getElementById('videoPlayer');
       video.addEventListener('timeupdate', () => {
         if (!currentPlayingMovie || video.duration <= 30) return;
@@ -1139,6 +1211,8 @@
         if (currentPlayingMovie) {
           localStorage.removeItem(getResumeKey(currentPlayingMovie.slug, currentEpIndex));
         }
+        // Tự động bật Hộp Quà 11 câu quote khi hết phim
+        checkAndShowGiftBox();
       });
     }
 
@@ -2137,6 +2211,48 @@
       initVideoProgressTracking();
       initDoubleTapAndShortcuts();
       fetchMovies(1);
+
+      // ==========================================
+    // HỆ THỐNG 11 CÂU QUOTE & HỘP QUÀ KHI HẾT PHIM
+    // ==========================================
+    const healingQuotes = [
+      "Bạn đang trong độ tuổi đẹp nhất cuộc đời. Đây là khoảng thời gian đẹp mà bạn sẽ không bao giờ quay lại được.",
+      "Vậy nên hãy làm những điều khiến trái tim mình vui, trước khi mọi thứ trở thành ký ức.",
+      "Rồi bạn sẽ nhận ra điều đáng tiếc nhất không phải là đã sai, mà là chưa từng dám sống.",
+      "Vì thế, hãy cứ sống, cứ trải nghiệm và chọn những điều khiến mình hạnh phúc.",
+      "Hãy đi những nơi muốn đi, làm những điều muốn làm và sống một cuộc đời khiến mình tự hào.",
+      "Bạn sẽ không bao giờ quay lại độ tuổi này nữa, nên hãy làm những điều khiến bản thân mình hạnh phúc.",
+      "Hãy hạnh phúc. Vì cuộc đời này ngắn lắm, đừng để những chuyện không đáng lấy mất niềm vui.",
+      "Hãy khỏe mạnh. Vì còn rất nhiều điều đẹp đẽ đang chờ bạn ở phía trước.",
+      "Hãy tự tin. Chính vì bạn là điều đặc biệt nhất.",
+      "Hãy là phiên bản tốt nhất. Vì bạn chỉ có một cuộc đời.",
+      "Hãy hạnh phúc, hãy khỏe mạnh, hãy tự tin, hãy là phiên bản tốt nhất và hãy tự hào về chính mình."
+    ];
+
+    function checkAndShowGiftBox() {
+      // 1. Kiểm tra nếu người dùng đã bật tắt trong 24h
+      const muteUntil = localStorage.getItem('phimnha_gift_mute_until');
+      if (muteUntil && Date.now() < parseInt(muteUntil)) return;
+
+      // 2. Bốc ngẫu nhiên 1 trong 11 câu
+      const randomQuote = healingQuotes[Math.floor(Math.random() * healingQuotes.length)];
+      document.getElementById('giftQuoteText').innerText = `"${randomQuote}"`;
+
+      // 3. Bật modal hộp quà
+      playSoftChime();
+      document.getElementById('giftBoxModal').style.display = 'flex';
+    }
+
+    function closeGiftBox() {
+      document.getElementById('giftBoxModal').style.display = 'none';
+    }
+
+    function muteGiftBox24h() {
+      const until = Date.now() + (24 * 60 * 60 * 1000);
+      localStorage.setItem('phimnha_gift_mute_until', until.toString());
+      document.getElementById('giftBoxModal').style.display = 'none';
+      showToast("🔕 Đã tắt thông điệp hộp quà trong 24 giờ!");
+    }
     };
   </script>
 </body>
